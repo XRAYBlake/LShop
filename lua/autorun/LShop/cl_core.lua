@@ -172,7 +172,7 @@ function LShop.cl.MainShop()
 	LShop_MainShopPanel:SetSize( LShop_MainShopPanel_w, LShop_MainShopPanel_h )
 	LShop_MainShopPanel:SetTitle( "" )
 	LShop_MainShopPanel:SetDraggable( true )
-	LShop_MainShopPanel:ShowCloseButton( true )
+	LShop_MainShopPanel:ShowCloseButton( false )
 	LShop_MainShopPanel:MakePopup()
 	LShop_MainShopPanel.Think = function()
 		if ( LShop_Menu01Panel ) then
