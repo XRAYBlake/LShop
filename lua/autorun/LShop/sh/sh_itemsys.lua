@@ -130,6 +130,8 @@ for k, v in pairs( LShop.ITEMs ) do
 end
 --]]
 
+print( LShop.Config.Version )
+
 if ( SERVER ) then
 	util.AddNetworkString("LShop_ItemBuy")
 	util.AddNetworkString("LShop_ItemSell")
