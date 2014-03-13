@@ -22,24 +22,19 @@ concommand.Add("LShop_GiveMoney", function( pl, cmd, args )
 	if ( pl:IsSuperAdmin() ) then
 		if ( args[1] ) then
 			pl:LShop_SetMoney( args[1] )
-<<<<<<< HEAD
 		else
-			pl:ChatPrint( "[LShop] 당신은 서버 관리자가 아닙니다." )
+			pl:ChatPrint( "[LShop] You are not superadmin." )
 		end
-	end)
+	end
+end)
 	
-	concommand.Add("LShop_GiveMoneys2", function( pl, cmd, args )
-		if ( pl:IsSuperAdmin() ) then
-			for k, v in pairs( player.GetAll() ) do
-				v:LShop_SetMoney( args[1] )
-			end
-		else
-			pl:ChatPrint( "[LShop] 당신은 서버 관리자가 아닙니다." )
-=======
->>>>>>> Code Cleanup 4
+concommand.Add("LShop_GiveMoneyAll", function( pl, cmd, args )
+	if ( pl:IsSuperAdmin() ) then
+		for k, v in pairs( player.GetAll() ) do
+			v:LShop_SetMoney( args[1] )
 		end
 	else
-		pl:ChatPrint( "[LShop] You are not server admin." )
+		pl:ChatPrint( "[LShop] You are not superadmin." )
 	end
 end)
 
