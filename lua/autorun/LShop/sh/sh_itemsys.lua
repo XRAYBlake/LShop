@@ -69,7 +69,7 @@ function LShop.system.ItemFindByModel( model, category )
 	end
 end
 
-LShop.ITEMs = {}
+LShop.ITEMs = {} -- Init
 
 if ( CLIENT ) then
 	function LShop.system.CSLoadItemFiles( )
@@ -124,7 +124,6 @@ if ( SERVER ) then
 		net.WriteTable( tab )
 		net.Send( pl )
 	end
-		
 
 	local Player = FindMetaTable('Player')
 	
@@ -154,7 +153,6 @@ if ( SERVER ) then
 								if ( item.Buyed ) then
 									item.Buyed( item, self )
 								end
-								PrintTable( self.OwnItems )
 								return
 							end
 						end
@@ -209,37 +207,34 @@ if ( SERVER ) then
 	
 	function Player:LShop_IsOwn( itemID, category )
 		local id = LShop.system.ItemFindByID( tostring( itemID ), category )
-
 		if ( id ) then
 			for k, v in pairs( self.OwnItems ) do
 				if ( v.ID == itemID ) then
 					return true
 				else
 					if ( i == #v ) then
-						LShop.system.SendBugNotice( self, "LShop_IsOwn 함수 오류!", "아이디에 맞는 아이템을 찾을 수 없었습니다. : " .. itemID )
+						//LShop.system.SendBugNotice( self, "LShop_IsOwn 함수 오류!", "아이디에 맞는 아이템을 찾을 수 없었습니다. : " .. itemID )
 						return nil
 					end
 				end
 			end
 		else
-			LShop.system.SendBugNotice( self, "LShop_IsOwn 함수 오류!", "아이템을 찾을 수 없었습니다. : " .. itemID )
+			// LShop.system.SendBugNotice( self, "LShop_IsOwn 함수 오류!", "아이템을 찾을 수 없었습니다. : " .. itemID )
 			return nil
 		end
 	end
 
 	function Player:LShop_ItemRemoveInventory( itemID, category )
-			for k, v in pairs( self.OwnItems ) do
-				if ( v.ID == itemID ) then
-					self.OwnItems[k] = nil
-					print("REM")
-					return
-				else
-					if ( k == #self.OwnItems ) then
-						print("Own not found.")
-						LShop.system.SendBugNotice( self, "LShop_ItemRemoveInventory 함수 오류!", "그 아이템을 가지고 있지 않습니다. : " .. itemID )
-					end
+		for k, v in pairs( self.OwnItems ) do
+			if ( v.ID == itemID ) then
+				self.OwnItems[k] = nil
+				return
+			else
+				if ( k == #self.OwnItems ) then
+					// LShop.system.SendBugNotice( self, "LShop_ItemRemoveInventory 함수 오류!", "그 아이템을 가지고 있지 않습니다. : " .. itemID )
 				end
 			end
+		end
 	end
 	
 	function Player:LShop_PlayerSpawn()
@@ -363,9 +358,6 @@ if ( SERVER ) then
 		cl:LShop_SaveData()
 	end)
 
-	hook.Add( "Initialize", "FirstLoad", function( )
-	end)
-	
 	function LShop.system.SendDBToPlayer( pl )
 		if ( IsValid( pl ) ) then
 			net.Start("LShop_SendTable")
@@ -405,7 +397,6 @@ if ( SERVER ) then
 	
 	function LShop.system.SVLoadItemFiles( )
 		local find = file.Find("autorun/LShop/items/*.lua", "LUA") or {}
-
 		if ( find ) then
 			for k, v in pairs( find ) do
 				LShop.core.LoadFile( "autorun/LShop/items/" .. v )

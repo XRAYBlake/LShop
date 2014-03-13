@@ -17,13 +17,12 @@ function meta:LShop_TakeMoney( money )
 	local curretmoney = self.Money
 	self.Money = curretmoney - tonumber( money )
 end
-	concommand.Add("LShop_Loadmoney", function( pl, cmd, args )
-		print( pl:LShop_GetMoney( ) )
-	end)
 	
-	concommand.Add("LShop_GiveMoneys", function( pl, cmd, args )
-		if ( pl:IsSuperAdmin() ) then
+concommand.Add("LShop_GiveMoney", function( pl, cmd, args )
+	if ( pl:IsSuperAdmin() ) then
+		if ( args[1] ) then
 			pl:LShop_SetMoney( args[1] )
+<<<<<<< HEAD
 		else
 			pl:ChatPrint( "[LShop] 당신은 서버 관리자가 아닙니다." )
 		end
@@ -36,9 +35,14 @@ end
 			end
 		else
 			pl:ChatPrint( "[LShop] 당신은 서버 관리자가 아닙니다." )
+=======
+>>>>>>> Code Cleanup 4
 		end
-	end)
-	
-	concommand.Add("LShop_GetMoney", function( pl, cmd, args )
-		pl:ChatPrint( pl:LShop_GetMoney( ) )
-	end)
+	else
+		pl:ChatPrint( "[LShop] You are not server admin." )
+	end
+end)
+
+concommand.Add("LShop_GetMoney", function( pl, cmd, args )
+	pl:ChatPrint( pl:LShop_GetMoney( ) )
+end)
