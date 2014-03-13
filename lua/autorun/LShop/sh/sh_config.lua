@@ -1,4 +1,3 @@
-
 LShop.Config = LShop.Config or {}
 
 LShop.Config.Version = "1.0"

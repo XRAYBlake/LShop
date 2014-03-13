@@ -1,7 +1,3 @@
---[[
-
---]]
-
 LShop = LShop or {}
 LShop.core = LShop.core or {}
 LShop.system = LShop.system or {}

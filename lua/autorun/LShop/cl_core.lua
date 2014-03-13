@@ -1,7 +1,3 @@
---[[
-
---]]
-
 LShop = LShop or {}
 LShop.cl = LShop.cl or {}
 LShop.cl.SelectedCategory = nil
@@ -14,7 +10,6 @@ function LShop.cl.LoadSharedFile( )
 	if ( find ) then
 		for k, v in pairs( find ) do
 			include( "sh/" .. v )
-			print( v )
 		end
 	end
 end
@@ -29,7 +24,7 @@ function LShop.cl.IsOwned( pl, itemID, category )
 					return true
 				else
 					if ( k == #LShop.OwnItemsCL ) then
-						return nil -- 추후에 수정할것.
+						return nil
 					end
 				end
 			end
@@ -45,21 +40,17 @@ function LShop.cl.IsEquiped( pl, itemID, category )
 			for k, v in pairs( LShop.OwnItemsCL ) do
 				if ( v.ID == itemID ) then
 					if ( v.onEquip ) then
-						print("Equiped true")
 						return true
 					else
-						print("Equiped false")
 						return false
 					end
 				else
 					if ( k == #LShop.OwnItemsCL ) then
-						print("Equiped no")
-						return nil -- 추후에 수정할것.
+						return nil
 					end
 				end
 			end
 		else
-			print("Equiped no[3]")
 		end
 	end
 --]]
@@ -75,7 +66,6 @@ function meta:LShop_IsEquiped( id, category )
 end
 
 net.Receive("LShop_ItemIsOwnCheck_SendCL", function( len, cl )
-	--print( net.ReadString() )
 end)
 
 net.Receive("LShop_BugNoticeSend", function( len, cl )
@@ -170,7 +160,6 @@ function LShop.cl.MainShop()
 	local scrW, scrH = ScrW(), ScrH()
 	local LShop_MainShopPanel_w, LShop_MainShopPanel_h = scrW, scrH -- scrW, scrH
 	local LShop_MainShopPanel_x, LShop_MainShopPanel_y = (scrW * 0.5) - (LShop_MainShopPanel_w / 2), (scrH * 0.5) - (LShop_MainShopPanel_h / 2);
-	--LShop.cl.SelectedCategory = nil
 	LShop.PlyMoneyAnimation = 0
 	LShop.cl.SelectedMenu = nil
 
@@ -413,13 +402,9 @@ function LShop.cl.Menu01( parent, tab )
 						if ( !LP:LShop_IsEquiped( SelectItem.ID, SelectItem.Category ) ) then
 							LShop_Menu01Panel.Action:SetVisible( true )
 							LShop_Menu01Panel.Action:SetText( "Equip" )  
-							--ButtonMode = 3
-							print("equipe can!")
 						else
 							LShop_Menu01Panel.Action:SetVisible( true )
 							LShop_Menu01Panel.Action:SetText( "Unequip" )  
-							--ButtonMode = 4
-							print("unequipe can!")
 						end
 					else
 						LShop_Menu01Panel.Action:SetVisible( false )
@@ -428,57 +413,17 @@ function LShop.cl.Menu01( parent, tab )
 						LShop_Menu01Panel.Buy:SetVisible( true )
 						LShop_Menu01Panel.Buy:SetText( "Buy" )  
 						ButtonMode = 1
-						print("buy can!")
 					elseif ( Find.CanSell && LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category )  ) then
 						LShop_Menu01Panel.Buy:SetVisible( true )
 						LShop_Menu01Panel.Buy:SetText( "Sell" )  
 						ButtonMode = 0
-						print("sell can!")
 					end
-					--[[
-					if ( !Find.CanBuy  ) then
-						LShop_Menu01Panel.Buy:SetVisible( false )
-					elseif ( !Find.CanSell ) then
-					
-						LShop_Menu01Panel.Buy:SetVisible( false )
-					end
-					--]]
 					if ( !LP:LShop_IsEquiped( SelectItem.ID, SelectItem.Category ) ) then
 						SelectItem.EquBool = true
 					else
 						SelectItem.EquBool = false
 					end
-				end		
-
-				
---[[
-			if ( ButtonMode == 1 ) then
-				LShop_Menu01Panel.Buy:SetText( "Buy" )  
-			else
-				LShop_Menu01Panel.Buy:SetText( "Sell" )  
-			end
---]]
---[[
-						
-						if ( !LP:LShop_IsOwned( v.ID )  ) then
-							Menu:AddOption("Buy", function() 
-								net.Start("LShop_ItemBuy")
-								net.WriteString( v.Category )
-								net.WriteString( v.ID )
-								net.SendToServer()	
-							end
-							)
-						end
-						if ( v.CanSell && LP:LShop_IsOwned( v.ID ) ) then
-							Menu:AddOption("Sell", function() 
-								net.Start("LShop_ItemSell")
-								net.WriteString( v.Category )
-								net.WriteString( v.ID )
-								net.SendToServer()	
-							end
-							)
-						end
---]]
+				end
 		end
 	end
 	LShop_Menu01Panel.Paint = function()
@@ -591,54 +536,6 @@ function LShop.cl.Menu01( parent, tab )
 			list.DoClick = function()
 						surface.PlaySound( "ui/buttonclick.wav" )		
 						local Menu = DermaMenu( )
-						--local Find = LShop.system.ItemFindByID( v.ID )
-						--PrintTable( Find )
-					
-					--[[
-						
-						if ( !LP:LShop_IsOwned( v.ID )  ) then
-							Menu:AddOption("Buy", function() 
-								net.Start("LShop_ItemBuy")
-								net.WriteString( v.Category )
-								net.WriteString( v.ID )
-								net.SendToServer()	
-							end
-							)
-						end
-						if ( v.CanSell && LP:LShop_IsOwned( v.ID ) ) then
-							Menu:AddOption("Sell", function() 
-								net.Start("LShop_ItemSell")
-								net.WriteString( v.Category )
-								net.WriteString( v.ID )
-								net.SendToServer()	
-							end
-							)
-						end
-						
-						if ( v.CanEquip && LP:LShop_IsOwned( v.ID ) ) then
-							if ( !LP:LShop_IsEquiped( v.ID ) ) then
-								Menu:AddOption("Equip", function() 
-									net.Start("LShop_ItemEquip")
-									net.WriteString( v.Category )
-									net.WriteString( v.ID )
-									net.WriteString( "true" )
-									net.SendToServer()
-								end
-								)
-							else
-								Menu:AddOption("Unequip", function() 
-									net.Start("LShop_ItemEquip")
-									net.WriteString( v.Category )
-									net.WriteString( v.ID )
-									net.WriteString( "false" )
-									net.SendToServer()
-									
-								end
-								)							
-							end
-						end
-						Menu:Open()
-				--]]
 				SelectItem.ID = v.ID
 				SelectItem.Category = v.Category
 				if ( v.CanEquip && LP:LShop_IsOwned( v.ID, SelectItem.Category ) ) then
@@ -656,42 +553,14 @@ function LShop.cl.Menu01( parent, tab )
 
 			end
 			list.OnCursorEntered = function()
-				
-			--[[
-				if ( IsValid( LShop_Menu01Panel ) ) then
-					local LShop_Menu01Panel_w, LShop_Menu01Panel_h = scrW * 0.25, scrH * 0.7
-					local LShop_Menu01Panel_x, LShop_Menu01Panel_y = scrW + LShop_Menu01Panel_w, (scrH * 0.5) - (LShop_Menu01Panel_h / 2);
-					LShop_Menu01Panel:SetPos( LShop_Menu01Panel_x , LShop_Menu01Panel_y )
-					LShop_Menu01Panel:MoveTo( ScrW() - LShop_Menu01Panel_w, LShop_Menu01Panel_y, 0.3, 0 )
-
-					return
-				end
-				LShop.cl.ItemDetail( LShop_MainShopPanel, v )
-			
-				itemInformation.Name = v.Name or ""
-				itemInformation.Price = v.Price or 0
-				itemInformation.Desc = v.Desc or ""
-			--]]
 			end
 			list.OnCursorExited = function()
-			--[[
-				if ( IsValid( LShop_Menu01Panel ) ) then
-					local LShop_Menu01Panel_w, LShop_Menu01Panel_h = scrW * 0.25, scrH * 0.7
-					local LShop_Menu01Panel_x, LShop_Menu01Panel_y = scrW + LShop_Menu01Panel_w, (scrH * 0.5) - (LShop_Menu01Panel_h / 2);
-					LShop_Menu01Panel:MoveTo( ScrW() + LShop_Menu01Panel_w, LShop_Menu01Panel_y, 0.3, 0 )
-				end
-				SelectItemmodel:SetModel( "" )
-				itemInformation.Name = ""
-				itemInformation.Price = 0
-				itemInformation.Desc = ""
-			--]]
 			end
 			list.Paint = function()
 				local w, h = list:GetWide(), list:GetTall()
 				surface.SetDrawColor( 10, 10, 10, 30 )
 				surface.DrawRect( 0, 0, w, h )
 				
-				--draw.SimpleText( k, "XP_Notice_Text3", w * 0.02, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 				draw.SimpleText( v.Name, "LShop_Category_Text", w * 0.1, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 				draw.SimpleText( v.Price, "LShop_Category_Text", w * 0.96, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 				
@@ -711,62 +580,24 @@ function LShop.cl.Menu01( parent, tab )
 				icon:SetModel( v.Model )
 			end
 			icon:SetToolTip( false )
-			
-			/*
-				local w, h = list:GetWide(), list:GetTall()
-
-					local Bx, By = (w * 0.5) - (w * 0.1 / 2), h - 40
-			
-					local dobutt = list:Add("DButton")
-					dobutt:SetText( "Do" )  
-					dobutt:SetFont("LShop_ButtonText")
-					dobutt:SetPos( Bx, By )  
-					dobutt:SetColor(Color( 0, 0, 0, 255 ))
-					dobutt:SetSize( w * 0.1, 35 ) 
-					dobutt.DoClick = function(  )
-						
-					end
-					dobutt.Paint = function()
-						local w = dobutt:GetWide()
-						local h = dobutt:GetTall()
-						
-						surface.SetDrawColor( 0, 255, 100, 200 )
-						surface.DrawRect( 0, 0, w, h )
-					end
-			*/
 			ItemList:AddItem( list )
 		end
 	end
 	
 	SelectItemmodel = vgui.Create("DModelPanel", LShop_Menu01Panel)
---		model:ParentToHUD()
-		SelectItemmodel:SetSize( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.65 )
-		SelectItemmodel:SetPos( LShop_Menu01Panel_w * 0.87 - LShop_Menu01Panel_w * 0.2 / 2, LShop_Menu01Panel_h * 0.13 )
-		SelectItemmodel:SetFOV(50) -- 105
-		SelectItemmodel:SetCamPos( Vector( 50, 50, 5 ) )
-		SelectItemmodel:SetLookAt( Vector( 0, 0, 0 ) )
-		SelectItemmodel.OnCursorEntered = function() end
-		SelectItemmodel:SetDisabled(true)
-		SelectItemmodel:SetCursor("none")
-		SelectItemmodel:MoveToBack()
-		SelectItemmodel:SetVisible( true )
-		SelectItemmodel.PaintOver = function()
-			local w, h = SelectItemmodel:GetWide(), SelectItemmodel:GetTall()
-		--[[
-			surface.SetDrawColor( 0, 0, 0, 30 )
-			surface.DrawRect( 0, 0, 3, h )
-			
-			surface.SetDrawColor( 0, 0, 0, 30 )
-			surface.DrawRect( w - 3, 0, 3, h )
-		--]]
---[[
-			surface.SetDrawColor( 10, 10, 10, 30 )
-			surface.DrawRect( 0, 0, w, 3 )
-			
-			surface.SetDrawColor( 10, 10, 10, 30 )
-			surface.DrawRect( 0, h - 3, w, 3 )
---]]
-		end
+	SelectItemmodel:SetSize( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.65 )
+	SelectItemmodel:SetPos( LShop_Menu01Panel_w * 0.87 - LShop_Menu01Panel_w * 0.2 / 2, LShop_Menu01Panel_h * 0.13 )
+	SelectItemmodel:SetFOV(50) -- 105
+	SelectItemmodel:SetCamPos( Vector( 50, 50, 5 ) )
+	SelectItemmodel:SetLookAt( Vector( 0, 0, 0 ) )
+	SelectItemmodel.OnCursorEntered = function() end
+	SelectItemmodel:SetDisabled(true)
+	SelectItemmodel:SetCursor("none")
+	SelectItemmodel:MoveToBack()
+	SelectItemmodel:SetVisible( true )
+	SelectItemmodel.PaintOver = function()
+		local w, h = SelectItemmodel:GetWide(), SelectItemmodel:GetTall()
+	end
 		
 	local Bx, By = scrW * 0.75, LShop_Menu01Panel_h * 0.9 - 10
 
@@ -840,9 +671,7 @@ function LShop.cl.Menu01( parent, tab )
 		surface.DrawRect( 0, 0, w, h )
 
 	end
-	
-	-- LShop_Menu01Panel.Action
-	
+
 	CategoryListClear()
 	CategoryListAdd()
 	
@@ -901,11 +730,6 @@ function LShop.cl.Menu02( parent, tab )
 		surface.SetDrawColor( 255, 255, 255, 230 )
 		surface.DrawRect( 0, 0, w, h )
 		
---[[		
-		surface.SetDrawColor( 10, 10, 10, 10 )
-		surface.DrawRect( w * 0.75, h * 0.1, w * 0.25 - 20, h * 0.85 )
---]]
-
 		draw.SimpleText( "Inventory", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 	end
 	
@@ -1004,103 +828,7 @@ function LShop.cl.Menu02( parent, tab )
 					end
 				end
 			end
-			
-			--if ( itemInformation != 1 ) then
-				ItemList:AddItem( list )
-			--end
-
-/*
-			if ( !Tab[ v.Category ] ) then
-			local list = ItemList:Add( "DForm" )
-			list:SetSize( 30, 30 )
-			list:SetSpacing( 20 )
-			list:SetName( v.Category )
-				local icons = vgui.Create("DIconLayout")
-				icons.Paint = function( icons, w, h )
-					surface.SetDrawColor( 10, 10, 10, 30 )
-					surface.DrawRect( 0, 0, w, h )
-				end
-				list:SetContents(icons)
-
-				local category = v.Category
-				
-				Tab[category] = category
-				
-				local itemInformation = LShop.system.ItemFindByID( v.ID, v.Category )
-				
-				local items = icons:Add("SpawnIcon")
-				items:SetSize( 70, 70 )
-				items:SetModel( itemInformation.Model )
-				items.Paint = function( items, w, h )
-					if ( v.onEquip ) then
-						surface.SetMaterial( Material("icon16/accept.png") )
-						surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
-						surface.DrawTexturedRect( 5, 5, 16, 16 )
-					end
-				end
-				items.DoClick = function()
-					print("Yeah!")
-					local Menu = DermaMenu( )
-					if ( v.CanSell && LP:LShop_IsOwned( v.ID, v.Category ) ) then
-						Menu:AddOption("Sell", function() 
-							net.Start("LShop_ItemSell")
-							net.WriteString( v.Category )
-							net.WriteString( v.ID )
-							net.SendToServer()	
-						end
-						)
-					end
-					print( v.Category )
-					
-					if ( v.CanEquip && LP:LShop_IsOwned( v.ID, v.Category ) ) then
-						if ( !LP:LShop_IsEquiped( v.ID, v.Category ) ) then
-							Menu:AddOption("Equip", function() 
-								net.Start("LShop_ItemEquip")
-								net.WriteString( v.Category )
-								net.WriteString( v.ID )
-								net.WriteString( "true" )
-								net.SendToServer()
-							end
-							)
-						else
-							Menu:AddOption("Unequip", function() 
-								net.Start("LShop_ItemEquip")
-								net.WriteString( v.Category )
-								net.WriteString( v.ID )
-								net.WriteString( "false" )
-								net.SendToServer()
-							end
-							)							
-						end
-					end
-	
-					Menu:Open()		
-					print("Run!")
-				end
-				
-				--list:AddItem( items )
-				ItemList:AddItem( list )
-			else
-
-				local icons = vgui.Create("DIconLayout")
-				icons.Paint = function( icons, w, h )
-					surface.SetDrawColor( 10, 10, 10, 30 )
-					surface.DrawRect( 0, 0, w, h )
-				end
-				list:SetContents(icons)	
-				local itemInformation = LShop.system.ItemFindByID( v.ID, v.Category )
-				local items = icons:Add("SpawnIcon")
-				items:SetSize( 70, 70 )
-				items:SetModel( itemInformation.Model )
-				items.Paint = function( items, w, h )
-					if ( v.onEquip ) then
-						surface.SetMaterial( Material("icon16/accept.png") )
-						surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
-						surface.DrawTexturedRect( 5, 5, 16, 16 )
-					end
-				end				
-			end
-*/
+			ItemList:AddItem( list )
 		end
 	end
 	
@@ -1236,5 +964,3 @@ function LShop.cl.BugNotice( tab )
 		end
 	end
 end
-
--- LShop.system.CheckIsOwned( pl, itemID )

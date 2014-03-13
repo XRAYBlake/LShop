@@ -1,6 +1,3 @@
---[[
-
---]]
 LShop = LShop or {}
 LShop.system = LShop.system or {}
 LShop.ITEMs = {}
@@ -80,7 +77,6 @@ if ( CLIENT ) then
 	function LShop.system.CSLoadItemFiles( )
 		local find = file.Find("autorun/LShop/items/*.lua", "LUA") or {}
 
-		PrintTable( find )
 		if ( find ) then
 			for k, v in pairs( find ) do
 				include( "autorun/LShop/items/" .. v )
@@ -90,45 +86,6 @@ if ( CLIENT ) then
 	
 	LShop.system.CSLoadItemFiles( )
 end
-
---[[
-LShop.system.ItemRegister( {
-	ID = "sex",
-	Name = "Sex on the beach",
-	Category = "Sex",
-	Price = 30,
-	Ammo_ID = "smg1",
-	Type = "ammo",
-	Ammo_Count = 50,
-	CanBuy = true,
-	CanSell = true,
-	CanEquip = false,
-	OneUse = false,
-	Desc = "섹스!",
-	Model = "models/error.mdl",
-	Buyed = function( item, ply )
-
-	end,
-	Selled = function( item, ply )
-
-	end,
-	Equipped = function( item, ply )
-	
-	end,
-	Unequipped = function( item, ply )
-		
-	end
-} )
-
-
-
-
-for k, v in pairs( LShop.ITEMs ) do
-	for i, a in pairs( v ) do
-		--print( a.ID )
-	end
-end
---]]
 
 if ( SERVER ) then
 	util.AddNetworkString("LShop_ItemBuy")
@@ -147,23 +104,17 @@ if ( SERVER ) then
 		net.WriteString( cl.Money )
 		net.Send( cl )
 	end)
-	--[[
-		net.Start("LShop_SendTable")
-		net.WriteTable( LShop.PlyItems )
-		net.Broadcast()
-	--]]
+	
 	net.Receive("LShop_ItemIsOwnCheck", function( len, cl )
 		local check = self:LShop_IsOwn( net.ReadString() )
 		if ( check ) then
 			net.Start("LShop_ItemIsOwnCheck_SendCL")
 			net.WriteString( "1" )
 			net.Send( cl )
-			print("1")
 		else
 			net.Start("LShop_ItemIsOwnCheck_SendCL")
 			net.WriteString( "0" )
-			net.Send( cl )		
-			print("0")
+			net.Send( cl )
 		end
 	end)
 	
@@ -188,25 +139,12 @@ if ( SERVER ) then
 				net.Start("LShop_SendMessage")
 				net.WriteString( "You already own this item. : " .. itemID )
 				net.Send( self )
-				print("One use item!")
 				return
 			end
 		end
 		if ( item ) then
 			if ( item.Price <= curretMoney ) then
 				if ( !item.OneUse ) then
-				--[[
-					if ( !self.OwnItems[ self:SteamID() ] ) then
-						self.OwnItems[ self:SteamID() ] = {}
-						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
-						--self.OwnItems[ self:SteamID() ][ #self.OwnItems[ self:SteamID() ] + 1 ] = { ID = itemID, Category = category, onEquip = true }
-						self:LShop_TakeMoney( item.Price )
-					else
-						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
-						--self.OwnItems[ self:SteamID() ][ #self.OwnItems[ self:SteamID() ] + 1 ] = { ID = itemID, Category = category, onEquip = true }
-						self:LShop_TakeMoney( item.Price )
-					end
-				--]]
 					if ( #self.OwnItems != 0 ) then
 						for k, v in pairs( self.OwnItems ) do
 							if ( v.ID != itemID ) then
@@ -227,8 +165,6 @@ if ( SERVER ) then
 						self:LShop_TakeMoney( item.Price )
 						return
 					end
-							
-						--self.OwnItems[ self:SteamID() ][ #self.OwnItems[ self:SteamID() ] + 1 ] = { ID = itemID, Category = category, onEquip = true }
 				else
 					if ( #self.OwnItems != 0 ) then
 						for k, v in pairs( self.OwnItems ) do
@@ -241,7 +177,6 @@ if ( SERVER ) then
 								if ( item.Buyed ) then
 									item.Buyed( item, self )
 								end
-								PrintTable( self.OwnItems )
 								return
 							end
 						end
@@ -250,16 +185,12 @@ if ( SERVER ) then
 						self:LShop_TakeMoney( item.Price )
 					end
 				end
-				
-				print("dd")
 			else
-				print("Not enough money!")
 				net.Start("LShop_SendMessage")
 				net.WriteString( "Not enough money! : LShop Alpha Ver" )
 				net.Send( self )
 			end
 		else
-			print("ERROR : Item is not exists!")
 		end
 	end
 	
@@ -290,7 +221,7 @@ if ( SERVER ) then
 				else
 					if ( i == #v ) then
 						LShop.system.SendBugNotice( self, "LShop_IsOwn 함수 오류!", "아이디에 맞는 아이템을 찾을 수 없었습니다. : " .. itemID )
-						return nil -- 추후에 수정할것.
+						return nil
 					end
 				end
 			end
@@ -301,8 +232,6 @@ if ( SERVER ) then
 	end
 
 	function Player:LShop_ItemRemoveInventory( itemID, category )
-		--local item = LShop.system.ItemFindByID( itemID, category )
-		--if ( item ) then
 			for k, v in pairs( self.OwnItems ) do
 				if ( v.ID == itemID ) then
 					self.OwnItems[k] = nil
@@ -315,30 +244,22 @@ if ( SERVER ) then
 					end
 				end
 			end
-			
-		--else
-		--	print("Item not found.")
-		--end
 	end
 	
 	function Player:LShop_PlayerSpawn()
 		local item = self:LShop_GetOwnedItem( )
-		--PrintTable( item )
 		timer.Simple(1, function()
-			--PrintTable( item )
 			if ( item ) then
 				for k, v in pairs( item ) do
 					local findItem = LShop.system.ItemFindByID( v.ID, v.Category )
 					if ( findItem ) then
 						if ( findItem.OneUse ) then return end
 						findItem.Equipped( findItem, self )
-						print("Give item! : " .. findItem.Name )
 					else
 						self:LShop_ItemRemoveInventory( v.ID, v.Category )
 					end
 				end
 			end
-			PrintTable( self.OwnItems )
 		end)
 	end
 	
