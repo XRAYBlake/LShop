@@ -1,6 +1,5 @@
 local meta = FindMetaTable("Player")
 
-
 function meta:LShop_GetMoney( )
 	return self.Money
 end
@@ -25,7 +24,6 @@ end
 	concommand.Add("LShop_GiveMoneys", function( pl, cmd, args )
 		if ( pl:IsSuperAdmin() ) then
 			pl:LShop_SetMoney( args[1] )
-			print( pl:LShop_GetMoney( ) )
 		else
 			pl:ChatPrint( "[LShop] 당신은 서버 관리자가 아닙니다." )
 		end
@@ -35,8 +33,6 @@ end
 		if ( pl:IsSuperAdmin() ) then
 			for k, v in pairs( player.GetAll() ) do
 				v:LShop_SetMoney( args[1] )
-		
-				print( v.Money )
 			end
 		else
 			pl:ChatPrint( "[LShop] 당신은 서버 관리자가 아닙니다." )

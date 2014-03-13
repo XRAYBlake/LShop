@@ -148,8 +148,6 @@ surface.CreateFont("LShop_ButtonText2",
 	weight		= 1000
 });
 
-
-
 concommand.Add("LShop_open", function( pl, cmd, args )
 	LShop.cl.MainShop()
 end)
@@ -197,14 +195,12 @@ function LShop.cl.MainShop()
 		
 		draw.SimpleText( "You have " .. LShop.PlyMoneyAnimation .. " Moneys.", "LShop_MoneyNotice", w * 0.85, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 		
-		
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "Alpha Version", "LShop_MoneyNotice", w * 0.01, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		
 		draw.SimpleText( "New Items", "LShop_MainTitle", w * 0.25, h * 0.3, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 	end
 
-	
 	local Bx, By = LShop_MainShopPanel_w - 40, LShop_MainShopPanel_h - 40
 
 	local CloseButton = vgui.Create( "DButton", LShop_MainShopPanel )    
@@ -315,7 +311,6 @@ function LShop.cl.MainShop()
 		surface.DrawRect( 0, 0, w, h )
 	end
 	
-	
 	local function NewitemRefresh()
 		if ( LShop.ITEMs[ "New" ] ) then
 			for k, v in pairs( LShop.ITEMs[ "New" ] ) do
@@ -329,7 +324,6 @@ function LShop.cl.MainShop()
 	end
 	
 	NewitemRefresh()
-	
 	
 	net.Start("LShop_SendTable_Request")
 	net.SendToServer()
@@ -483,8 +477,6 @@ function LShop.cl.Menu01( parent, tab )
 		CategoryList:Clear()
 	end
 	
-
-	
 	function CategoryListAdd()
 		for k, v in pairs( LShop.ITEMs ) do
 			local color = Color( 10, 10, 10, 10 )
@@ -586,7 +578,7 @@ function LShop.cl.Menu01( parent, tab )
 	SelectItemmodel = vgui.Create("DModelPanel", LShop_Menu01Panel)
 	SelectItemmodel:SetSize( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.65 )
 	SelectItemmodel:SetPos( LShop_Menu01Panel_w * 0.87 - LShop_Menu01Panel_w * 0.2 / 2, LShop_Menu01Panel_h * 0.13 )
-	SelectItemmodel:SetFOV(50) -- 105
+	SelectItemmodel:SetFOV(50)
 	SelectItemmodel:SetCamPos( Vector( 50, 50, 5 ) )
 	SelectItemmodel:SetLookAt( Vector( 0, 0, 0 ) )
 	SelectItemmodel.OnCursorEntered = function() end
@@ -631,7 +623,6 @@ function LShop.cl.Menu01( parent, tab )
 			surface.SetDrawColor( 255, 10, 10, 50 )
 			surface.DrawRect( 0, 0, w, h )		
 		end
-		
 	end
 	
 	local Bx, By = scrW * 0.86 - LShop_Menu01Panel_w * 0.15 / 2, LShop_Menu01Panel_h * 0.11
@@ -835,9 +826,6 @@ function LShop.cl.Menu02( parent, tab )
 
 	local Bx, By = scrW * 0.05, scrH * 0.1
 	
-
-
-		
 	if ( LShop_Menu01Panel ) then
 		local LShop_Menu01Panel_w, LShop_Menu01Panel_h = 10 + scrW - 30, scrH * 0.8
 		local LShop_Menu01Panel_x, LShop_Menu01Panel_y = 10, scrH + LShop_Menu01Panel_h;
@@ -862,14 +850,11 @@ function LShop.cl.Menu02( parent, tab )
 	end
 end
 
-
-
 function LShop.cl.BugNotice( tab )
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
 	local LShop_BugNoticePanel_w, LShop_BugNoticePanel_h = scrW * 0.6, scrH * 0.6
 	local LShop_BugNoticePanel_x, LShop_BugNoticePanel_y = scrW / 2 - LShop_BugNoticePanel_w / 2, scrH / 2 - LShop_BugNoticePanel_h / 2;
-
 
 	if ( !LShop_BugNoticePanel ) then
 	LShop_BugNoticePanel = vgui.Create("DFrame", parent)

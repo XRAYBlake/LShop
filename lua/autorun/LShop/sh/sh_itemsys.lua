@@ -28,7 +28,6 @@ function LShop.system.GetItemsByCategory( category )
 	end
 end
 
-
 function LShop.system.ItemFindByID( id, category )
 	for k, v in pairs( LShop.system.GetItems( ) ) do
 		if ( k == category ) then
@@ -45,7 +44,6 @@ function LShop.system.ItemFindByID( id, category )
 		end
 	end
 end
-
 
 function LShop.system.ItemFindByModel( model, category )
 	for k, v in pairs( LShop.system.GetItems( ) ) do
@@ -193,9 +191,7 @@ if ( SERVER ) then
 		else
 		end
 	end
-	
 
-	
 	function Player:LShop_ItemSellProgress( itemID, category )
 		local item = LShop.system.ItemFindByID( itemID, category )
 		local checkOwn = self:LShop_IsOwn( itemID, category )
@@ -378,7 +374,6 @@ if ( SERVER ) then
 			net.Send( pl )	
 		end
 	end
-	
 	
 	function Player:onEquipProgress( itemID, bool, category )
 		local id = LShop.system.ItemFindByID( itemID, category )

@@ -31,7 +31,6 @@ function LShop.core.LoadSharedFile( )
 	end
 end
 
-
 function LShop.core.LoadServerFile( )
 	local find = file.Find("autorun/LShop/sv/*.lua", "LUA") or nil
 	if ( find ) then
