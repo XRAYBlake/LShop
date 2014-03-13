@@ -34,27 +34,26 @@ function LShop.cl.IsOwned( pl, itemID, category )
 	end
 
 function LShop.cl.IsEquiped( pl, itemID, category )
-		local id = LShop.system.ItemFindByID( tostring( itemID ), category )
-
-		if ( id ) then
-			for k, v in pairs( LShop.OwnItemsCL ) do
-				if ( v.ID == itemID ) then
-					if ( v.onEquip ) then
-						return true
-					else
-						return false
-					end
+	local id = LShop.system.ItemFindByID( tostring( itemID ), category )
+	if ( id ) then
+		for k, v in pairs( LShop.OwnItemsCL ) do
+			if ( v.ID == itemID ) then
+				if ( v.onEquip ) then
+					return true
 				else
-					if ( k == #LShop.OwnItemsCL ) then
-						return nil
-					end
+					return false
+				end
+			else
+				if ( k == #LShop.OwnItemsCL ) then
+					return nil
 				end
 			end
-		else
 		end
-	end
---]]
+	else
 	
+	end
+end
+
 local meta = FindMetaTable("Player")
 
 function meta:LShop_IsOwned( id, category ) 
