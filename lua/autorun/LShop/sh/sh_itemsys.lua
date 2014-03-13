@@ -28,6 +28,7 @@ function LShop.system.GetItemsByCategory( category )
 	end
 end
 
+
 function LShop.system.ItemFindByID( id, category )
 	for k, v in pairs( LShop.system.GetItems( ) ) do
 		if ( k == category ) then
@@ -44,6 +45,7 @@ function LShop.system.ItemFindByID( id, category )
 		end
 	end
 end
+
 
 function LShop.system.ItemFindByModel( model, category )
 	for k, v in pairs( LShop.system.GetItems( ) ) do
@@ -69,7 +71,7 @@ function LShop.system.ItemFindByModel( model, category )
 	end
 end
 
-LShop.ITEMs = {} -- Init
+LShop.ITEMs = {}
 
 if ( CLIENT ) then
 	function LShop.system.CSLoadItemFiles( )
@@ -124,6 +126,7 @@ if ( SERVER ) then
 		net.WriteTable( tab )
 		net.Send( pl )
 	end
+		
 
 	local Player = FindMetaTable('Player')
 	
@@ -159,6 +162,12 @@ if ( SERVER ) then
 					else
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 						self:LShop_TakeMoney( item.Price )
+						net.Start("LShop_SendMessage")
+						net.WriteString( "You buyed this item. : " .. itemID )
+						net.Send( self )
+						if ( item.Buyed ) then
+							item.Buyed( item, self )
+						end
 						return
 					end
 				else
@@ -179,6 +188,13 @@ if ( SERVER ) then
 					else
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 						self:LShop_TakeMoney( item.Price )
+						net.Start("LShop_SendMessage")
+						net.WriteString( "You buyed this item. : " .. itemID )
+						net.Send( self )
+						if ( item.Buyed ) then
+							item.Buyed( item, self )
+						end
+						return
 					end
 				end
 			else
@@ -189,7 +205,7 @@ if ( SERVER ) then
 		else
 		end
 	end
-
+	
 	function Player:LShop_ItemSellProgress( itemID, category )
 		local item = LShop.system.ItemFindByID( itemID, category )
 		local checkOwn = self:LShop_IsOwn( itemID, category )
@@ -213,13 +229,11 @@ if ( SERVER ) then
 					return true
 				else
 					if ( i == #v ) then
-						//LShop.system.SendBugNotice( self, "LShop_IsOwn 함수 오류!", "아이디에 맞는 아이템을 찾을 수 없었습니다. : " .. itemID )
 						return nil
 					end
 				end
 			end
 		else
-			// LShop.system.SendBugNotice( self, "LShop_IsOwn 함수 오류!", "아이템을 찾을 수 없었습니다. : " .. itemID )
 			return nil
 		end
 	end
@@ -231,7 +245,7 @@ if ( SERVER ) then
 				return
 			else
 				if ( k == #self.OwnItems ) then
-					// LShop.system.SendBugNotice( self, "LShop_ItemRemoveInventory 함수 오류!", "그 아이템을 가지고 있지 않습니다. : " .. itemID )
+					return
 				end
 			end
 		end
@@ -397,6 +411,7 @@ if ( SERVER ) then
 	
 	function LShop.system.SVLoadItemFiles( )
 		local find = file.Find("autorun/LShop/items/*.lua", "LUA") or {}
+
 		if ( find ) then
 			for k, v in pairs( find ) do
 				LShop.core.LoadFile( "autorun/LShop/items/" .. v )

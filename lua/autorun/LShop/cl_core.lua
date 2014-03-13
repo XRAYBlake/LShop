@@ -17,21 +17,21 @@ end
 LShop.cl.LoadSharedFile( )
 
 function LShop.cl.IsOwned( pl, itemID, category )
-		local id = LShop.system.ItemFindByID( tostring( itemID ), category )
-		if ( id ) then
-			for k, v in pairs( LShop.OwnItemsCL ) do
-				if ( v.ID == itemID ) then
-					return true
-				else
-					if ( k == #LShop.OwnItemsCL ) then
-						return nil
-					end
+	local id = LShop.system.ItemFindByID( tostring( itemID ), category )
+	if ( id ) then
+		for k, v in pairs( LShop.OwnItemsCL ) do
+			if ( v.ID == itemID ) then
+				return true
+			else
+				if ( k == #LShop.OwnItemsCL ) then
+					return nil
 				end
 			end
-		else
-
 		end
+	else
+
 	end
+end
 
 function LShop.cl.IsEquiped( pl, itemID, category )
 	local id = LShop.system.ItemFindByID( tostring( itemID ), category )
@@ -65,6 +65,7 @@ function meta:LShop_IsEquiped( id, category )
 end
 
 net.Receive("LShop_ItemIsOwnCheck_SendCL", function( len, cl )
+
 end)
 
 net.Receive("LShop_BugNoticeSend", function( len, cl )
@@ -80,7 +81,7 @@ net.Receive("LShop_SendTable", function( len, cl )
 		ItemListAdd( LShop.cl.SelectedCategory )
 	end
 end)
-
+/*
 concommand.Add("LShop_BuyItem", function( pl, cmd, args )
 	net.Start("LShop_ItemBuy")
 	net.WriteString( args[1] )
@@ -105,7 +106,7 @@ concommand.Add("LShop_IsOwn", function( pl, cmd, args )
 	net.WriteString( args[1] )
 	net.SendToServer()
 end)
-
+*/
 surface.CreateFont("LShop_MainTitle", 
 {
 	font		= "Segoe UI Light",
@@ -160,7 +161,6 @@ function LShop.cl.MainShop()
 	LShop.PlyMoneyAnimation = 0
 	LShop.cl.SelectedMenu = nil
 
-	
 	net.Receive("LShop_SendMessage", function( len, cl )
 		Derma_Message( net.ReadString(), "!", "OK" )
 	end)
@@ -172,7 +172,7 @@ function LShop.cl.MainShop()
 	LShop_MainShopPanel:SetSize( LShop_MainShopPanel_w, LShop_MainShopPanel_h )
 	LShop_MainShopPanel:SetTitle( "" )
 	LShop_MainShopPanel:SetDraggable( true )
-	LShop_MainShopPanel:ShowCloseButton( false )
+	LShop_MainShopPanel:ShowCloseButton( true )
 	LShop_MainShopPanel:MakePopup()
 	LShop_MainShopPanel.Think = function()
 		if ( LShop_Menu01Panel ) then
@@ -194,6 +194,7 @@ function LShop.cl.MainShop()
 		LShop.PlyMoneyAnimation = math.Approach( LShop.PlyMoneyAnimation, LShop.PlyMoney, 1 )
 		
 		draw.SimpleText( "You have " .. LShop.PlyMoneyAnimation .. " Moneys.", "LShop_MoneyNotice", w * 0.85, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+		
 		
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "Alpha Version", "LShop_MoneyNotice", w * 0.01, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
@@ -258,7 +259,6 @@ function LShop.cl.MainShop()
 	LShop_MainShopPanel.Menu01.DoClick = function(  )
 		surface.PlaySound( "ui/buttonclick.wav" )
 		LShop.cl.Menu01( LShop_MainShopPanel )
-		
 	end
 	LShop_MainShopPanel.Menu01.Paint = function()
 		local w = LShop_MainShopPanel.Menu01:GetWide()
@@ -310,7 +310,7 @@ function LShop.cl.MainShop()
 		surface.SetDrawColor( 10, 10, 10, 30 )
 		surface.DrawRect( 0, 0, w, h )
 	end
-	
+
 	local function NewitemRefresh()
 		if ( LShop.ITEMs[ "New" ] ) then
 			for k, v in pairs( LShop.ITEMs[ "New" ] ) do
@@ -354,7 +354,6 @@ function LShop.cl.MainShop()
 			end)
 		end
 	end
-
 end
 
 function LShop.cl.Menu01( parent, tab )
@@ -388,35 +387,35 @@ function LShop.cl.Menu01( parent, tab )
 	LShop_Menu01Panel:SetDrawOnTop( true )
 	LShop_Menu01Panel.Think = function()
 		if ( LShop_Menu01Panel ) then
-				if ( SelectItem.ID ) then
-					local Find = LShop.system.ItemFindByID( SelectItem.ID, SelectItem.Category )
+			if ( SelectItem.ID ) then
+				local Find = LShop.system.ItemFindByID( SelectItem.ID, SelectItem.Category )
 
-					if ( Find.CanEquip && LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category ) ) then
-						if ( !LP:LShop_IsEquiped( SelectItem.ID, SelectItem.Category ) ) then
-							LShop_Menu01Panel.Action:SetVisible( true )
-							LShop_Menu01Panel.Action:SetText( "Equip" )  
-						else
-							LShop_Menu01Panel.Action:SetVisible( true )
-							LShop_Menu01Panel.Action:SetText( "Unequip" )  
-						end
-					else
-						LShop_Menu01Panel.Action:SetVisible( false )
-					end
-					if ( Find.CanBuy && !LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category )  ) then
-						LShop_Menu01Panel.Buy:SetVisible( true )
-						LShop_Menu01Panel.Buy:SetText( "Buy" )  
-						ButtonMode = 1
-					elseif ( Find.CanSell && LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category )  ) then
-						LShop_Menu01Panel.Buy:SetVisible( true )
-						LShop_Menu01Panel.Buy:SetText( "Sell" )  
-						ButtonMode = 0
-					end
+				if ( Find.CanEquip && LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category ) ) then
 					if ( !LP:LShop_IsEquiped( SelectItem.ID, SelectItem.Category ) ) then
-						SelectItem.EquBool = true
+						LShop_Menu01Panel.Action:SetVisible( true )
+						LShop_Menu01Panel.Action:SetText( "Equip" )  
 					else
-						SelectItem.EquBool = false
+						LShop_Menu01Panel.Action:SetVisible( true )
+						LShop_Menu01Panel.Action:SetText( "Unequip" )  
 					end
+				else
+					LShop_Menu01Panel.Action:SetVisible( false )
 				end
+				if ( Find.CanBuy && !LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category )  ) then
+					LShop_Menu01Panel.Buy:SetVisible( true )
+					LShop_Menu01Panel.Buy:SetText( "Buy" )  
+					ButtonMode = 1
+				elseif ( Find.CanSell && LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category )  ) then
+					LShop_Menu01Panel.Buy:SetVisible( true )
+					LShop_Menu01Panel.Buy:SetText( "Sell" )  
+					ButtonMode = 0
+				end
+				if ( !LP:LShop_IsEquiped( SelectItem.ID, SelectItem.Category ) ) then
+					SelectItem.EquBool = true
+				else
+					SelectItem.EquBool = false
+				end
+			end
 		end
 	end
 	LShop_Menu01Panel.Paint = function()
@@ -476,7 +475,7 @@ function LShop.cl.Menu01( parent, tab )
 	function CategoryListClear()
 		CategoryList:Clear()
 	end
-	
+
 	function CategoryListAdd()
 		for k, v in pairs( LShop.ITEMs ) do
 			local color = Color( 10, 10, 10, 10 )
@@ -494,7 +493,6 @@ function LShop.cl.Menu01( parent, tab )
 			list.OnCursorExited = function()
 				color = Color( 10, 10, 10, 10 )
 			end
-			
 			list.Paint = function()
 				local w, h = list:GetWide(), list:GetTall()
 				surface.SetDrawColor( color )
@@ -525,8 +523,8 @@ function LShop.cl.Menu01( parent, tab )
 			list:SetSize( ItemList:GetWide(), 50 ) 
 			list:SetText("")
 			list.DoClick = function()
-						surface.PlaySound( "ui/buttonclick.wav" )		
-						local Menu = DermaMenu( )
+				surface.PlaySound( "ui/buttonclick.wav" )		
+				local Menu = DermaMenu( )
 				SelectItem.ID = v.ID
 				SelectItem.Category = v.Category
 				if ( v.CanEquip && LP:LShop_IsOwned( v.ID, SelectItem.Category ) ) then
@@ -540,13 +538,9 @@ function LShop.cl.Menu01( parent, tab )
 				itemInformation.Price = v.Price
 				itemInformation.Desc = v.Desc
 				SelectItemmodel:SetModel( v.Model )
-				
-
 			end
-			list.OnCursorEntered = function()
-			end
-			list.OnCursorExited = function()
-			end
+			list.OnCursorEntered = function() end
+			list.OnCursorExited = function() end
 			list.Paint = function()
 				local w, h = list:GetWide(), list:GetTall()
 				surface.SetDrawColor( 10, 10, 10, 30 )
@@ -560,15 +554,16 @@ function LShop.cl.Menu01( parent, tab )
 				surface.DrawTexturedRect( w - 20, h / 2 - 16 / 2, 16, 16 )
 				
 			end
+			
 			local w, h = list:GetWide(), list:GetTall()
 			
 			local icon = list:Add("SpawnIcon")
-			
 			icon:SetPos( 5, 5 )
 			icon:SetSize( 50 - 10, h - 10 )
-			
 			if ( v.Model ) then
 				icon:SetModel( v.Model )
+			else
+				icon:SetModel( "models/error.mdl" )
 			end
 			icon:SetToolTip( false )
 			ItemList:AddItem( list )
@@ -578,7 +573,7 @@ function LShop.cl.Menu01( parent, tab )
 	SelectItemmodel = vgui.Create("DModelPanel", LShop_Menu01Panel)
 	SelectItemmodel:SetSize( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.65 )
 	SelectItemmodel:SetPos( LShop_Menu01Panel_w * 0.87 - LShop_Menu01Panel_w * 0.2 / 2, LShop_Menu01Panel_h * 0.13 )
-	SelectItemmodel:SetFOV(50)
+	SelectItemmodel:SetFOV(50) -- 105
 	SelectItemmodel:SetCamPos( Vector( 50, 50, 5 ) )
 	SelectItemmodel:SetLookAt( Vector( 0, 0, 0 ) )
 	SelectItemmodel.OnCursorEntered = function() end
@@ -602,15 +597,15 @@ function LShop.cl.Menu01( parent, tab )
 	LShop_Menu01Panel.Buy.DoClick = function(  )
 		surface.PlaySound( "ui/buttonclick.wav" )
 		if ( ButtonMode == 1 ) then
-								net.Start("LShop_ItemBuy")
-								net.WriteString( SelectItem.Category )
-								net.WriteString( SelectItem.ID )
-								net.SendToServer()			
+			net.Start("LShop_ItemBuy")
+			net.WriteString( SelectItem.Category )
+			net.WriteString( SelectItem.ID )
+			net.SendToServer()			
 		else
-								net.Start("LShop_ItemSell")
-								net.WriteString( SelectItem.Category )
-								net.WriteString( SelectItem.ID )
-								net.SendToServer()			
+			net.Start("LShop_ItemSell")
+			net.WriteString( SelectItem.Category )
+			net.WriteString( SelectItem.ID )
+			net.SendToServer()			
 		end
 	end
 	LShop_Menu01Panel.Buy.Paint = function()
@@ -659,7 +654,6 @@ function LShop.cl.Menu01( parent, tab )
 		
 		surface.SetDrawColor( 10, 10, 10, 30 )
 		surface.DrawRect( 0, 0, w, h )
-
 	end
 
 	CategoryListClear()
@@ -699,7 +693,6 @@ function LShop.cl.Menu02( parent, tab )
 	local scrW, scrH = ScrW(), ScrH()
 	local LShop_Menu02Panel_w, LShop_Menu02Panel_h = 10 + scrW - 30, scrH * 0.8
 	local LShop_Menu02Panel_x, LShop_Menu02Panel_y = 10, scrH + LShop_Menu02Panel_h;
-
 
 	if ( !LShop_Menu02Panel ) then
 	LShop_Menu02Panel = vgui.Create("DFrame", parent)
@@ -825,7 +818,7 @@ function LShop.cl.Menu02( parent, tab )
 	LoadInventory()
 
 	local Bx, By = scrW * 0.05, scrH * 0.1
-	
+
 	if ( LShop_Menu01Panel ) then
 		local LShop_Menu01Panel_w, LShop_Menu01Panel_h = 10 + scrW - 30, scrH * 0.8
 		local LShop_Menu01Panel_x, LShop_Menu01Panel_y = 10, scrH + LShop_Menu01Panel_h;
@@ -855,6 +848,7 @@ function LShop.cl.BugNotice( tab )
 	local scrW, scrH = ScrW(), ScrH()
 	local LShop_BugNoticePanel_w, LShop_BugNoticePanel_h = scrW * 0.6, scrH * 0.6
 	local LShop_BugNoticePanel_x, LShop_BugNoticePanel_y = scrW / 2 - LShop_BugNoticePanel_w / 2, scrH / 2 - LShop_BugNoticePanel_h / 2;
+
 
 	if ( !LShop_BugNoticePanel ) then
 	LShop_BugNoticePanel = vgui.Create("DFrame", parent)

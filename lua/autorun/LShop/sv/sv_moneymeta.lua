@@ -22,22 +22,24 @@ concommand.Add("LShop_GiveMoney", function( pl, cmd, args )
 	if ( pl:IsSuperAdmin() ) then
 		if ( args[1] ) then
 			pl:LShop_SetMoney( args[1] )
-		else
-			pl:ChatPrint( "[LShop] You are not superadmin." )
-		end
-	end
-end)
-	
-concommand.Add("LShop_GiveMoneyAll", function( pl, cmd, args )
-	if ( pl:IsSuperAdmin() ) then
-		for k, v in pairs( player.GetAll() ) do
-			v:LShop_SetMoney( args[1] )
 		end
 	else
 		pl:ChatPrint( "[LShop] You are not superadmin." )
 	end
 end)
-
+	
+concommand.Add("LShop_GiveMoneyAll", function( pl, cmd, args )
+	if ( pl:IsSuperAdmin() ) then
+		if ( args[1] ) then
+			for k, v in pairs( player.GetAll() ) do
+				v:LShop_SetMoney( args[1] )
+			end
+		end
+	else
+		pl:ChatPrint( "[LShop] You are not superadmin." )
+	end
+end)
+	
 concommand.Add("LShop_GetMoney", function( pl, cmd, args )
 	pl:ChatPrint( pl:LShop_GetMoney( ) )
 end)
