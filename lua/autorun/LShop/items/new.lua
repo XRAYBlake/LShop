@@ -1,4 +1,3 @@
-
 LShop.system.ItemRegister( {
 	ID = "model_kliner",
 	Name = "Kliner",
@@ -60,4 +59,3 @@ LShop.system.ItemRegister( {
 		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
 	end
 } )
-

@@ -269,10 +269,8 @@ if ( SERVER ) then
 			local item = LShop.system.ItemFindByID( v.ID, v.Category )
 			if ( item ) then
 				self:LShop_ItemRemoveInventory( item.ID, item.Category )
-				print("Remove item : " .. item.ID )
 			else
 				self:LShop_ItemRemoveInventory( v.ID, v.Category )
-				print("Remove item [2] : " .. v.ID )
 			end
 		end
 	end
@@ -320,8 +318,6 @@ if ( SERVER ) then
 			if ( LShop.Config.AutoMoneyGive ) then
 				self:LShop_AddMoney( LShop.Config.MoneyAmmount )
 				self:SendLua("GAMEMODE:AddNotify(\"You gift from server " .. LShop.Config.MoneyAmmount .. " $.\", NOTIFY_NONE, 10)")
-				-- LShop.Config.MoneyAmmount
-				print("Money give!")
 			end
 		end)
 	end
@@ -336,8 +332,7 @@ if ( SERVER ) then
 	function Player:LShop_GetOwnedItem( )
 		return self.OwnItems
 	end
-	
-	--PrintTable( LShop.ITEMs )
+
 	hook.Add('PlayerSpawn', 'LShop_PlayerSpawn', function(pl) pl:LShop_PlayerSpawn() end)
 	hook.Add('PlayerDeath', 'LShop_PlayerDeath', function(pl) pl:LShop_PlayerDeath() end)
 	hook.Add('PlayerInitialSpawn', 'LShop_PlayerInitialSpawn', function(pl) pl:LShop_PlayerInitialSpawn() end)
@@ -370,32 +365,10 @@ if ( SERVER ) then
 		cl:onEquipProgress( itemID, bool, category )
 		
 		cl:LShop_SaveData()
-		print("Received")
-	end)
---[[
-	function LShop.system.ItemSave( )
-		file.CreateDir("Lshop/items")
-		file.Write("Lshop/items/Items.txt", util.TableToJSON( LShop.PlyItems ))
-		print("Save items")
-	end
-	
-	function LShop.system.ItemLoad( )
-		local read = file.Read("Lshop/items/Items.txt","DATA") or nil
-		if ( read ) then
-			LShop.PlyItems = util.JSONToTable( read )
-			net.Start("LShop_SendTable")
-			net.WriteTable( LShop.PlyItems )
-			net.Broadcast()
-		end
-		print("Load items")
-	end
---]]	
-	hook.Add( "Initialize", "FirstLoad", function( )
-	--	LShop.system.ItemLoad( )
 	end)
 
-	
-	
+	hook.Add( "Initialize", "FirstLoad", function( )
+	end)
 	
 	function LShop.system.SendDBToPlayer( pl )
 		if ( IsValid( pl ) ) then
@@ -425,7 +398,6 @@ if ( SERVER ) then
 					return
 				else				
 					if ( k == #self.OwnItems ) then
-						print("ERROR : Not buy. 3")
 						net.Start("LShop_SendMessage")
 						net.WriteString( "Not buy. : " .. itemID .. " : " .. bool )
 						net.Send( self )
@@ -435,12 +407,10 @@ if ( SERVER ) then
 			end
 		end
 	end
-	--LShop.PlyItems = {}
 	
 	function LShop.system.SVLoadItemFiles( )
 		local find = file.Find("autorun/LShop/items/*.lua", "LUA") or {}
 
-		PrintTable( find )
 		if ( find ) then
 			for k, v in pairs( find ) do
 				LShop.core.LoadFile( "autorun/LShop/items/" .. v )

@@ -1,5 +1,3 @@
-
-
 LShop.system.ItemRegister( {
 	ID = "ammo_smg",
 	Name = "SMG Ammo",
