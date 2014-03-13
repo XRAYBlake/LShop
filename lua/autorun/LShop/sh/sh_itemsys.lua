@@ -130,8 +130,6 @@ for k, v in pairs( LShop.ITEMs ) do
 end
 --]]
 
-print( LShop.Config.Version )
-
 if ( SERVER ) then
 	util.AddNetworkString("LShop_ItemBuy")
 	util.AddNetworkString("LShop_ItemSell")
@@ -396,10 +394,22 @@ if ( SERVER ) then
 				self:LShop_LoadData()
 			end
 		end)
+		
+		timer.Create("LShop_AutoMoneyGive_" .. self:SteamID(), LShop.Config.MoneyGiveTimer, 0, function() 
+			if ( LShop.Config.AutoMoneyGive ) then
+				self:LShop_AddMoney( LShop.Config.MoneyAmmount )
+				self:SendLua("GAMEMODE:AddNotify(\"You gift from server " .. LShop.Config.MoneyAmmount .. " $.\", NOTIFY_NONE, 10)")
+				-- LShop.Config.MoneyAmmount
+				print("Money give!")
+			end
+		end)
 	end
 
 	function Player:LShop_PlayerDisconnected()
 		self:LShop_SaveData()
+		if ( timer.Exists( "LShop_AutoMoneyGive_" .. self:SteamID() ) ) then
+			timer.Destroy( "LShop_AutoMoneyGive_" .. self:SteamID() )
+		end
 	end
 	
 	function Player:LShop_GetOwnedItem( )
