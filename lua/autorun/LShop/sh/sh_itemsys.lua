@@ -126,7 +126,6 @@ if ( SERVER ) then
 		net.WriteTable( tab )
 		net.Send( pl )
 	end
-		
 
 	local Player = FindMetaTable('Player')
 	
@@ -312,7 +311,7 @@ if ( SERVER ) then
 	function Player:LShop_PlayerInitialSpawn()
 		self.Money = 0
 		self.OwnItems = {}
-		
+
 		timer.Simple( 2, function()
 			if ( IsValid( self ) ) then
 				self:LShop_LoadData()
