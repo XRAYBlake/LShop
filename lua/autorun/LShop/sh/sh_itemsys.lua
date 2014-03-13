@@ -151,7 +151,7 @@ if ( SERVER ) then
 								self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 								self:LShop_TakeMoney( item.Price )
 								net.Start("LShop_SendMessage")
-								net.WriteString( "You buyed this item. : " .. itemID )
+								net.WriteString( "You buying this item." )
 								net.Send( self )
 								if ( item.Buyed ) then
 									item.Buyed( item, self )
@@ -163,7 +163,7 @@ if ( SERVER ) then
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 						self:LShop_TakeMoney( item.Price )
 						net.Start("LShop_SendMessage")
-						net.WriteString( "You buyed this item. : " .. itemID )
+						net.WriteString( "You buying this item." )
 						net.Send( self )
 						if ( item.Buyed ) then
 							item.Buyed( item, self )
@@ -177,7 +177,7 @@ if ( SERVER ) then
 								self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 								self:LShop_TakeMoney( item.Price )
 								net.Start("LShop_SendMessage")
-								net.WriteString( "You buyed this item. : " .. itemID )
+								net.WriteString( "You buying this item." )
 								net.Send( self )
 								if ( item.Buyed ) then
 									item.Buyed( item, self )
@@ -189,7 +189,7 @@ if ( SERVER ) then
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 						self:LShop_TakeMoney( item.Price )
 						net.Start("LShop_SendMessage")
-						net.WriteString( "You buyed this item. : " .. itemID )
+						net.WriteString( "You buying this item." )
 						net.Send( self )
 						if ( item.Buyed ) then
 							item.Buyed( item, self )
@@ -199,7 +199,7 @@ if ( SERVER ) then
 				end
 			else
 				net.Start("LShop_SendMessage")
-				net.WriteString( "Not enough money! : LShop Alpha Ver" )
+				net.WriteString( "Not enough money!" )
 				net.Send( self )
 			end
 		else
@@ -213,7 +213,7 @@ if ( SERVER ) then
 			self:LShop_ItemRemoveInventory( itemID, category )
 			self:LShop_AddMoney( item.Price or 100 )
 			net.Start("LShop_SendMessage")
-			net.WriteString( "You selled this item. : " .. itemID .. " : " .. self:LShop_GetMoney() )
+			net.WriteString( "You selling this item." )
 			net.Send( self )
 			if ( item.Selled ) then
 				item.Selled( item, self )
@@ -285,7 +285,7 @@ if ( SERVER ) then
 		file.CreateDir("Lshop/" .. dirName)
 		file.Write("Lshop/" .. dirName .. "/Ownitems.txt", util.TableToJSON( self.OwnItems ))
 		file.Write("Lshop/" .. dirName .. "/Money.txt", tostring( self.Money ))
-		LShop.core.Message( Color( 0, 255, 0 ), "Player data saved. : " .. self:SteamID() )
+		LShop.core.Message( Color( 0, 255, 0 ), "Player data saved : " .. self:SteamID() )
 	end
 	
 	function Player:LShop_LoadData()
@@ -296,7 +296,7 @@ if ( SERVER ) then
 				local ownitems = file.Read("Lshop/" .. dirName .. "/Ownitems.txt", "DATA") or "[]"
 				self.Money = tonumber( money )
 				self.OwnItems = util.JSONToTable( ownitems )
-				LShop.core.Message( Color( 0, 255, 0 ), "Player data loaded. : " .. self:SteamID() )
+				LShop.core.Message( Color( 0, 255, 0 ), "Player data loaded : " .. self:SteamID() )
 			else
 				self.Money = 0
 				self.OwnItems = {}
@@ -368,7 +368,6 @@ if ( SERVER ) then
 		local itemID = net.ReadString()
 		local bool = net.ReadString()
 		cl:onEquipProgress( itemID, bool, category )
-		
 		cl:LShop_SaveData()
 	end)
 
@@ -387,9 +386,15 @@ if ( SERVER ) then
 			for k, v in pairs( self.OwnItems ) do
 				if ( v.ID == itemID ) then
 					v.onEquip = tobool( bool )
-					net.Start("LShop_SendMessage")
-					net.WriteString( "You equipped this item. : " .. itemID .. " : " .. bool )
-					net.Send( self )
+					if ( v.onEquip == true ) then 
+						net.Start("LShop_SendMessage")
+						net.WriteString( "You equipped this item." )
+						net.Send( self )
+					else
+						net.Start("LShop_SendMessage")
+						net.WriteString( "You unequipped this item." )
+						net.Send( self )					
+					end
 					if ( v.onEquip ) then
 						id.Equipped( id, self )
 					else
@@ -400,7 +405,7 @@ if ( SERVER ) then
 				else				
 					if ( k == #self.OwnItems ) then
 						net.Start("LShop_SendMessage")
-						net.WriteString( "Not buy. : " .. itemID .. " : " .. bool )
+						net.WriteString( "You not own this item!!!" )
 						net.Send( self )
 						return
 					end
