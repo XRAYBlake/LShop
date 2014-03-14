@@ -81,32 +81,7 @@ net.Receive("LShop_SendTable", function( len, cl )
 		ItemListAdd( LShop.cl.SelectedCategory )
 	end
 end)
-/*
-concommand.Add("LShop_BuyItem", function( pl, cmd, args )
-	net.Start("LShop_ItemBuy")
-	net.WriteString( args[1] )
-	net.SendToServer()
-end)
 
-concommand.Add("LShop_SellItem", function( pl, cmd, args )
-	net.Start("LShop_ItemSell")
-	net.WriteString( args[1] )
-	net.SendToServer()
-end)
-
-concommand.Add("LShop_EquipItem", function( pl, cmd, args )
-	net.Start("LShop_ItemEquip")
-	net.WriteString( args[1] )
-	net.WriteString( args[2] )
-	net.SendToServer()
-end)
-
-concommand.Add("LShop_IsOwn", function( pl, cmd, args )
-	net.Start("LShop_ItemIsOwnCheck")
-	net.WriteString( args[1] )
-	net.SendToServer()
-end)
-*/
 surface.CreateFont("LShop_MainTitle", 
 {
 	font		= "Segoe UI Light",
