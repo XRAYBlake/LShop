@@ -1,61 +1,26 @@
-LShop.system.ItemRegister( {
-	ID = "model_kliner",
-	Name = "Kliner",
-	Category = "New",
-	Price = 1000,
-	CanBuy = true,
-	CanSell = true,
-	CanEquip = true,
-	OneUse = false,
-	Desc = "This is Doctor Kliner model!",
-	Model = "models/player/kleiner.mdl",
-	Buyed = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
-		end
-		ply:SetModel( item.Model )
-	end,
-	Selled = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
-	end,
-	Equipped = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
-		end
-		ply:SetModel( item.Model )
-	end,
-	Unequipped = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
-	end
-} )
+--[[
+	LShop.system.ItemRegister( {
+		ID = "new_item_code",
+		Name = "Test Item",
+		Category = "New", -- Very Important!
+		Price = 100,
+		CanBuy = true,
+		CanSell = true,
+		CanEquip = true,
+		OneUse = false,
+		Desc = "This is test item!",
+		Model = "models/error.mdl",
+		Buyed = function( item, ply )
 
-LShop.system.ItemRegister( {
-	ID = "model_alyx",
-	Name = "Alyx",
-	Category = "New",
-	Price = 100,
-	CanBuy = true,
-	CanSell = true,
-	CanEquip = true,
-	OneUse = false,
-	Desc = "This is Alyx model!",
-	Model = "models/player/alyx.mdl",
-	Buyed = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+		end,
+		Selled = function( item, ply )
+
+		end,
+		Equipped = function( item, ply )
+
+		end,
+		Unequipped = function( item, ply )
+
 		end
-		ply:SetModel( item.Model )
-	end,
-	Selled = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
-	end,
-	Equipped = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
-		end
-		ply:SetModel( item.Model )
-	end,
-	Unequipped = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
-	end
-} )
+	} )
+--]]
