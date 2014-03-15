@@ -45,74 +45,6 @@ local function BuildMenuTake( parent, target )
 	end
 end
 
-/*
-local function PlayerManagerMenu( v )
-	local LP = LocalPlayer()
-	local scrW, scrH = ScrW(), ScrH()
-	local LShop_PlayerManager_w, LShop_PlayerManager_h = 10 + scrW - 30, scrH * 0.8
-	local LShop_PlayerManager_x, LShop_PlayerManager_y = 10, scrH + LShop_PlayerManager_h;
-
-	if ( !LShop_PlayerManager ) then
-	LShop_PlayerManager = vgui.Create("DFrame", parent)
-	LShop_PlayerManager:SetPos( LShop_PlayerManager_x , LShop_PlayerManager_y )
-	LShop_PlayerManager:MoveTo( LShop_PlayerManager_x, scrH * 0.1, 0.3, 0 )
-	LShop_PlayerManager:SetSize( LShop_PlayerManager_w, LShop_PlayerManager_h )
-	LShop_PlayerManager:SetTitle( "" )
-	LShop_PlayerManager:SetDraggable( false )
-	LShop_PlayerManager:ShowCloseButton( true )
-	LShop_PlayerManager:MakePopup()
-	LShop_PlayerManager:SetDrawOnTop( true )
-	LShop_PlayerManager.Paint = function()
-		local x = LShop_PlayerManager_x
-		local y = LShop_PlayerManager_y
-		local w = LShop_PlayerManager_w
-		local h = LShop_PlayerManager_h
-
-		surface.SetDrawColor( 255, 255, 255, 230 )
-		surface.DrawRect( 0, 0, w, h )
-		
-		draw.SimpleText( v:Name() .. " Player Manager", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
-	end
-	
-	print( v )
-	
-	local Bx, By = LShop_PlayerManager_w - 40, LShop_PlayerManager_h - 40
-
-	local CloseButton = vgui.Create( "DButton", LShop_PlayerManager )    
-	CloseButton:SetText( "X" )  
-	CloseButton:SetFont("LShop_ButtonText")
-	CloseButton:SetPos( Bx, By )  
-	CloseButton:SetColor(Color( 0, 0, 0, 255 ))
-	CloseButton:SetSize( 35, 35 ) 
-	CloseButton.DoClick = function(  )
-		surface.PlaySound( "ui/buttonclick.wav" )
-		LShop_PlayerManager:MoveTo( ScrW() / 2 - LShop_PlayerManager_w / 2, ScrH() * 1.5, 0.3, 0 )
-		timer.Simple(0.3 , function()
-			LShop_PlayerManager:Remove()
-			LShop_PlayerManager = nil
-		end)		
-	end
-	CloseButton.Paint = function()
-		local w = CloseButton:GetWide()
-		local h = CloseButton:GetTall()
-		
-		surface.SetDrawColor( 255, 100, 100, 50 )
-		surface.DrawRect( 0, 0, w, h )
-	end
-	
-	else
-		LShop_PlayerManager:MoveTo( LShop_PlayerManager_x, scrH + LShop_PlayerManager_w, 0.3, 0 )
-		timer.Simple( 0.3, function()
-			if ( LShop_PlayerManager ) then
-				LShop_PlayerManager:Remove()
-				LShop_PlayerManager = nil
-			end
-		end)
-	end
-
-end
-*/
-
 function LShop.cl.Admin( parent, tab )
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
@@ -126,7 +58,7 @@ function LShop.cl.Admin( parent, tab )
 	LShop_AdminPanel:SetSize( LShop_AdminPanel_w, LShop_AdminPanel_h )
 	LShop_AdminPanel:SetTitle( "" )
 	LShop_AdminPanel:SetDraggable( false )
-	LShop_AdminPanel:ShowCloseButton( true )
+	LShop_AdminPanel:ShowCloseButton( false )
 	LShop_AdminPanel:MakePopup()
 	LShop_AdminPanel:SetDrawOnTop( true )
 	LShop_AdminPanel.Paint = function()

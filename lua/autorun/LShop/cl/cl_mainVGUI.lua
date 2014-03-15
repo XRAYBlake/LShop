@@ -276,5 +276,3 @@ function LShop.cl.MainShop()
 		end
 	end
 end
-
-

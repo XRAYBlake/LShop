@@ -13,12 +13,14 @@ LShop.system.ItemRegister( {
 	Model = "models/weapons/w_crowbar.mdl",
 	Buyed = function( item, ply )
 		ply:Give( item.Weapon_ID )
+		ply:SelectWeapon( item.Weapon_ID )
 	end,
 	Selled = function( item, ply )
 		ply:StripWeapon( item.Weapon_ID )
 	end,
 	Equipped = function( item, ply )
 		ply:Give( item.Weapon_ID )
+		ply:SelectWeapon( item.Weapon_ID )
 	end,
 	Unequipped = function( item, ply )
 		ply:StripWeapon( item.Weapon_ID )
@@ -40,12 +42,14 @@ LShop.system.ItemRegister( {
 	Model = "models/weapons/W_pistol.mdl",
 	Buyed = function( item, ply )
 		ply:Give( item.Weapon_ID )
+		ply:SelectWeapon( item.Weapon_ID )
 	end,
 	Selled = function( item, ply )
 		ply:StripWeapon( item.Weapon_ID )
 	end,
 	Equipped = function( item, ply )
 		ply:Give( item.Weapon_ID )
+		ply:SelectWeapon( item.Weapon_ID )
 	end,
 	Unequipped = function( item, ply )
 		ply:StripWeapon( item.Weapon_ID )
@@ -67,12 +71,14 @@ LShop.system.ItemRegister( {
 	Model = "models/weapons/w_smg1.mdl",
 	Buyed = function( item, ply )
 		ply:Give( item.Weapon_ID )
+		ply:SelectWeapon( item.Weapon_ID )
 	end,
 	Selled = function( item, ply )
 		ply:StripWeapon( item.Weapon_ID )
 	end,
 	Equipped = function( item, ply )
 		ply:Give( item.Weapon_ID )
+		ply:SelectWeapon( item.Weapon_ID )
 	end,
 	Unequipped = function( item, ply )
 		ply:StripWeapon( item.Weapon_ID )
