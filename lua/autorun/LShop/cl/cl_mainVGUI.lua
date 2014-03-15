@@ -170,28 +170,30 @@ function LShop.cl.MainShop()
 		end
 	end
 	
-	local Bx, By = scrW * 0.65 - LShop_MainShopPanel_w * 0.15 / 2, scrH * 0.05 - 35 / 2
+	if ( LShop.Config.PermissionCheck( LP ) ) then
+		local Bx, By = scrW * 0.65 - LShop_MainShopPanel_w * 0.15 / 2, scrH * 0.05 - 35 / 2
 
-	LShop_MainShopPanel.Admin = vgui.Create( "DButton", LShop_MainShopPanel )    
-	LShop_MainShopPanel.Admin:SetText( "Administrator" )  
-	LShop_MainShopPanel.Admin:SetFont("LShop_ButtonText")
-	LShop_MainShopPanel.Admin:SetPos( Bx, By )  
-	LShop_MainShopPanel.Admin:SetColor(Color( 0, 0, 0, 255 ))
-	LShop_MainShopPanel.Admin:SetSize( LShop_MainShopPanel_w * 0.15, 35 ) 
-	LShop_MainShopPanel.Admin.DoClick = function(  )
-		surface.PlaySound( "ui/buttonclick.wav" )
-		LShop.cl.Admin( LShop_MainShopPanel )
-	end
-	LShop_MainShopPanel.Admin.Paint = function()
-		local w = LShop_MainShopPanel.Admin:GetWide()
-		local h = LShop_MainShopPanel.Admin:GetTall()
-		
-		surface.SetDrawColor( 10, 10, 10, 10 )
-		surface.DrawRect( 0, 0, w, h )
-		
-		if ( LShop.cl.SelectedMenu == 3 ) then
-			surface.SetDrawColor( 10, 255, 10, 50 )
-			surface.DrawRect( 0, 0, w, h )		
+		LShop_MainShopPanel.Admin = vgui.Create( "DButton", LShop_MainShopPanel )    
+		LShop_MainShopPanel.Admin:SetText( "Administrator" )  
+		LShop_MainShopPanel.Admin:SetFont("LShop_ButtonText")
+		LShop_MainShopPanel.Admin:SetPos( Bx, By )  
+		LShop_MainShopPanel.Admin:SetColor(Color( 0, 0, 0, 255 ))
+		LShop_MainShopPanel.Admin:SetSize( LShop_MainShopPanel_w * 0.15, 35 ) 
+		LShop_MainShopPanel.Admin.DoClick = function(  )
+			surface.PlaySound( "ui/buttonclick.wav" )
+			LShop.cl.Admin( LShop_MainShopPanel )
+		end
+		LShop_MainShopPanel.Admin.Paint = function()
+			local w = LShop_MainShopPanel.Admin:GetWide()
+			local h = LShop_MainShopPanel.Admin:GetTall()
+			
+			surface.SetDrawColor( 10, 10, 10, 10 )
+			surface.DrawRect( 0, 0, w, h )
+			
+			if ( LShop.cl.SelectedMenu == 3 ) then
+				surface.SetDrawColor( 10, 255, 10, 50 )
+				surface.DrawRect( 0, 0, w, h )		
+			end
 		end
 	end
 	

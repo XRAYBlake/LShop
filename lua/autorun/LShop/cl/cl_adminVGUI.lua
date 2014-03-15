@@ -10,7 +10,7 @@ local function BuildMenuGive( parent, target )
 		for i= 1, #items do
 			local ownitems = target:LShop_IsOwned( items[i].ID, items[i].Category )
 			if ( !ownitems ) then
-				category:AddOption( items[i].Name, function() --callback(item_id) 
+				category:AddOption( items[i].Name, function()
 					net.Start("LShop_Admin_ItemGive")
 					net.WriteEntity( target )
 					net.WriteString( items[i].ID )
@@ -45,7 +45,7 @@ local function BuildMenuTake( parent, target )
 	end
 end
 
-
+/*
 local function PlayerManagerMenu( v )
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
@@ -111,6 +111,7 @@ local function PlayerManagerMenu( v )
 	end
 
 end
+*/
 
 function LShop.cl.Admin( parent, tab )
 	local LP = LocalPlayer()
@@ -163,32 +164,42 @@ function LShop.cl.Admin( parent, tab )
 			list:SetSize( PlayerList:GetWide(), 50 ) 
 			list:SetText("")
 			list.DoClick = function()
-				local Menu = DermaMenu()
-				Menu:AddOption( "Money Set", function()
-					Derma_StringRequest(
-						v:Name() .. " 's money set.",
-						"How set ammount target money?",
-						v:LShop_GetMoney(),
-						function( str )
-							if ( !str ) then
-								return
+				if ( LShop.Config.PermissionCheck( LP ) ) then
+					local Menu = DermaMenu()
+					Menu:AddOption( "Money Set", function()
+						Derma_StringRequest(
+							v:Name() .. " 's money set.",
+							"How set ammount target money?",
+							v:LShop_GetMoney(),
+							function( str )
+								if ( !str ) then
+									return
+								end
+								if ( type( str ) == "string" ) then
+									str = tonumber( str )
+								end
+								
+								net.Start("LShop_Admin_SetMoney")
+									net.WriteEntity( v )
+									net.WriteString( str )
+								net.SendToServer()
 							end
-							if ( type( str ) == "string" ) then
-								str = tonumber( str )
-							end
-							
-							net.Start("LShop_Admin_SetMoney")
-								net.WriteEntity( v )
-								net.WriteString( str )
-							net.SendToServer()
+						)					
+					end)
+					BuildMenuGive( Menu:AddSubMenu( "Item Give" ), v )
+					BuildMenuTake( Menu:AddSubMenu( "Item Take" ), v )
+					Menu:Open()
+				else
+					LShop.cl.SelectedMenu = nil
+					LShop_AdminPanel:MoveTo( LShop_AdminPanel_x, scrH + LShop_AdminPanel_w, 0.3, 0 )
+					timer.Simple( 0.3, function()
+						if ( LShop_AdminPanel ) then
+							LShop_AdminPanel:Remove()
+							LShop_AdminPanel = nil
 						end
-					)					
-				end)
-				BuildMenuGive( Menu:AddSubMenu( "Item Give" ), v )
-				BuildMenuTake( Menu:AddSubMenu( "Item Take" ), v )
-				Menu:Open()
-				--BuildMenu( menu, ply, itemstype, callback )
-				--PlayerManagerMenu( v )
+					end)	
+					Derma_Message( "YOU ARE NOT HAVE PERMISSION! :(", "WARNING", "OK" )
+				end
 			end
 			list.OnCursorEntered = function()
 				color = Color( 10, 255, 10, 50 )

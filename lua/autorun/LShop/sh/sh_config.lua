@@ -15,3 +15,7 @@ LShop.Config.OpenKey = "F4" -- Set menu open key.
 LShop.Config.AutoMoneyGive = true -- Are you sure turn on Auto Money Give system?
 LShop.Config.MoneyGiveTimer = 60 -- ( Sec )
 LShop.Config.MoneyAmmount = 100 -- Money Amount. ( 100 $ )
+
+LShop.Config.PermissionCheck = function( pl ) -- Administrator menu permission.
+	return pl:IsSuperAdmin()
+end
