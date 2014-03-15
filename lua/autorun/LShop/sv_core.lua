@@ -20,6 +20,16 @@ function LShop.core.CSLoadFile( fileDir )
 	end
 end
 
+function LShop.core.AddClientFile( )
+	local find = file.Find("autorun/LShop/cl/*.lua", "LUA") or nil
+	if ( find ) then
+		for k, v in pairs( find ) do
+			LShop.core.CSLoadFile( "autorun/LShop/cl/" .. v )
+			LShop.core.Message( Color( 0, 255, 255 ), "Load client file : " .. v )
+		end
+	end
+end
+
 function LShop.core.LoadSharedFile( )
 	local find = file.Find("autorun/LShop/sh/*.lua", "LUA") or nil
 	if ( find ) then
@@ -41,5 +51,6 @@ function LShop.core.LoadServerFile( )
 	end
 end
 
+LShop.core.AddClientFile( )
 LShop.core.LoadServerFile( )
 LShop.core.LoadSharedFile( )

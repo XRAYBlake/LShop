@@ -28,7 +28,6 @@ function LShop.system.GetItemsByCategory( category )
 	end
 end
 
-
 function LShop.system.ItemFindByID( id, category )
 	for k, v in pairs( LShop.system.GetItems( ) ) do
 		if ( k == category ) then
@@ -45,7 +44,6 @@ function LShop.system.ItemFindByID( id, category )
 		end
 	end
 end
-
 
 function LShop.system.ItemFindByModel( model, category )
 	for k, v in pairs( LShop.system.GetItems( ) ) do
@@ -97,12 +95,22 @@ if ( SERVER ) then
 	util.AddNetworkString("LShop_SendTable_Request")
 	util.AddNetworkString("LShop_SendMessage")
 	util.AddNetworkString("LShop_BugNoticeSend")
+	util.AddNetworkString("LShop_Admin_ItemGive")
+	util.AddNetworkString("LShop_Admin_ItemTake")
 	
 	net.Receive("LShop_SendTable_Request", function( len, cl )
 		net.Start("LShop_SendTable")
 		net.WriteTable( cl.OwnItems )
 		net.WriteString( cl.Money )
 		net.Send( cl )
+	end)
+	
+	net.Receive("LShop_Admin_ItemGive", function( len, cl )
+		LShop.system.ItemGive( net.ReadEntity(), net.ReadString(), net.ReadString() )
+	end)
+	
+	net.Receive("LShop_Admin_ItemTake", function( len, cl )
+		LShop.system.ItemTake( net.ReadEntity(), net.ReadString(), net.ReadString() )
 	end)
 	
 	net.Receive("LShop_ItemIsOwnCheck", function( len, cl )
@@ -126,7 +134,77 @@ if ( SERVER ) then
 		net.WriteTable( tab )
 		net.Send( pl )
 	end
-
+	
+	function LShop.system.ItemGive( target, itemID, category )
+		local curretMoney = target:LShop_GetMoney( )
+		local item = LShop.system.ItemFindByID( itemID, category )
+		local checkOwn = target:LShop_IsOwn( itemID, category )
+		if ( checkOwn ) then
+			if ( item.OneUse ) then
+				LShop.core.Message( Color( 255, 255, 0 ), "Already own this item! : " .. target:SteamID() )
+				return
+			end
+		end
+		if ( item ) then
+				if ( !item.OneUse ) then
+					if ( #target.OwnItems != 0 ) then
+						for k, v in pairs( target.OwnItems ) do
+							if ( v.ID != itemID ) then
+								target.OwnItems[ #target.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
+								if ( item.Buyed ) then
+									item.Buyed( item, target )
+								end
+								LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
+								return
+							end
+						end
+					else
+						target.OwnItems[ #target.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
+						if ( item.Buyed ) then
+							item.Buyed( item, target )
+						end
+						LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
+						return
+					end
+				else
+					if ( #target.OwnItems != 0 ) then
+						for k, v in pairs( target.OwnItems ) do
+							if ( v.ID != itemID ) then
+								target.OwnItems[ #target.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
+								if ( item.Buyed ) then
+									item.Buyed( item, target )
+								end
+								LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
+								return
+							end
+						end
+					else
+						target.OwnItems[ #target.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
+						if ( item.Buyed ) then
+							item.Buyed( item, target )
+						end
+						LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
+						return
+					end
+				end
+		else
+		end
+	end
+	
+	function LShop.system.ItemTake( target, itemID, category )
+		local item = LShop.system.ItemFindByID( itemID, category )
+		local checkOwn = target:LShop_IsOwn( itemID, category )
+		if ( checkOwn ) then
+			target:LShop_ItemRemoveInventory( itemID, category )
+			LShop.core.Message( Color( 0, 255, 0 ), "Item take : " .. target:SteamID() )
+			if ( item.Selled ) then
+				item.Selled( item, target )
+			end
+		else
+			LShop.core.Message( Color( 255, 255, 0 ), "Not own this item! : " .. target:SteamID() )
+		end	
+	end
+	
 	local Player = FindMetaTable('Player')
 	
 	function Player:LShop_ItemBuyProgress( itemID, category )

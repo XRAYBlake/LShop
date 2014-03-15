@@ -1,7 +1,7 @@
 "AddonInfo"
 {
 	"name"				"LShop"
-	"version"			"1.0 Alpha"
+	"version"			"1.2A"
 	"up_date"			""
 	"author_name"			"L7D"
 	"author_email"			"smhjyh2009@gmail.com"
