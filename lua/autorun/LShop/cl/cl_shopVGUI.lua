@@ -1,3 +1,4 @@
+
 function LShop.cl.Menu01( parent, tab )
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
