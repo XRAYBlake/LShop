@@ -53,3 +53,31 @@ LShop.system.ItemRegister( {
 		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
 	end
 } )
+
+LShop.system.ItemRegister( {
+	ID = "ammo_ar2",
+	Name = "AR2 Ammo",
+	Category = "Ammonation",
+	Price = 30,
+	Ammo_ID = "ar2",
+	Type = "ammo",
+	Ammo_Count = 90,
+	CanBuy = true,
+	CanSell = false,
+	CanEquip = false,
+	OneUse = false,
+	Desc = "This is AR2 ammo, it's simple!",
+	Model = "models/items/item_item_crate.mdl",
+	Buyed = function( item, ply )
+		ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+	end,
+	Selled = function( item, ply )
+		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+	end,
+	Equipped = function( item, ply )
+		ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+	end,
+	Unequipped = function( item, ply )
+		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+	end
+} )
