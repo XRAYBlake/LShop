@@ -78,3 +78,30 @@ LShop.system.ItemRegister( {
 		ply:StripWeapon( item.Weapon_ID )
 	end
 } )
+
+LShop.system.ItemRegister( {
+	ID = "ar2",
+	Name = "AR2",
+	Category = "Weapon",
+	Price = 180,
+	Weapon_ID = "weapon_ar2",
+	Type = "weapon",
+	CanBuy = true,
+	CanSell = true,
+	CanEquip = true,
+	OneUse = true,
+	Desc = "This is AR2, it's simple!",
+	Model = "models/weapons/w_irifle.mdl",
+	Buyed = function( item, ply )
+		ply:Give( item.Weapon_ID )
+	end,
+	Selled = function( item, ply )
+		ply:StripWeapon( item.Weapon_ID )
+	end,
+	Equipped = function( item, ply )
+		ply:Give( item.Weapon_ID )
+	end,
+	Unequipped = function( item, ply )
+		ply:StripWeapon( item.Weapon_ID )
+	end
+} )
