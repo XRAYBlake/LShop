@@ -56,7 +56,7 @@ LShop.system.ItemRegister( {
 	ID = "smg",
 	Name = "SMG",
 	Category = "Weapon",
-	Price = 100,
+	Price = 120,
 	Weapon_ID = "weapon_smg1",
 	Type = "weapon",
 	CanBuy = true,

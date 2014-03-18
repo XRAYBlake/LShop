@@ -5,8 +5,18 @@ LShop.ITEMs = {}
 function LShop.system.ItemRegister( tab )
 	if ( !LShop.ITEMs[ tab.Category ] ) then
 		LShop.ITEMs[ tab.Category ] = {}
+		for k, v in pairs( LShop.ITEMs[ tab.Category ] ) do
+			if ( v.ID == tab.ID ) then
+				LShop.ITEMs[ tab.Category ][ k ] = nil
+			end
+		end
 		LShop.ITEMs[ tab.Category ][ #LShop.ITEMs[ tab.Category ] + 1 ] = tab
 	else
+		for k, v in pairs( LShop.ITEMs[ tab.Category ] ) do
+			if ( v.ID == tab.ID ) then
+				LShop.ITEMs[ tab.Category ][ k ] = nil
+			end
+		end
 		LShop.ITEMs[ tab.Category ][ #LShop.ITEMs[ tab.Category ] + 1 ] = tab
 	end
 end
@@ -330,6 +340,7 @@ if ( SERVER ) then
 	
 	function Player:LShop_PlayerSpawn()
 		local item = self:LShop_GetOwnedItem( )
+		PrintTable( item )
 		timer.Simple(1, function()
 			if ( item ) then
 				for k, v in pairs( item ) do
@@ -350,7 +361,9 @@ if ( SERVER ) then
 		for k, v in pairs( ownitem ) do
 			local item = LShop.system.ItemFindByID( v.ID, v.Category )
 			if ( item ) then
-				self:LShop_ItemRemoveInventory( item.ID, item.Category )
+				if ( item.OneUse ) then
+					self:LShop_ItemRemoveInventory( item.ID, item.Category )
+				end
 			else
 				self:LShop_ItemRemoveInventory( v.ID, v.Category )
 			end
