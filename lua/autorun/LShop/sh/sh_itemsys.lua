@@ -360,7 +360,7 @@ if ( SERVER ) then
 		for k, v in pairs( ownitem ) do
 			local item = LShop.system.ItemFindByID( v.ID, v.Category )
 			if ( item ) then
-				if ( item.OneUse ) then
+				if ( item.OneUse or item.UseTillDeath ) then
 					self:LShop_ItemRemoveInventory( item.ID, item.Category )
 				end
 			else

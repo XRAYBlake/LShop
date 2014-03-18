@@ -1,3 +1,6 @@
+-- NOTE: "UseTillDeath" differs with "OneUse" by restrict only on death. Good for ammo types.
+-- Use one from above.
+
 --[[
 	LShop.system.ItemRegister( {
 		ID = "new_item_code",
@@ -8,6 +11,7 @@
 		CanSell = true,
 		CanEquip = true,
 		OneUse = false,
+		UseTillDeath = false,
 		Desc = "This is test item!",
 		Model = "models/error.mdl",
 		Buyed = function( item, ply )
