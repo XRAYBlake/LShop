@@ -150,13 +150,13 @@ if ( SERVER ) then
 		local item = LShop.system.ItemFindByID( itemID, category )
 		local checkOwn = target:LShop_IsOwn( itemID, category )
 		if ( checkOwn ) then
-			if ( item.OneUse ) then
+			if ( item.UseTillDeath ) then
 				LShop.core.Message( Color( 255, 255, 0 ), "Already own this item! : " .. target:SteamID() )
 				return
 			end
 		end
 		if ( item ) then
-				if ( !item.OneUse ) then
+				if ( !item.UseTillDeath ) then
 					if ( #target.OwnItems != 0 ) then
 						for k, v in pairs( target.OwnItems ) do
 							if ( v.ID != itemID ) then
@@ -222,7 +222,7 @@ if ( SERVER ) then
 		local item = LShop.system.ItemFindByID( itemID, category )
 		local checkOwn = self:LShop_IsOwn( itemID, category )
 		if ( checkOwn ) then
-			if ( item.OneUse ) then
+			if ( item.UseTillDeath ) then
 				net.Start("LShop_SendMessage")
 				net.WriteString( "You already own this item. : " .. itemID )
 				net.Send( self )
@@ -231,7 +231,7 @@ if ( SERVER ) then
 		end
 		if ( item ) then
 			if ( item.Price <= curretMoney ) then
-				if ( !item.OneUse ) then
+				if ( !item.UseTillDeath ) then
 					if ( #self.OwnItems != 0 ) then
 						for k, v in pairs( self.OwnItems ) do
 							if ( v.ID != itemID ) then
@@ -345,7 +345,7 @@ if ( SERVER ) then
 				for k, v in pairs( item ) do
 					local findItem = LShop.system.ItemFindByID( v.ID, v.Category )
 					if ( findItem ) then
-						if ( findItem.OneUse ) then return end
+						if ( findItem.UseTillDeath ) then return end
 						findItem.Equipped( findItem, self )
 					else
 						self:LShop_ItemRemoveInventory( v.ID, v.Category )
@@ -360,7 +360,7 @@ if ( SERVER ) then
 		for k, v in pairs( ownitem ) do
 			local item = LShop.system.ItemFindByID( v.ID, v.Category )
 			if ( item ) then
-				if ( item.OneUse or item.UseTillDeath ) then
+				if ( item.UseTillDeath ) then
 					self:LShop_ItemRemoveInventory( item.ID, item.Category )
 				end
 			else

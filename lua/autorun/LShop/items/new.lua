@@ -10,7 +10,6 @@
 		CanBuy = true,
 		CanSell = true,
 		CanEquip = true,
-		OneUse = false,
 		UseTillDeath = false,
 		Desc = "This is test item!",
 		Model = "models/error.mdl",
