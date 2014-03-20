@@ -38,6 +38,22 @@ function LShop.system.OpenKeyHook( keyhook )
 	end
 end
 
+function LShop.system.OpenKeyHook_Chat( pl, text )
+	if ( !IsValid( pl ) ) then return end
+	if ( !text ) then return end
+	if ( !LShop.Config.ChatOpenCommand ) then return end
+	local text_lower = string.lower( text )
+	local command_lower = string.lower( LShop.Config.ChatOpenCommand )
+	
+	if ( command_lower == text_lower ) then
+		net.Start("LShop_MenuOpen")
+		net.Send( pl )		
+		return LShop.Config.ChatOpenCommand_Output
+	end
+end
+
+hook.Add("PlayerSay", "LShop.OpenKeyHook_Chat", LShop.system.OpenKeyHook_Chat)
+
 hook.Add("Initialize", "LShop.OpenKeyHook", function()
 	LShop.system.OpenKeyHook( LShop.Config.OpenKey )
 end)
