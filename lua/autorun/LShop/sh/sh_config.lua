@@ -1,10 +1,10 @@
 LShop.Config = LShop.Config or {}
 
-LShop.Config.Version = "1.2A" -- Do not edit this!
+LShop.Config.Version = "1.2" -- Do not edit this!
 
 LShop.Config.OpenCommand = "LShop_open" -- Set menu open console command.
 LShop.Config.OpenKey = "F4" -- Set menu open key.
-LShop.Config.ChatOpenCommand = "/XPSys_open" -- Set menu open chat command.
+LShop.Config.ChatOpenCommand = "/LShop_open" -- Set menu open chat command.
 LShop.Config.ChatOpenCommand_Output = "" -- Set menu open chat command output string.
 --[[
 	= LShop.Config.OpenKey List =
