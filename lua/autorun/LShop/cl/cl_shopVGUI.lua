@@ -244,7 +244,12 @@ function LShop.cl.Menu01( parent, tab )
 				itemInformation.Name = v.Name
 				itemInformation.Price = v.Price
 				itemInformation.Desc = v.Desc
-				SelectItemmodel:SetModel( v.Model )
+				if ( !v.Material ) then
+					SelectItemmodel:SetModel( v.Model )
+				else
+				
+					SelectItemmodel:SetModel( "" )
+				end
 			end
 			list.OnCursorEntered = function() end
 			list.OnCursorExited = function() end
@@ -263,16 +268,28 @@ function LShop.cl.Menu01( parent, tab )
 			end
 			
 			local w, h = list:GetWide(), list:GetTall()
-			
-			local icon = list:Add("SpawnIcon")
-			icon:SetPos( 5, 5 )
-			icon:SetSize( 50 - 10, h - 10 )
-			if ( v.Model ) then
-				icon:SetModel( v.Model )
+			if ( !v.Material ) then
+				local icon = list:Add("SpawnIcon")
+				icon:SetPos( 5, 5 )
+				icon:SetSize( 50 - 10, h - 10 )
+				if ( v.Model ) then
+					icon:SetModel( v.Model )
+				else
+					icon:SetModel( "models/error.mdl" )
+				end
+				icon:SetToolTip( false )
 			else
-				icon:SetModel( "models/error.mdl" )
+				local icon = list:Add("DImage")
+				icon:SetPos( 5, 5 )
+				icon:SetSize( 50 - 10, h - 10 )
+				if ( v.Material ) then
+					icon:SetImage( v.Material )
+				else
+					icon:SetImage( "" )
+				end
+				icon:SetToolTip( false )			
 			end
-			icon:SetToolTip( false )
+			
 			ItemList:AddItem( list )
 		end
 	end

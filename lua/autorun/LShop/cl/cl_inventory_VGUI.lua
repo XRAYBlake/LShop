@@ -105,22 +105,36 @@ function LShop.cl.Menu02( parent, tab )
 				end
 			end
 			
-			local items = vgui.Create("SpawnIcon", list)
-			items:SetSize( 70 - 10, 70 - 10 )
-			items:SetPos( 5, 5 )
-			if ( itemInformation != 1 ) then
-				items:SetModel( itemInformation.Model )
-			else
-				items:SetModel( "models/error.mdl" )
-			end
-			items.PaintOver = function( items, w, h )
-				if ( v ) then
-					if ( v.onEquip ) then
-						surface.SetMaterial( Material("icon16/accept.png") )
-						surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
-						surface.DrawTexturedRect( 5, 5, 16, 16 )
+			local w, h = list:GetWide(), list:GetTall()
+			
+			if ( !itemInformation.Material ) then
+				local items = list:Add("SpawnIcon")
+				items:SetSize( 70 - 10, 70 - 10 )
+				items:SetPos( 5, 5 )
+				if ( itemInformation != 1 ) then
+					items:SetModel( itemInformation.Model )
+				else
+					items:SetModel( "models/error.mdl" )
+				end
+				items.PaintOver = function( items, w, h )
+					if ( v ) then
+						if ( v.onEquip ) then
+							surface.SetMaterial( Material("icon16/accept.png") )
+							surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
+							surface.DrawTexturedRect( 5, 5, 16, 16 )
+						end
 					end
 				end
+			else
+				local icon = list:Add("DImage")
+				icon:SetPos( 5, 5 )
+				icon:SetSize( 60, h - 10 )
+				if ( itemInformation.Material ) then
+					icon:SetImage( itemInformation.Material )
+				else
+					icon:SetImage( "" )
+				end
+				icon:SetToolTip( false )				
 			end
 			ItemList:AddItem( list )
 		end
