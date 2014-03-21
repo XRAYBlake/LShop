@@ -41,13 +41,11 @@ function LShop.cl.Menu02( parent, tab )
 		surface.DrawRect( 0, 0, w, h )
 	end
 	
-	local Tab = {}
-	Tab = {}
-	local function ClearInventory()
+	function ClearInventory()
 		ItemList:Clear()
 	end
 	
-	local function LoadInventory()
+	function LoadInventory()
 		for k, v in pairs( LShop.OwnItemsCL ) do
 			local itemInformation = LShop.system.ItemFindByID( v.ID, v.Category ) or 1
 			local list = vgui.Create("DButton", ItemList)

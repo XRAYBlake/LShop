@@ -94,6 +94,10 @@ net.Receive("LShop_SendTable", function( len, cl )
 		ItemListClear()
 		ItemListAdd( LShop.cl.SelectedCategory )
 	end
+	if ( IsValid( LShop_Menu02Panel ) ) then
+		ClearInventory()
+		LoadInventory()
+	end
 end)
 
 concommand.Add( LShop.Config.OpenCommand , function( pl, cmd, args )
