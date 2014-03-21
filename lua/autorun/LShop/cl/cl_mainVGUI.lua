@@ -205,7 +205,7 @@ function LShop.cl.MainShop()
 	NewItemList:EnableVerticalScrollbar( true )
 	NewItemList.Paint = function()
 		local w, h = NewItemList:GetWide(), NewItemList:GetTall()
-		surface.SetDrawColor( 10, 10, 10, 30 )
+		surface.SetDrawColor( 10, 10, 10, 10 )
 		surface.DrawRect( 0, 0, w, h )
 	end
 
