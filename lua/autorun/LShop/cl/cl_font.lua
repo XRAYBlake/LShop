@@ -1,42 +1,49 @@
+local FontList = {}
 
-surface.CreateFont("LShop_MainTitle", 
-{
-	font		= "Segoe UI Light",
-	size		= 55,
-	weight		= 1000
-});
+FontList[1] = {
+	Name = "LShop_MainTitle",
+	Font = "Segoe UI Light",
+	Size = 55
+}
 
-surface.CreateFont("LShop_ButtonText", 
-{
-	font		= "Segoe UI Light",
-	size		= 20,
-	weight		= 1000
-});
+FontList[2] = {
+	Name = "LShop_SubTitle",
+	Font = "Segoe UI Light",
+	Size = 40
+}
 
-surface.CreateFont("LShop_SubTitle", 
-{
-	font		= "Segoe UI Light",
-	size		= 40,
-	weight		= 1000
-});
+FontList[3] = {
+	Name = "LShop_ButtonText",
+	Font = "Segoe UI Light",
+	Size = 20
+}
 
-surface.CreateFont("LShop_Category_Text", 
-{
-	font		= "Segoe UI Light",
-	size		= 25,
-	weight		= 1000
-});
+FontList[4] = {
+	Name = "LShop_Category_Text",
+	Font = "Segoe UI Light",
+	Size = 25
+}
 
-surface.CreateFont("LShop_MoneyNotice", 
-{
-	font		= "Segoe UI Light",
-	size		= 20,
-	weight		= 1000
-});
+FontList[5] = {
+	Name = "LShop_MoneyNotice",
+	Font = "Segoe UI Light",
+	Size = 20
+}
 
-surface.CreateFont("LShop_ButtonText2", 
-{
-	font		= "Segoe UI Light",
-	size		= 40,
-	weight		= 1000
-});
+for i = 1, #FontList do
+	if ( FontList[i].Name && FontList[i].Font && FontList[i].Size ) then
+		surface.CreateFont( FontList[i].Name, { font = FontList[i].Font, size = FontList[i].Size, weight = 1000 } )
+	else
+		MsgC( Color( 255, 0, 0 ), "[LShop] ERROR : Font register failed!\n" )
+	end
+end
+
+--[[// #################################### //
+	= LShop New Font System Document =
+
+	FontList[ Index ] = { -- WARNING : Index value must be number value!
+		Name = "Font Unique Name", -- EX : LShop_TESTFont
+		Font = "Font Name", -- EX : Arial
+		Size = Font Size -- EX : 20 or ScreenScale( 15 )
+	}
+--]]// #################################### //
