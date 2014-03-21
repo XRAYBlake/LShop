@@ -184,7 +184,7 @@ function LShop.cl.Menu01( parent, tab )
 	end
 
 	function CategoryListAdd()
-		for k, v in pairs( LShop.ITEMs ) do
+		for k, v in pairs( LShop.system.GetItems( ) ) do
 			local color = Color( 10, 10, 10, 10 )
 			local list = vgui.Create( "DButton", CategoryList )    
 			list:SetSize( CategoryList:GetWide(), 70 ) 
@@ -225,7 +225,7 @@ function LShop.cl.Menu01( parent, tab )
 		if ( !category ) then
 			return
 		end
-		for k, v in pairs( LShop.ITEMs[ category ] ) do
+		for k, v in pairs( LShop.system.GetItems( )[ category ] ) do
 			local list = vgui.Create( "DButton", ItemList )    
 			list:SetSize( ItemList:GetWide(), 50 ) 
 			list:SetText("")
@@ -280,17 +280,15 @@ function LShop.cl.Menu01( parent, tab )
 	SelectItemmodel = vgui.Create("DModelPanel", LShop_Menu01Panel)
 	SelectItemmodel:SetSize( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.65 )
 	SelectItemmodel:SetPos( LShop_Menu01Panel_w * 0.87 - LShop_Menu01Panel_w * 0.2 / 2, LShop_Menu01Panel_h * 0.13 )
-	SelectItemmodel:SetFOV(50) -- 105
+	SelectItemmodel:SetFOV( 50 )
 	SelectItemmodel:SetCamPos( Vector( 50, 50, 5 ) )
 	SelectItemmodel:SetLookAt( Vector( 0, 0, 0 ) )
 	SelectItemmodel.OnCursorEntered = function() end
-	SelectItemmodel:SetDisabled(true)
-	SelectItemmodel:SetCursor("none")
+	SelectItemmodel:SetDisabled( true )
+	SelectItemmodel:SetCursor( "none" )
 	SelectItemmodel:MoveToBack()
 	SelectItemmodel:SetVisible( true )
-	SelectItemmodel.PaintOver = function()
-		local w, h = SelectItemmodel:GetWide(), SelectItemmodel:GetTall()
-	end
+	SelectItemmodel.PaintOver = function() end
 		
 	local Bx, By = scrW * 0.75, LShop_Menu01Panel_h * 0.9 - 10
 

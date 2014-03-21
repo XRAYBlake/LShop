@@ -115,10 +115,8 @@ if ( SERVER ) then
 		net.WriteString( cl.Money )
 		net.Send( cl )
 	end)
-	
-	
+
 	net.Receive("LShop_ItemSend", function( len, cl )
-	--	LShop.system.ItemGive( net.ReadEntity(), net.ReadString(), net.ReadString() )
 		LShop.system.ItemSend( cl, net.ReadEntity(), net.ReadString(), net.ReadString() )
 	end)
 	
@@ -157,7 +155,7 @@ if ( SERVER ) then
 		local item = LShop.system.ItemFindByID( itemID, category )
 		local checkOwn = target:LShop_IsOwn( itemID, category )
 		if ( checkOwn ) then
-			LShop.core.Message( Color( 255, 255, 0 ), "Already own this item! : " .. target:SteamID() )
+			LShop.core.Message( Color( 255, 255, 0 ), "Already own this item! : " .. target:Name() )
 			return
 		end
 		if ( item ) then
@@ -181,7 +179,7 @@ if ( SERVER ) then
 				net.Send( pl )			
 			end
 		else
-		
+			return
 		end
 	end
 	
@@ -238,6 +236,7 @@ if ( SERVER ) then
 					end
 				end
 		else
+			return
 		end
 	end
 	
@@ -330,6 +329,7 @@ if ( SERVER ) then
 				net.Send( self )
 			end
 		else
+			return
 		end
 	end
 	
@@ -467,15 +467,11 @@ if ( SERVER ) then
 		return self.OwnItems
 	end
 
-	hook.Add('PlayerSpawn', 'LShop_PlayerSpawn', function(pl) pl:LShop_PlayerSpawn() end)
-	hook.Add('PlayerDeath', 'LShop_PlayerDeath', function(pl) pl:LShop_PlayerDeath() end)
-	hook.Add('PlayerInitialSpawn', 'LShop_PlayerInitialSpawn', function(pl) pl:LShop_PlayerInitialSpawn() end)
-	hook.Add('PlayerDisconnected', 'LShop_PlayerDisconnected', function(pl) pl:LShop_PlayerDisconnected() end)
+	hook.Add("PlayerSpawn", "LShop_PlayerSpawn", function( pl ) pl:LShop_PlayerSpawn() end)
+	hook.Add("PlayerDeath", "LShop_PlayerDeath", function( pl ) pl:LShop_PlayerDeath() end)
+	hook.Add("PlayerInitialSpawn", "LShop_PlayerInitialSpawn", function( pl ) pl:LShop_PlayerInitialSpawn() end)
+	hook.Add("PlayerDisconnected", "LShop_PlayerDisconnected", function( pl ) pl:LShop_PlayerDisconnected() end)
 
-	concommand.Add("Lshop_resetitems", function( pl, cmd, args )
-		pl:LShop_LoadData()
-	end)
-	
 	net.Receive("LShop_ItemBuy", function( len, cl )
 		local category = net.ReadString()
 		local itemID = net.ReadString()

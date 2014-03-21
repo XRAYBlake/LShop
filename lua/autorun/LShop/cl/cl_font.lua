@@ -1,3 +1,4 @@
+
 surface.CreateFont("LShop_MainTitle", 
 {
 	font		= "Segoe UI Light",
