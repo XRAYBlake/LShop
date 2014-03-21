@@ -47,7 +47,7 @@ function LShop.cl.MainShop()
 		
 		draw.SimpleText( "You have " .. LShop.PlyMoneyAnimation .. " Moneys.", "LShop_MoneyNotice", w * 0.85, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 		
-		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.03, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "New Items", "LShop_MainTitle", w * 0.25, h * 0.3, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 	end
 
@@ -210,11 +210,11 @@ function LShop.cl.MainShop()
 	end
 
 	local function NewitemRefresh()
-		if ( LShop.ITEMs[ "New" ] ) then
-			for k, v in pairs( LShop.ITEMs[ "New" ] ) do
+		if ( LShop.system.GetItems( )[ "New" ] ) then
+			for k, v in pairs( LShop.system.GetItems( )[ "New" ] ) do
 				local list = vgui.Create("SpawnIcon", NewItemList)
 				list:SetModel( v.Model )
-				list:SetSize( 52, 52 )
+				list:SetSize( 72, 72 )
 				list:SetToolTip("Name : " .. v.Name .. "\nPrice : " .. v.Price .. " $\n")
 				NewItemList:AddItem( list )
 			end

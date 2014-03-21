@@ -25,19 +25,21 @@ function LShop.cl.Menu02( parent, tab )
 		surface.DrawRect( 0, 0, w, h )
 		
 		draw.SimpleText( "Inventory", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		
+		draw.SimpleText( "You have " .. #LShop.OwnItemsCL .. "'s items.", "LShop_MoneyNotice", w * 0.99, h * 0.975, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 	end
 	
 	LShop.cl.SelectedMenu = 2
 	
 	local ItemList = vgui.Create( "DPanelList", LShop_Menu02Panel )
-	ItemList:SetPos( LShop_Menu02Panel_w * 0.1, LShop_Menu02Panel_h * 0.1 )
-	ItemList:SetSize( LShop_Menu02Panel_w * 0.8 , LShop_Menu02Panel_h * 0.85 )
+	ItemList:SetPos( LShop_Menu02Panel_w * 0.5 - LShop_Menu02Panel_w * 0.98 / 2, LShop_Menu02Panel_h * 0.1 )
+	ItemList:SetSize( LShop_Menu02Panel_w * 0.98 , LShop_Menu02Panel_h * 0.85 )
 	ItemList:SetSpacing( 3 )
 	ItemList:EnableHorizontal( false )
 	ItemList:EnableVerticalScrollbar( true )
 	ItemList.Paint = function()
 		local w, h = ItemList:GetWide(), ItemList:GetTall()
-		surface.SetDrawColor( 10, 10, 10, 10 )
+		surface.SetDrawColor( 10, 10, 10, 0 )
 		surface.DrawRect( 0, 0, w, h )
 	end
 	
@@ -62,8 +64,7 @@ function LShop.cl.Menu02( parent, tab )
 							net.SendToServer()	
 						end
 						)
-					end
-							
+					end	
 					if ( itemInformation.CanEquip && LP:LShop_IsOwned( v.ID, v.Category ) ) then
 						if ( !LP:LShop_IsEquiped( v.ID, v.Category ) ) then
 							Menu:AddOption("Equip", function() 
@@ -84,8 +85,7 @@ function LShop.cl.Menu02( parent, tab )
 								net.WriteString( "false" )
 								net.SendToServer()
 								ClearInventory()
-								LoadInventory()
-										
+								LoadInventory()	
 							end
 							)							
 						end
@@ -95,11 +95,13 @@ function LShop.cl.Menu02( parent, tab )
 			end
 			list.Paint = function()
 				local w, h = list:GetWide(), list:GetTall()
+				surface.SetDrawColor( 10, 10, 10, 10 )
+				surface.DrawRect( 0, 0, w, h )
 				
 				if ( itemInformation != 1 ) then
 					draw.SimpleText( itemInformation.Name, "LShop_SubTitle", w * 0.2, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 				else
-					draw.SimpleText( "Can't use this item.", "LShop_SubTitle", w * 0.2, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+					draw.SimpleText( "Can't use this item.", "LShop_SubTitle", w * 0.2, h * 0.5, Color( 255, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 				end
 			end
 			
@@ -139,9 +141,7 @@ function LShop.cl.Menu02( parent, tab )
 	end
 	
 	LoadInventory()
-
-	local Bx, By = scrW * 0.05, scrH * 0.1
-
+	
 	if ( LShop_Menu01Panel ) then
 		local LShop_Menu01Panel_w, LShop_Menu01Panel_h = 10 + scrW - 30, scrH * 0.8
 		local LShop_Menu01Panel_x, LShop_Menu01Panel_y = 10, scrH + LShop_Menu01Panel_h;

@@ -133,9 +133,8 @@ function LShop.cl.Menu01( parent, tab )
 
 		surface.SetDrawColor( 255, 255, 255, 230 )
 		surface.DrawRect( 0, 0, w, h )
-		
-		
-		surface.SetDrawColor( 10, 10, 10, 10 )
+
+		surface.SetDrawColor( 10, 10, 10, 0 )
 		surface.DrawRect( w * 0.75, h * 0.1, w * 0.25 - 20, h * 0.85 )
 
 		draw.SimpleText( "Shop", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
@@ -143,13 +142,11 @@ function LShop.cl.Menu01( parent, tab )
 		if ( itemInformation.Name != "" ) then
 			draw.SimpleText( itemInformation.Name, "LShop_SubTitle", w * 0.87, h * 0.7, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		end
-		
 		if ( itemInformation.Desc != "" ) then
 			draw.SimpleText( itemInformation.Desc, "LShop_Category_Text", w * 0.87, h * 0.75, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		end
-		
 		if ( itemInformation.Price != 0 ) then
-			draw.SimpleText( itemInformation.Price .. " $", "LShop_SubTitle", w * 0.87, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			draw.SimpleText( itemInformation.Price .. " $", "LShop_SubTitle", w * 0.87, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		end
 	end
 	
@@ -163,7 +160,7 @@ function LShop.cl.Menu01( parent, tab )
 	CategoryList:EnableVerticalScrollbar( true )
 	CategoryList.Paint = function()
 		local w, h = CategoryList:GetWide(), CategoryList:GetTall()
-		surface.SetDrawColor( 10, 10, 10, 30 )
+		surface.SetDrawColor( 10, 10, 10, 0 )
 		surface.DrawRect( 0, 0, w, h )
 	end
 	
@@ -175,7 +172,7 @@ function LShop.cl.Menu01( parent, tab )
 	ItemList:EnableVerticalScrollbar( true )
 	ItemList.Paint = function()
 		local w, h = ItemList:GetWide(), ItemList:GetTall()
-		surface.SetDrawColor( 10, 10, 10, 10 )
+		surface.SetDrawColor( 10, 10, 10, 0 )
 		surface.DrawRect( 0, 0, w, h )
 	end
 	
@@ -195,18 +192,19 @@ function LShop.cl.Menu01( parent, tab )
 				ItemListAdd( LShop.cl.SelectedCategory )
 			end
 			list.OnCursorEntered = function()
-				color = Color( 10, 255, 10, 50 )
+				color = Color( 10, 255, 10, 100 )
 			end
 			list.OnCursorExited = function()
 				color = Color( 10, 10, 10, 10 )
 			end
 			list.Paint = function()
 				local w, h = list:GetWide(), list:GetTall()
+				
 				surface.SetDrawColor( color )
 				surface.DrawRect( 0, 0, w, h )
 				
 				if ( LShop.cl.SelectedCategory == k ) then
-					surface.SetDrawColor( 10, 10, 10, 100 )
+					surface.SetDrawColor( 10, 10, 10, 30 )
 					surface.DrawRect( 0, 0, w, h )				
 				end
 				
@@ -225,10 +223,15 @@ function LShop.cl.Menu01( parent, tab )
 		if ( !category ) then
 			return
 		end
+		local delta = 0
 		for k, v in pairs( LShop.system.GetItems( )[ category ] ) do
+			
 			local list = vgui.Create( "DButton", ItemList )    
 			list:SetSize( ItemList:GetWide(), 50 ) 
 			list:SetText("")
+			list:SetAlpha( 0 )
+			list:AlphaTo( 255, 0.05, delta )
+			delta = delta + 0.07
 			list.DoClick = function()
 				surface.PlaySound( "ui/buttonclick.wav" )		
 				local Menu = DermaMenu( )
@@ -247,7 +250,6 @@ function LShop.cl.Menu01( parent, tab )
 				if ( !v.Material ) then
 					SelectItemmodel:SetModel( v.Model )
 				else
-				
 					SelectItemmodel:SetModel( "" )
 				end
 			end
@@ -255,7 +257,7 @@ function LShop.cl.Menu01( parent, tab )
 			list.OnCursorExited = function() end
 			list.Paint = function()
 				local w, h = list:GetWide(), list:GetTall()
-				surface.SetDrawColor( 10, 10, 10, 30 )
+				surface.SetDrawColor( 10, 10, 10, 10 )
 				surface.DrawRect( 0, 0, w, h )
 				
 				draw.SimpleText( v.Name, "LShop_Category_Text", w * 0.1, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
@@ -264,7 +266,6 @@ function LShop.cl.Menu01( parent, tab )
 				surface.SetMaterial( Material("icon16/money_dollar.png") )
 				surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
 				surface.DrawTexturedRect( w - 20, h / 2 - 16 / 2, 16, 16 )
-				
 			end
 			
 			local w, h = list:GetWide(), list:GetTall()
@@ -295,17 +296,19 @@ function LShop.cl.Menu01( parent, tab )
 	end
 	
 	SelectItemmodel = vgui.Create("DModelPanel", LShop_Menu01Panel)
-	SelectItemmodel:SetSize( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.65 )
-	SelectItemmodel:SetPos( LShop_Menu01Panel_w * 0.87 - LShop_Menu01Panel_w * 0.2 / 2, LShop_Menu01Panel_h * 0.13 )
+	SelectItemmodel:SetSize( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.5 )
+	SelectItemmodel:SetPos( LShop_Menu01Panel_w * 0.87 - LShop_Menu01Panel_w * 0.2 / 2, LShop_Menu01Panel_h * 0.17 )
 	SelectItemmodel:SetFOV( 50 )
-	SelectItemmodel:SetCamPos( Vector( 50, 50, 5 ) )
-	SelectItemmodel:SetLookAt( Vector( 0, 0, 0 ) )
+	SelectItemmodel:SetCamPos( Vector( 50, 50, 15 ) )
+	SelectItemmodel:SetLookAt( Vector( 0, 0, 10 ) )
 	SelectItemmodel.OnCursorEntered = function() end
 	SelectItemmodel:SetDisabled( true )
 	SelectItemmodel:SetCursor( "none" )
 	SelectItemmodel:MoveToBack()
 	SelectItemmodel:SetVisible( true )
-	SelectItemmodel.PaintOver = function() end
+	SelectItemmodel.PaintOver = function( pnl, w, h ) 
+
+	end
 		
 	local Bx, By = scrW * 0.75, LShop_Menu01Panel_h * 0.9 - 10
 
