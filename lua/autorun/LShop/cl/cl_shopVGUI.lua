@@ -302,26 +302,33 @@ function LShop.cl.Menu01( parent, tab )
 	LShop_Menu01Panel.Buy.DoClick = function(  )
 		surface.PlaySound( "ui/buttonclick.wav" )
 		if ( ButtonMode == 1 ) then
-			local Menu = DermaMenu()
-			Menu:AddOption( "Buy", function()
+			if ( LShop.Config.ItemGiftSystem ) then
+				local Menu = DermaMenu()
+				Menu:AddOption( "Buy", function()
+					net.Start("LShop_ItemBuy")
+					net.WriteString( SelectItem.Category )
+					net.WriteString( SelectItem.ID )
+					net.SendToServer()					
+				end)
+				local submenu = Menu:AddSubMenu( "Gift to player" )
+				for k, v in pairs( player.GetAll() ) do
+					if ( v:SteamID() != LP:SteamID() ) then
+						submenu:AddOption( v:Name(), function()
+							net.Start("LShop_ItemSend")
+							net.WriteEntity( v )
+							net.WriteString( SelectItem.ID )
+							net.WriteString( SelectItem.Category )
+							net.SendToServer()
+						end)
+					end
+				end
+				Menu:Open()
+			else
 				net.Start("LShop_ItemBuy")
 				net.WriteString( SelectItem.Category )
 				net.WriteString( SelectItem.ID )
-				net.SendToServer()					
-			end)
-			local submenu = Menu:AddSubMenu( "Gift to player" )
-			for k, v in pairs( player.GetAll() ) do
-				if ( v:SteamID() != LP:SteamID() ) then
-					submenu:AddOption( v:Name(), function()
-						net.Start("LShop_ItemSend")
-						net.WriteEntity( v )
-						net.WriteString( SelectItem.ID )
-						net.WriteString( SelectItem.Category )
-						net.SendToServer()
-					end)
-				end
+				net.SendToServer()				
 			end
-			Menu:Open()			
 		else
 			net.Start("LShop_ItemSell")
 			net.WriteString( SelectItem.Category )
