@@ -22,6 +22,29 @@ LShop.Config.MoneyAmmount = 100 -- Money Amount. ( 100 $ )
 
 LShop.Config.ItemGiftSystem = true -- Are you sure allow Item Gift System?
 
+LShop.Config.DaySaleSystem = false -- Are you sure turn on Week Day Sale System?
+LShop.Config.DayNumber = 1 -- WeekDay Sale system day number.
+LShop.Config.SalePercent = function( price ) -- WeekDay Sale system sale percent.
+	return math.Round( price * 0.95 )
+end
+
+--[[// #################################### //
+	= WeekDay Sale System Document =
+
+	What is 'LShop.Config.DayNumber'?
+	Answer : It is weekday number, look at bottom.
+	
+	1 = Sunday
+	2 = Monday
+	3 = Tuesday
+	4 = Wednesday
+	5 = Thursday
+	6 = Friday
+	7 = Saturday
+	
+	:)
+--]]// #################################### //
+
 LShop.Config.PermissionCheck = function( pl ) -- Administrator menu permission.
 	return pl:IsSuperAdmin()
 end

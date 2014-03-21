@@ -1,6 +1,43 @@
 LShop = LShop or {}
 LShop.system = LShop.system or {}
 LShop.ITEMs = {}
+LShop.system.WeekDay = {}
+
+LShop.system.WeekDay[1] = {
+	WeekName = "Mondey",
+	WeekIndex = 2
+}
+
+LShop.system.WeekDay[2] = {
+	WeekName = "Tuesday",
+	WeekIndex = 3
+}
+
+LShop.system.WeekDay[3] = {
+	WeekName = "Wednesday",
+	WeekIndex = 4
+}
+
+LShop.system.WeekDay[4] = {
+	WeekName = "Thursday",
+	WeekIndex = 5
+}
+
+LShop.system.WeekDay[5] = {
+	WeekName = "Friday",
+	WeekIndex = 6
+}
+
+LShop.system.WeekDay[6] = {
+	WeekName = "Saturday",
+	WeekIndex = 7
+}
+
+LShop.system.WeekDay[7] = {
+	WeekName = "Sunday",
+	WeekIndex = 1
+}
+
 
 function LShop.system.ItemRegister( tab )
 	if ( !LShop.ITEMs[ tab.Category ] ) then
@@ -79,6 +116,25 @@ function LShop.system.ItemFindByModel( model, category )
 	end
 end
 
+function LShop.system.DaySale( )
+	local day = os.date("*t")
+	for i = 1, #LShop.system.WeekDay do
+		if ( day.wday == LShop.Config.DayNumber ) then
+			for k, v in pairs( LShop.ITEMs ) do
+				for a, h in pairs( LShop.ITEMs[ k ] ) do
+					for n = 1, #LShop.ITEMs[ k ] do
+						h.Price = LShop.Config.SalePercent( h.Price )
+					end
+				end
+			end
+		else
+			if ( i == #LShop.system.WeekDay ) then
+				return
+			end
+		end
+	end
+end
+
 LShop.ITEMs = {}
 
 if ( CLIENT ) then
@@ -94,6 +150,8 @@ if ( CLIENT ) then
 	
 	LShop.system.CSLoadItemFiles( )
 end
+
+
 
 if ( SERVER ) then
 	util.AddNetworkString("LShop_ItemBuy")
@@ -552,3 +610,5 @@ if ( SERVER ) then
 	
 	LShop.system.SVLoadItemFiles( )
 end
+
+LShop.system.DaySale( )

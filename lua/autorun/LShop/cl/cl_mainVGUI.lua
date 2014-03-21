@@ -6,7 +6,8 @@ function LShop.cl.MainShop()
 	local LShop_MainShopPanel_x, LShop_MainShopPanel_y = (scrW * 0.5) - (LShop_MainShopPanel_w / 2), (scrH * 0.5) - (LShop_MainShopPanel_h / 2);
 	LShop.PlyMoneyAnimation = 0
 	LShop.cl.SelectedMenu = nil
-
+	local day = os.date("*t")
+	
 	net.Receive("LShop_SendMessage", function( len, cl )
 		Derma_Message( net.ReadString(), "NOTICE", "OK" )
 	end)
@@ -49,6 +50,12 @@ function LShop.cl.MainShop()
 		
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.03, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "New Items", "LShop_MainTitle", w * 0.25, h * 0.3, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		
+		if ( LShop.Config.DaySaleSystem ) then
+			if ( day.wday == LShop.Config.DayNumber ) then
+				draw.SimpleText( "Sale Day!", "LShop_SubTitle", w * 0.5, h * 0.95, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			end
+		end
 	end
 
 	local Bx, By = LShop_MainShopPanel_w - 40, LShop_MainShopPanel_h - 40
