@@ -107,12 +107,19 @@ if ( SERVER ) then
 	util.AddNetworkString("LShop_BugNoticeSend")
 	util.AddNetworkString("LShop_Admin_ItemGive")
 	util.AddNetworkString("LShop_Admin_ItemTake")
+	util.AddNetworkString("LShop_ItemSend")
 	
 	net.Receive("LShop_SendTable_Request", function( len, cl )
 		net.Start("LShop_SendTable")
 		net.WriteTable( cl.OwnItems )
 		net.WriteString( cl.Money )
 		net.Send( cl )
+	end)
+	
+	
+	net.Receive("LShop_ItemSend", function( len, cl )
+	--	LShop.system.ItemGive( net.ReadEntity(), net.ReadString(), net.ReadString() )
+		LShop.system.ItemSend( cl, net.ReadEntity(), net.ReadString(), net.ReadString() )
 	end)
 	
 	net.Receive("LShop_Admin_ItemGive", function( len, cl )
@@ -143,6 +150,39 @@ if ( SERVER ) then
 		net.Start("LShop_BugNoticeSend")
 		net.WriteTable( tab )
 		net.Send( pl )
+	end
+	
+	function LShop.system.ItemSend( pl, target, itemID, category )
+		local curretMoney = target:LShop_GetMoney( )
+		local item = LShop.system.ItemFindByID( itemID, category )
+		local checkOwn = target:LShop_IsOwn( itemID, category )
+		if ( checkOwn ) then
+			LShop.core.Message( Color( 255, 255, 0 ), "Already own this item! : " .. target:SteamID() )
+			return
+		end
+		if ( item ) then
+			if ( item.Price <= curretMoney ) then
+				target.OwnItems[ #target.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
+				if ( item.Buyed ) then
+					item.Buyed( item, target )
+				end
+				pl:LShop_TakeMoney( item.Price )
+				net.Start("LShop_SendMessage")
+				net.WriteString( "You gift to " .. target:Name() .. " player." )
+				net.Send( pl )
+				net.Start("LShop_SendMessage")
+				net.WriteString( pl:Name() .. " gift to item!" )
+				net.Send( target )
+				LShop.core.Message( Color( 0, 255, 0 ), "Item send : " .. target:SteamID() )
+				return			
+			else
+				net.Start("LShop_SendMessage")
+				net.WriteString( "Not enough money!" )
+				net.Send( pl )			
+			end
+		else
+		
+		end
 	end
 	
 	function LShop.system.ItemGive( target, itemID, category )

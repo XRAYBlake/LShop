@@ -48,7 +48,6 @@ function LShop.cl.MainShop()
 		draw.SimpleText( "You have " .. LShop.PlyMoneyAnimation .. " Moneys.", "LShop_MoneyNotice", w * 0.85, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 		
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
-		draw.SimpleText( "Alpha Version", "LShop_MoneyNotice", w * 0.01, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "New Items", "LShop_MainTitle", w * 0.25, h * 0.3, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 	end
 

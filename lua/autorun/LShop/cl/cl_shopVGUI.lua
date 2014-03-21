@@ -1,3 +1,67 @@
+/*
+function LShop.cl.ItemGiftMenu( itemID, category )
+	local LP = LocalPlayer()
+	local scrW, scrH = ScrW(), ScrH()
+	local LShop_ItemGiftMenu_w, LShop_ItemGiftMenu_h = 10 + scrW - 30, scrH * 0.5
+	local LShop_ItemGiftMenu_x, LShop_ItemGiftMenu_y = 10, scrH + LShop_ItemGiftMenu_h;
+	if ( !LShop_ItemGiftMenu ) then
+	LShop_ItemGiftMenu = vgui.Create("DFrame", parent)
+	LShop_ItemGiftMenu:SetPos( LShop_ItemGiftMenu_x , LShop_ItemGiftMenu_y )
+	LShop_ItemGiftMenu:MoveTo( LShop_ItemGiftMenu_x, scrH * 0.1, 0.3, 0 )
+	LShop_ItemGiftMenu:SetSize( LShop_ItemGiftMenu_w, LShop_ItemGiftMenu_h )
+	LShop_ItemGiftMenu:SetTitle( "" )
+	LShop_ItemGiftMenu:SetDraggable( false )
+	LShop_ItemGiftMenu:ShowCloseButton( true )
+	LShop_ItemGiftMenu:MakePopup()
+	--LShop_ItemGiftMenu:SetDrawOnTop( true )
+	LShop_ItemGiftMenu.Think = function()
+		if ( LShop_ItemGiftMenu ) then
+			LShop_ItemGiftMenu:MoveToFront()
+		end
+	end
+	LShop_ItemGiftMenu.Paint = function()
+		local x = LShop_ItemGiftMenu_x
+		local y = LShop_ItemGiftMenu_y
+		local w = LShop_ItemGiftMenu_w
+		local h = LShop_ItemGiftMenu_h
+
+		surface.SetDrawColor( 255, 255, 255, 230 )
+		surface.DrawRect( 0, 0, w, h )
+
+		draw.SimpleText( "Item Gift", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+	end
+	
+	local Bx, By = 40, LShop_ItemGiftMenu_h - 40
+
+	local CloseButton = vgui.Create( "DButton", LShop_ItemGiftMenu )    
+	CloseButton:SetText( "X" )  
+	CloseButton:SetFont("LShop_ButtonText")
+	CloseButton:SetPos( Bx, By )  
+	CloseButton:SetColor(Color( 0, 0, 0, 255 ))
+	CloseButton:SetSize( 35, 35 ) 
+	CloseButton.DoClick = function(  )
+		LShop_ItemGiftMenu:MoveTo( LShop_ItemGiftMenu_x, scrH + LShop_ItemGiftMenu_w, 0.3, 0 )
+		timer.Simple( 0.3, function()
+			if ( LShop_ItemGiftMenu ) then
+				LShop_ItemGiftMenu:Remove()
+				LShop_ItemGiftMenu = nil
+			end
+		end)	
+	end
+	CloseButton.Paint = function()
+		local w = CloseButton:GetWide()
+		local h = CloseButton:GetTall()
+		
+		surface.SetDrawColor( 255, 100, 100, 50 )
+		surface.DrawRect( 0, 0, w, h )
+	end
+	
+	else
+		LShop_ItemGiftMenu:Remove()
+		LShop_ItemGiftMenu = nil
+	end
+end
+*/
 
 function LShop.cl.Menu01( parent, tab )
 	local LP = LocalPlayer()
@@ -240,10 +304,26 @@ function LShop.cl.Menu01( parent, tab )
 	LShop_Menu01Panel.Buy.DoClick = function(  )
 		surface.PlaySound( "ui/buttonclick.wav" )
 		if ( ButtonMode == 1 ) then
-			net.Start("LShop_ItemBuy")
-			net.WriteString( SelectItem.Category )
-			net.WriteString( SelectItem.ID )
-			net.SendToServer()			
+			local Menu = DermaMenu()
+			Menu:AddOption( "Buy", function()
+				net.Start("LShop_ItemBuy")
+				net.WriteString( SelectItem.Category )
+				net.WriteString( SelectItem.ID )
+				net.SendToServer()					
+			end)
+			local submenu = Menu:AddSubMenu( "Gift to player" )
+			for k, v in pairs( player.GetAll() ) do
+				if ( v:SteamID() != LP:SteamID() ) then
+					submenu:AddOption( v:Name(), function()
+						net.Start("LShop_ItemSend")
+						net.WriteEntity( v )
+						net.WriteString( SelectItem.ID )
+						net.WriteString( SelectItem.Category )
+						net.SendToServer()
+					end)
+				end
+			end
+			Menu:Open()			
 		else
 			net.Start("LShop_ItemSell")
 			net.WriteString( SelectItem.Category )
