@@ -422,6 +422,27 @@ if ( SERVER ) then
 			return nil
 		end
 	end
+	
+	function Player:IsEquiped( itemID, category )
+		local id = LShop.system.ItemFindByID( tostring( itemID ), category )
+		if ( id ) then
+			for k, v in pairs( self.OwnItems ) do
+				if ( v.ID == itemID ) then
+					if ( v.onEquip ) then
+						return true
+					else
+						return false
+					end
+				else
+					if ( k == #self.OwnItems ) then
+						return nil
+					end
+				end
+			end
+		else
+		
+		end
+	end
 
 	function Player:LShop_ItemRemoveInventory( itemID, category )
 		for k, v in pairs( self.OwnItems ) do
@@ -458,10 +479,13 @@ if ( SERVER ) then
 		for k, v in pairs( ownitem ) do
 			local item = LShop.system.ItemFindByID( v.ID, v.Category )
 			if ( item ) then
-				if ( !UnEquipped_IS_NotRemove ) then
-					if ( item.UseTillDeath ) then
-						self:LShop_ItemRemoveInventory( item.ID, item.Category )
+				if ( !self:IsEquiped( item.ID, item.Category ) ) then
+					if ( item.UnEquipped_IS_NotRemove ) then
+						return
 					end
+				end
+				if ( item.UseTillDeath ) then
+					self:LShop_ItemRemoveInventory( item.ID, item.Category )
 				end
 			else
 				self:LShop_ItemRemoveInventory( v.ID, v.Category )
