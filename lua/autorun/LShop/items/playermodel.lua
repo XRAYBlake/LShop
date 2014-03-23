@@ -7,6 +7,7 @@ LShop.system.ItemRegister( {
 	CanSell = true,
 	CanEquip = true,
 	UseTillDeath = false,
+	UnEquipped_IS_NotRemove = true,
 	Desc = "This is Doctor Kliner model!",
 	Model = "models/player/kleiner.mdl",
 	Buyed = function( item, ply )
@@ -38,6 +39,7 @@ LShop.system.ItemRegister( {
 	CanSell = true,
 	CanEquip = true,
 	UseTillDeath = false,
+	UnEquipped_IS_NotRemove = true,
 	Desc = "This is Alyx model!",
 	Model = "models/player/alyx.mdl",
 	Buyed = function( item, ply )
@@ -69,6 +71,7 @@ LShop.system.ItemRegister( {
 	CanSell = true,
 	CanEquip = true,
 	UseTillDeath = false,
+	UnEquipped_IS_NotRemove = true,
 	Desc = "This is Breen model!",
 	Model = "models/player/breen.mdl",
 	Buyed = function( item, ply )

@@ -9,6 +9,7 @@ LShop.system.ItemRegister( {
 	CanSell = true,
 	CanEquip = true,
 	UseTillDeath = true,
+	UnEquipped_IS_NotRemove = true,
 	Desc = "This is Crowbar, it's simple!",
 	Model = "models/weapons/w_crowbar.mdl",
 	Buyed = function( item, ply )
@@ -36,6 +37,7 @@ LShop.system.ItemRegister( {
 	CanSell = true,
 	CanEquip = true,
 	UseTillDeath = true,
+	UnEquipped_IS_NotRemove = true,
 	Desc = "This is Pistol, it's simple!",
 	Model = "models/weapons/W_pistol.mdl",
 	Buyed = function( item, ply )
@@ -63,6 +65,7 @@ LShop.system.ItemRegister( {
 	CanSell = true,
 	CanEquip = true,
 	UseTillDeath = true,
+	UnEquipped_IS_NotRemove = true,
 	Desc = "This is SMG, it's simple!",
 	Model = "models/weapons/w_smg1.mdl",
 	Buyed = function( item, ply )
@@ -90,6 +93,7 @@ LShop.system.ItemRegister( {
 	CanSell = true,
 	CanEquip = true,
 	UseTillDeath = true,
+	UnEquipped_IS_NotRemove = true,
 	Desc = "This is AR2, it's simple!",
 	Model = "models/weapons/w_irifle.mdl",
 	Buyed = function( item, ply )

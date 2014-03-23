@@ -458,8 +458,10 @@ if ( SERVER ) then
 		for k, v in pairs( ownitem ) do
 			local item = LShop.system.ItemFindByID( v.ID, v.Category )
 			if ( item ) then
-				if ( item.UseTillDeath ) then
-					self:LShop_ItemRemoveInventory( item.ID, item.Category )
+				if ( !UnEquipped_IS_NotRemove ) then
+					if ( item.UseTillDeath ) then
+						self:LShop_ItemRemoveInventory( item.ID, item.Category )
+					end
 				end
 			else
 				self:LShop_ItemRemoveInventory( v.ID, v.Category )
