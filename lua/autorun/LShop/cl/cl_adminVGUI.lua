@@ -116,8 +116,8 @@ end
 function LShop.cl.Admin( parent, tab )
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
-	local LShop_AdminPanel_w, LShop_AdminPanel_h = 10 + scrW - 30, scrH * 0.8
-	local LShop_AdminPanel_x, LShop_AdminPanel_y = 10, scrH + LShop_AdminPanel_h;
+	local LShop_AdminPanel_w, LShop_AdminPanel_h = scrW, scrH * 0.8
+	local LShop_AdminPanel_x, LShop_AdminPanel_y = 0, scrH + LShop_AdminPanel_h;
 
 	if ( !LShop_AdminPanel ) then
 	LShop_AdminPanel = vgui.Create("DFrame", parent)
@@ -137,6 +137,9 @@ function LShop.cl.Admin( parent, tab )
 
 		surface.SetDrawColor( 255, 255, 255, 230 )
 		surface.DrawRect( 0, 0, w, h )
+		
+		draw.RoundedBox( 0, 0, 0, w, 2, Color( 0, 0, 0, 255 ) )
+		draw.RoundedBox( 0, 0, h - 2, w, 2, Color( 0, 0, 0, 255 ) )
 		
 		draw.SimpleText( "Administrator", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 	end

@@ -2,8 +2,8 @@
 function LShop.cl.Menu02( parent, tab )
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
-	local LShop_Menu02Panel_w, LShop_Menu02Panel_h = 10 + scrW - 30, scrH * 0.8
-	local LShop_Menu02Panel_x, LShop_Menu02Panel_y = 10, scrH + LShop_Menu02Panel_h;
+	local LShop_Menu02Panel_w, LShop_Menu02Panel_h = scrW, scrH * 0.8
+	local LShop_Menu02Panel_x, LShop_Menu02Panel_y = 0, scrH + LShop_Menu02Panel_h;
 
 	if ( !LShop_Menu02Panel ) then
 	LShop_Menu02Panel = vgui.Create("DFrame", parent)
@@ -23,6 +23,9 @@ function LShop.cl.Menu02( parent, tab )
 
 		surface.SetDrawColor( 255, 255, 255, 230 )
 		surface.DrawRect( 0, 0, w, h )
+		
+		draw.RoundedBox( 0, 0, 0, w, 2, Color( 0, 0, 0, 255 ) )
+		draw.RoundedBox( 0, 0, h - 2, w, 2, Color( 0, 0, 0, 255 ) )
 		
 		draw.SimpleText( "Inventory", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		

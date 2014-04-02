@@ -271,22 +271,12 @@ end
 function LShop.cl.Menu01( parent, tab )
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
-	local LShop_Menu01Panel_w, LShop_Menu01Panel_h = 10 + scrW - 30, scrH * 0.8
-	local LShop_Menu01Panel_x, LShop_Menu01Panel_y = 10, scrH + LShop_Menu01Panel_h;
-	local itemInformation = {}
-	itemInformation.Name = ""
-	itemInformation.Price = 0
-	itemInformation.Desc = ""
-	local SelectItem = {}
-	SelectItem.ID = nil
-	SelectItem.Category = nil
-	SelectItem.EquBool = nil
+	local LShop_Menu01Panel_w, LShop_Menu01Panel_h = scrW, scrH * 0.8
+	local LShop_Menu01Panel_x, LShop_Menu01Panel_y = 0, scrH + LShop_Menu01Panel_h;
 	
 	net.Start("LShop_SendTable_Request")
 	net.SendToServer()
-	
-	local ButtonMode = 1
-	
+
 	if ( !LShop_Menu01Panel ) then
 	LShop_Menu01Panel = vgui.Create("DFrame", parent)
 	LShop_Menu01Panel:SetPos( LShop_Menu01Panel_x , LShop_Menu01Panel_y )
@@ -298,37 +288,7 @@ function LShop.cl.Menu01( parent, tab )
 	LShop_Menu01Panel:MakePopup()
 	LShop_Menu01Panel:SetDrawOnTop( false )
 	LShop_Menu01Panel.Think = function()
-		if ( LShop_Menu01Panel ) then
-			if ( SelectItem.ID ) then
-				local Find = LShop.system.ItemFindByID( SelectItem.ID, SelectItem.Category )
-
-				if ( Find.CanEquip && LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category ) ) then
-					if ( !LP:LShop_IsEquiped( SelectItem.ID, SelectItem.Category ) ) then
-						LShop_Menu01Panel.Action:SetVisible( true )
-						LShop_Menu01Panel.Action:SetText( "Equip" )  
-					else
-						LShop_Menu01Panel.Action:SetVisible( true )
-						LShop_Menu01Panel.Action:SetText( "Unequip" )  
-					end
-				else
-					LShop_Menu01Panel.Action:SetVisible( false )
-				end
-				if ( Find.CanBuy && !LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category )  ) then
-					LShop_Menu01Panel.Buy:SetVisible( true )
-					LShop_Menu01Panel.Buy:SetText( "Buy" )  
-					ButtonMode = 1
-				elseif ( Find.CanSell && LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category )  ) then
-					LShop_Menu01Panel.Buy:SetVisible( true )
-					LShop_Menu01Panel.Buy:SetText( "Sell" )  
-					ButtonMode = 0
-				end
-				if ( !LP:LShop_IsEquiped( SelectItem.ID, SelectItem.Category ) ) then
-					SelectItem.EquBool = true
-				else
-					SelectItem.EquBool = false
-				end
-			end
-		end
+	
 	end
 	LShop_Menu01Panel.Paint = function()
 		local x = LShop_Menu01Panel_x
@@ -344,15 +304,8 @@ function LShop.cl.Menu01( parent, tab )
 
 		draw.SimpleText( "Shop", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		
-		if ( itemInformation.Name != "" ) then
-			draw.SimpleText( itemInformation.Name, "LShop_SubTitle", w * 0.87, h * 0.7, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-		end
-		if ( itemInformation.Desc != "" ) then
-			draw.SimpleText( itemInformation.Desc, "LShop_Category_Text", w * 0.87, h * 0.75, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-		end
-		if ( itemInformation.Price != 0 ) then
-			draw.SimpleText( itemInformation.Price .. " $", "LShop_SubTitle", w * 0.87, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-		end
+		draw.RoundedBox( 0, 0, 0, w, 2, Color( 0, 0, 0, 255 ) )
+		draw.RoundedBox( 0, 0, h - 2, w, 2, Color( 0, 0, 0, 255 ) )
 	end
 	
 	LShop.cl.SelectedMenu = 1
