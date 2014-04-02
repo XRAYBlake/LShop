@@ -23,6 +23,22 @@ end
 
 util.AddNetworkString("LShop_Admin_SetMoney")
 
+function LShop.core.MoneyFIX( )
+	for k, v in pairs( player.GetAll() ) do
+		local money = v.Money
+		if ( type( money ) == "number" ) then
+			if ( money < 0 ) then
+				v:LShop_SetMoney( 0 )
+				return
+			end
+		else
+			v:LShop_SetMoney( 0 )
+			return
+		end
+	end
+end
+hook.Add( "Think", "LAdmin.core.MoneyFIX", LShop.core.MoneyFIX )
+
 net.Receive("LShop_Admin_SetMoney", function( len, cl )
 	local target = net.ReadEntity()
 	local money = net.ReadString()
