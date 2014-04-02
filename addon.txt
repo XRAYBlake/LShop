@@ -1,11 +1,11 @@
 "AddonInfo"
 {
 	"name"				"LShop"
-	"version"			"1.3"
+	"version"			"1.4"
 	"up_date"			""
 	"author_name"			"L7D"
 	"author_email"			"smhjyh2009@gmail.com"
 	"author_url"			""
-	"info"				"Powerful shop system."
+	"info"				"A Shop system for Garry's Mod."
 	"override"			"0"
 }
