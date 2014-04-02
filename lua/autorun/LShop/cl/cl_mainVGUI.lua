@@ -2,9 +2,8 @@
 function LShop.cl.MainShop()
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
-	local LShop_MainShopPanel_w, LShop_MainShopPanel_h = scrW, scrH -- scrW, scrH
+	local LShop_MainShopPanel_w, LShop_MainShopPanel_h = scrW, scrH
 	local LShop_MainShopPanel_x, LShop_MainShopPanel_y = (scrW * 0.5) - (LShop_MainShopPanel_w / 2), (scrH * 0.5) - (LShop_MainShopPanel_h / 2);
-	LShop.PlyMoneyAnimation = 0
 	LShop.cl.SelectedMenu = nil
 	local day = os.date("*t")
 	
@@ -44,21 +43,24 @@ function LShop.cl.MainShop()
 		surface.SetDrawColor( 255, 255, 255, 235 )
 		surface.DrawRect( 0, 0, w, h )
 		
-		LShop.PlyMoneyAnimation = math.Approach( LShop.PlyMoneyAnimation, LP:LShop_GetMoney(), 100 )
-		
-		draw.SimpleText( "You have " .. LShop.PlyMoneyAnimation .. " Moneys.", "LShop_MoneyNotice", w * 0.85, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( "You have " .. LP:LShop_GetMoney() .. " $.", "LShop_MoneyNotice", w * 0.97, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 		
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.03, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "New Items", "LShop_MainTitle", w * 0.25, h * 0.3, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		
+		draw.SimpleText( "Version : " .. LShop.Config.Version, "LShop_MoneyNotice", w * 0.03, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( "Copyright ( C ) 2014 ~ 'Solar Team'", "LShop_MoneyNotice", w * 0.5, h * 0.97, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		
 		if ( LShop.Config.DaySaleSystem ) then
 			if ( day.wday == LShop.Config.DayNumber ) then
 				draw.SimpleText( "Sale Day!", "LShop_SubTitle", w * 0.5, h * 0.95, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 			end
 		end
+		
+		
 	end
 
-	local Bx, By = LShop_MainShopPanel_w - 40, LShop_MainShopPanel_h - 40
+	local Bx, By = LShop_MainShopPanel_w - 40, 10
 
 	local CloseButton = vgui.Create( "DButton", LShop_MainShopPanel )    
 	CloseButton:SetText( "X" )  

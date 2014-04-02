@@ -1,50 +1,110 @@
-/*
-function LShop.cl.ItemGiftMenu( itemID, category )
+
+function LShop.cl.ItemRunProgress( itemID, category )
 	local LP = LocalPlayer()
 	local scrW, scrH = ScrW(), ScrH()
-	local LShop_ItemGiftMenu_w, LShop_ItemGiftMenu_h = 10 + scrW - 30, scrH * 0.5
-	local LShop_ItemGiftMenu_x, LShop_ItemGiftMenu_y = 10, scrH + LShop_ItemGiftMenu_h;
-	if ( !LShop_ItemGiftMenu ) then
-	LShop_ItemGiftMenu = vgui.Create("DFrame", parent)
-	LShop_ItemGiftMenu:SetPos( LShop_ItemGiftMenu_x , LShop_ItemGiftMenu_y )
-	LShop_ItemGiftMenu:MoveTo( LShop_ItemGiftMenu_x, scrH * 0.1, 0.3, 0 )
-	LShop_ItemGiftMenu:SetSize( LShop_ItemGiftMenu_w, LShop_ItemGiftMenu_h )
-	LShop_ItemGiftMenu:SetTitle( "" )
-	LShop_ItemGiftMenu:SetDraggable( false )
-	LShop_ItemGiftMenu:ShowCloseButton( true )
-	LShop_ItemGiftMenu:MakePopup()
-	--LShop_ItemGiftMenu:SetDrawOnTop( true )
-	LShop_ItemGiftMenu.Think = function()
-		if ( LShop_ItemGiftMenu ) then
-			LShop_ItemGiftMenu:MoveToFront()
+	local LShop_ItemRunProgress_w, LShop_ItemRunProgress_h = scrW, scrH
+	local LShop_ItemRunProgress_x, LShop_ItemRunProgress_y = scrW / 2 - LShop_ItemRunProgress_w / 2, scrH + LShop_ItemRunProgress_h;
+	local Find = LShop.system.ItemFindByID( itemID, category )
+	local backgroundAlpha = 0
+	local modelStop = false
+	
+	if ( !LShop_ItemRunProgress ) then
+	LShop_ItemRunProgress = vgui.Create("DFrame", parent)
+	LShop_ItemRunProgress:SetPos( LShop_ItemRunProgress_x , LShop_ItemRunProgress_y )
+	LShop_ItemRunProgress:MoveTo( LShop_ItemRunProgress_x, scrH / 2 - LShop_ItemRunProgress_h / 2, 0.3, 0 )
+	LShop_ItemRunProgress:SetSize( LShop_ItemRunProgress_w, LShop_ItemRunProgress_h )
+	LShop_ItemRunProgress:SetTitle( "" )
+	LShop_ItemRunProgress:SetDraggable( false )
+	LShop_ItemRunProgress:ShowCloseButton( true )
+	LShop_ItemRunProgress:MakePopup()
+	LShop_ItemRunProgress.Think = function()
+		if ( LShop_ItemRunProgress ) then
+			if ( itemID && category ) then
+				
+				if ( Find.CanBuy && !LP:LShop_IsOwned( itemID, category )  ) then
+					LShop_ItemRunProgress.MainAction:SetVisible( true )
+					LShop_ItemRunProgress.MainAction:SetText( "Buy" )  
+					LShop_ItemRunProgress.ItemGiftAction:SetVisible( true )
+					local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.9
+					LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
+					ButtonMode = 1
+				elseif ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
+					LShop_ItemRunProgress.MainAction:SetVisible( true )
+					LShop_ItemRunProgress.MainAction:SetText( "Sell" )  
+					LShop_ItemRunProgress.ItemGiftAction:SetVisible( false )
+					local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.95
+					LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
+					ButtonMode = 0
+				end
+			end
 		end
 	end
-	LShop_ItemGiftMenu.Paint = function()
-		local x = LShop_ItemGiftMenu_x
-		local y = LShop_ItemGiftMenu_y
-		local w = LShop_ItemGiftMenu_w
-		local h = LShop_ItemGiftMenu_h
-
-		surface.SetDrawColor( 255, 255, 255, 230 )
+	LShop_ItemRunProgress.Paint = function()
+		local x = LShop_ItemRunProgress_x
+		local y = LShop_ItemRunProgress_y
+		local w = LShop_ItemRunProgress_w
+		local h = LShop_ItemRunProgress_h
+		
+		backgroundAlpha = math.Approach( backgroundAlpha, 210, 3 )
+		
+		surface.SetDrawColor( 0, 0, 0, backgroundAlpha )
 		surface.DrawRect( 0, 0, w, h )
-
-		draw.SimpleText( "Item Gift", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		
+		surface.SetDrawColor( 255, 255, 255, 200 )
+		surface.DrawRect( w / 2 - w * 0.4 / 2, 0, w * 0.4, h )
+		
+		surface.SetDrawColor( 0, 0, 0, 30 )
+		surface.DrawRect( w / 2 - w * 0.4 / 2, 0, w * 0.4, h * 0.1 )
+		
+		if ( Find.CanSell && !LP:LShop_IsOwned( itemID, category )  ) then
+			draw.SimpleText( "Item Buy", "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		elseif ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
+			draw.SimpleText( "Item Sell", "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		end
+		
+		if ( Find.Name ) then
+			draw.SimpleText( Find.Name, "LShop_SubTitle", w * 0.5, h * 0.65, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		else
+			draw.SimpleText( "NULL ITEM NAME", "LShop_SubTitle", w * 0.5, h * 0.65, Color( 255, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		end
+		
+		if ( Find.Desc ) then
+			draw.SimpleText( Find.Desc, "LShop_Category_Text", w * 0.5, h * 0.7, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		else
+			draw.SimpleText( "", "LShop_SubTitle", w * 0.5, h * 0.65, Color( 255, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		end
+		
+		if ( Find.Price ) then
+			if ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
+				draw.SimpleText( " + " .. Find.Price .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			else
+				draw.SimpleText( " - " .. Find.Price .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			end
+		else
+			draw.SimpleText( "NULL ITEM PRICE", "LShop_SubTitle", w * 0.5, h * 0.8, Color( 255, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		end
+		
+		if ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
+		
+		else
+			draw.SimpleText( "You have " .. LP:LShop_GetMoney() .. " $.", "LShop_Category_Text", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		end
 	end
 	
-	local Bx, By = 40, LShop_ItemGiftMenu_h - 40
+	local Bx, By = LShop_ItemRunProgress_w * 0.32, LShop_ItemRunProgress_h * 0.1 / 2 - 35 / 2
 
-	local CloseButton = vgui.Create( "DButton", LShop_ItemGiftMenu )    
-	CloseButton:SetText( "X" )  
+	local CloseButton = vgui.Create( "DButton", LShop_ItemRunProgress )    
+	CloseButton:SetText( "<" )  
 	CloseButton:SetFont("LShop_ButtonText")
 	CloseButton:SetPos( Bx, By )  
 	CloseButton:SetColor(Color( 0, 0, 0, 255 ))
 	CloseButton:SetSize( 35, 35 ) 
 	CloseButton.DoClick = function(  )
-		LShop_ItemGiftMenu:MoveTo( LShop_ItemGiftMenu_x, scrH + LShop_ItemGiftMenu_w, 0.3, 0 )
+		LShop_ItemRunProgress:MoveTo( LShop_ItemRunProgress_x, scrH + LShop_ItemRunProgress_h, 0.3, 0 )
 		timer.Simple( 0.3, function()
-			if ( LShop_ItemGiftMenu ) then
-				LShop_ItemGiftMenu:Remove()
-				LShop_ItemGiftMenu = nil
+			if ( LShop_ItemRunProgress ) then
+				LShop_ItemRunProgress:Remove()
+				LShop_ItemRunProgress = nil
 			end
 		end)	
 	end
@@ -52,16 +112,161 @@ function LShop.cl.ItemGiftMenu( itemID, category )
 		local w = CloseButton:GetWide()
 		local h = CloseButton:GetTall()
 		
-		surface.SetDrawColor( 255, 100, 100, 50 )
+		surface.SetDrawColor( 100, 100, 100, 50 )
 		surface.DrawRect( 0, 0, w, h )
 	end
 	
+	local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.85
+
+	LShop_ItemRunProgress.MainAction = vgui.Create( "DButton", LShop_ItemRunProgress )    
+	LShop_ItemRunProgress.MainAction:SetText( "" )  
+	LShop_ItemRunProgress.MainAction:SetFont("LShop_ButtonText2")
+	LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
+	LShop_ItemRunProgress.MainAction:SetColor(Color( 0, 0, 0, 255 ))
+	LShop_ItemRunProgress.MainAction:SetVisible( false )
+	LShop_ItemRunProgress.MainAction:SetSize( LShop_ItemRunProgress_w * 0.39, 35 ) 
+	LShop_ItemRunProgress.MainAction.DoClick = function(  )
+		surface.PlaySound( "ui/buttonclick.wav" )
+		local id = itemID
+		local c = category
+		if ( ButtonMode == 1 ) then
+			net.Start("LShop_ItemBuy")
+			net.WriteString( c )
+			net.WriteString( id )
+			net.SendToServer()	
+			if ( LShop_ItemRunProgress ) then
+				LShop_ItemRunProgress:MoveTo( LShop_ItemRunProgress_x, scrH + LShop_ItemRunProgress_h, 0.3, 0 )
+				timer.Simple( 0.3, function()
+					if ( LShop_ItemRunProgress ) then
+						LShop_ItemRunProgress:Remove()
+						LShop_ItemRunProgress = nil
+					end
+				end)	
+			end
+		else
+			net.Start("LShop_ItemSell")
+			net.WriteString( c )
+			net.WriteString( id )
+			net.SendToServer()	
+			if ( LShop_ItemRunProgress ) then
+				LShop_ItemRunProgress:MoveTo( LShop_ItemRunProgress_x, scrH + LShop_ItemRunProgress_h, 0.3, 0 )
+				timer.Simple( 0.3, function()
+					if ( LShop_ItemRunProgress ) then
+						LShop_ItemRunProgress:Remove()
+						LShop_ItemRunProgress = nil
+					end
+				end)	
+			end			
+		end
+	end
+	LShop_ItemRunProgress.MainAction.Paint = function()
+		local w = LShop_ItemRunProgress.MainAction:GetWide()
+		local h = LShop_ItemRunProgress.MainAction:GetTall()
+		if ( ButtonMode == 1 ) then
+			surface.SetDrawColor( 10, 255, 10, 50 )
+			surface.DrawRect( 0, 0, w, h )
+		else
+			surface.SetDrawColor( 255, 10, 10, 50 )
+			surface.DrawRect( 0, 0, w, h )		
+		end
+	end
+	
+	
+	
+	
+	LShop_ItemRunProgress.SelectItemmodel = vgui.Create("DModelPanel", LShop_ItemRunProgress)
+	LShop_ItemRunProgress.SelectItemmodel:SetSize( LShop_ItemRunProgress_w * 0.35, LShop_ItemRunProgress_h * 0.5 )
+	LShop_ItemRunProgress.SelectItemmodel:SetPos( LShop_ItemRunProgress_w * 0.5 - LShop_ItemRunProgress_w * 0.35 / 2, LShop_ItemRunProgress_h * 0.1 )
+	LShop_ItemRunProgress.SelectItemmodel.OnCursorEntered = function() 
+		modelStop = true
+	end
+	LShop_ItemRunProgress.SelectItemmodel.OnCursorExited = function() 
+		modelStop = false
+	end
+	LShop_ItemRunProgress.SelectItemmodel:SetDisabled( true )
+	// LShop_ItemRunProgress.SelectItemmode:SetCursor( "none" ) -- Deleted :)
+	LShop_ItemRunProgress.SelectItemmodel:MoveToBack()
+	if ( !Find.Material ) then
+		if ( Find.Model ) then
+			LShop_ItemRunProgress.SelectItemmodel:SetModel( Model( Find.Model ) )
+		else
+			LShop_ItemRunProgress.SelectItemmodel:SetVisible( false )
+		end
 	else
-		LShop_ItemGiftMenu:Remove()
-		LShop_ItemGiftMenu = nil
+		LShop_ItemRunProgress.SelectItemmodel:SetModel( "" )
+		LShop_ItemRunProgress.SelectItemmodel:SetVisible( false )
+	end
+	LShop_ItemRunProgress.SelectItemmodel:SetVisible( true )
+	LShop_ItemRunProgress.SelectItemmodel.PaintOver = function( pnl, w, h ) 
+		
+	end
+	LShop_ItemRunProgress.SelectItemmodel.LayoutEntity = function( pnl, entity ) 
+		local PrevMins, PrevMaxs = entity:GetRenderBounds()
+		
+		if ( modelStop == false ) then
+			entity:SetAngles( Angle( 0, entity:GetAngles().y + 0.5, 0 ) )
+		end
+		
+		LShop_ItemRunProgress.SelectItemmodel:SetCamPos( PrevMins:Distance( PrevMaxs ) * Vector( 0.5, 0.5, 0.5 ) )
+		LShop_ItemRunProgress.SelectItemmodel:SetLookAt( ( PrevMaxs + PrevMins ) / 2 )		
+	end
+	
+	
+	local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.95
+
+	LShop_ItemRunProgress.ItemGiftAction = vgui.Create( "DButton", LShop_ItemRunProgress )    
+	LShop_ItemRunProgress.ItemGiftAction:SetText( "Item Gift to" )  
+	LShop_ItemRunProgress.ItemGiftAction:SetFont("LShop_ButtonText2")
+	LShop_ItemRunProgress.ItemGiftAction:SetPos( Bx, By )  
+	LShop_ItemRunProgress.ItemGiftAction:SetColor(Color( 0, 0, 0, 255 ))
+	LShop_ItemRunProgress.ItemGiftAction:SetVisible( false )
+	LShop_ItemRunProgress.ItemGiftAction:SetSize( LShop_ItemRunProgress_w * 0.39, 35 ) 
+	LShop_ItemRunProgress.ItemGiftAction.DoClick = function(  )
+		surface.PlaySound( "ui/buttonclick.wav" )
+		local id = itemID
+		local c = category
+		local Menu = DermaMenu()
+		for k, v in pairs( player.GetAll() ) do
+			if ( k != 1 ) then
+				if ( v:SteamID() != LP:SteamID() ) then
+					Menu:AddOption( v:Name(), function()
+						net.Start("LShop_ItemSend")
+						net.WriteEntity( v )
+						net.WriteString( id )
+						net.WriteString( c )
+						net.SendToServer()
+						if ( LShop_ItemRunProgress ) then
+							LShop_ItemRunProgress:MoveTo( LShop_ItemRunProgress_x, scrH + LShop_ItemRunProgress_h, 0.3, 0 )
+							timer.Simple( 0.3, function()
+								if ( LShop_ItemRunProgress ) then
+									LShop_ItemRunProgress:Remove()
+									LShop_ItemRunProgress = nil
+								end
+							end)	
+						end
+					end)
+				end
+			else
+				Derma_Message( "Can't find other players!", "ERROR!", "OK" )
+			end
+		end
+		Menu:Open()
+	end
+	LShop_ItemRunProgress.ItemGiftAction.Paint = function()
+		local w = LShop_ItemRunProgress.ItemGiftAction:GetWide()
+		local h = LShop_ItemRunProgress.ItemGiftAction:GetTall()
+		surface.SetDrawColor( 10, 255, 10, 50 )
+		surface.DrawRect( 0, 0, w, h )
+	end
+	
+	LShop_ItemRunProgress:MoveToFront()
+	
+	else
+		LShop_ItemRunProgress:Remove()
+		LShop_ItemRunProgress = nil
 	end
 end
-*/
+
 
 function LShop.cl.Menu01( parent, tab )
 	local LP = LocalPlayer()
@@ -91,7 +296,7 @@ function LShop.cl.Menu01( parent, tab )
 	LShop_Menu01Panel:SetDraggable( false )
 	LShop_Menu01Panel:ShowCloseButton( false )
 	LShop_Menu01Panel:MakePopup()
-	LShop_Menu01Panel:SetDrawOnTop( true )
+	LShop_Menu01Panel:SetDrawOnTop( false )
 	LShop_Menu01Panel.Think = function()
 		if ( LShop_Menu01Panel ) then
 			if ( SelectItem.ID ) then
@@ -166,7 +371,7 @@ function LShop.cl.Menu01( parent, tab )
 	
 	local ItemList = vgui.Create( "DPanelList", LShop_Menu01Panel )
 	ItemList:SetPos( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.1 )
-	ItemList:SetSize( LShop_Menu01Panel_w * 0.5 , LShop_Menu01Panel_h * 0.85 )
+	ItemList:SetSize( LShop_Menu01Panel_w * 0.8 - 10 , LShop_Menu01Panel_h * 0.85 )
 	ItemList:SetSpacing( 3 )
 	ItemList:EnableHorizontal( false )
 	ItemList:EnableVerticalScrollbar( true )
@@ -184,7 +389,7 @@ function LShop.cl.Menu01( parent, tab )
 		for k, v in pairs( LShop.system.GetItems( ) ) do
 			local color = Color( 10, 10, 10, 10 )
 			local list = vgui.Create( "DButton", CategoryList )    
-			list:SetSize( CategoryList:GetWide(), 70 ) 
+			list:SetSize( CategoryList:GetWide(), 50 ) 
 			list:SetText("")
 			list.DoClick = function()
 				LShop.cl.SelectedCategory = k
@@ -234,24 +439,8 @@ function LShop.cl.Menu01( parent, tab )
 			delta = delta + 0.07
 			list.DoClick = function()
 				surface.PlaySound( "ui/buttonclick.wav" )		
-				local Menu = DermaMenu( )
-				SelectItem.ID = v.ID
-				SelectItem.Category = v.Category
-				if ( v.CanEquip && LP:LShop_IsOwned( v.ID, SelectItem.Category ) ) then
-					if ( !LP:LShop_IsEquiped( v.ID, v.Category ) ) then
-						SelectItem.EquBool = true
-					else
-						SelectItem.EquBool = false
-					end
-				end
-				itemInformation.Name = v.Name
-				itemInformation.Price = v.Price
-				itemInformation.Desc = v.Desc
-				if ( !v.Material ) then
-					SelectItemmodel:SetModel( v.Model )
-				else
-					SelectItemmodel:SetModel( "" )
-				end
+				LShop.cl.ItemRunProgress( v.ID, v.Category )
+				LShop_Menu01Panel:MoveToBack()
 			end
 			list.OnCursorEntered = function() end
 			list.OnCursorExited = function() end
@@ -293,115 +482,6 @@ function LShop.cl.Menu01( parent, tab )
 			
 			ItemList:AddItem( list )
 		end
-	end
-	
-	SelectItemmodel = vgui.Create("DModelPanel", LShop_Menu01Panel)
-	SelectItemmodel:SetSize( LShop_Menu01Panel_w * 0.2, LShop_Menu01Panel_h * 0.5 )
-	SelectItemmodel:SetPos( LShop_Menu01Panel_w * 0.87 - LShop_Menu01Panel_w * 0.2 / 2, LShop_Menu01Panel_h * 0.17 )
-	SelectItemmodel:SetFOV( 50 )
-	SelectItemmodel:SetCamPos( Vector( 50, 50, 15 ) )
-	SelectItemmodel:SetLookAt( Vector( 0, 0, 10 ) )
-	SelectItemmodel.OnCursorEntered = function() end
-	SelectItemmodel:SetDisabled( true )
-	SelectItemmodel:SetCursor( "none" )
-	SelectItemmodel:MoveToBack()
-	SelectItemmodel:SetVisible( true )
-	SelectItemmodel.PaintOver = function( pnl, w, h ) 
-
-	end
-		
-	local Bx, By = scrW * 0.75, LShop_Menu01Panel_h * 0.9 - 10
-
-	LShop_Menu01Panel.Buy = vgui.Create( "DButton", LShop_Menu01Panel )    
-	LShop_Menu01Panel.Buy:SetText( "" )  
-	LShop_Menu01Panel.Buy:SetFont("LShop_ButtonText2")
-	LShop_Menu01Panel.Buy:SetPos( Bx, By )  
-	LShop_Menu01Panel.Buy:SetColor(Color( 0, 0, 0, 255 ))
-	LShop_Menu01Panel.Buy:SetVisible( false )
-	LShop_Menu01Panel.Buy:SetSize( LShop_Menu01Panel_w * 0.22, 35 ) 
-	LShop_Menu01Panel.Buy.DoClick = function(  )
-		surface.PlaySound( "ui/buttonclick.wav" )
-		if ( ButtonMode == 1 ) then
-			if ( LShop.Config.ItemGiftSystem ) then
-				local Menu = DermaMenu()
-				Menu:AddOption( "Buy", function()
-					net.Start("LShop_ItemBuy")
-					net.WriteString( SelectItem.Category )
-					net.WriteString( SelectItem.ID )
-					net.SendToServer()					
-				end)
-				local submenu = Menu:AddSubMenu( "Gift to player" )
-				for k, v in pairs( player.GetAll() ) do
-					if ( v:SteamID() != LP:SteamID() ) then
-						submenu:AddOption( v:Name(), function()
-							net.Start("LShop_ItemSend")
-							net.WriteEntity( v )
-							net.WriteString( SelectItem.ID )
-							net.WriteString( SelectItem.Category )
-							net.SendToServer()
-						end)
-					end
-				end
-				Menu:Open()
-			else
-				net.Start("LShop_ItemBuy")
-				net.WriteString( SelectItem.Category )
-				net.WriteString( SelectItem.ID )
-				net.SendToServer()				
-			end
-		else
-			net.Start("LShop_ItemSell")
-			net.WriteString( SelectItem.Category )
-			net.WriteString( SelectItem.ID )
-			net.SendToServer()			
-		end
-	end
-	LShop_Menu01Panel.Buy.Paint = function()
-		local w = LShop_Menu01Panel.Buy:GetWide()
-		local h = LShop_Menu01Panel.Buy:GetTall()
-		if ( ButtonMode == 1 ) then
-			surface.SetDrawColor( 10, 255, 10, 50 )
-			surface.DrawRect( 0, 0, w, h )
-		else
-			surface.SetDrawColor( 255, 10, 10, 50 )
-			surface.DrawRect( 0, 0, w, h )		
-		end
-	end
-	
-	local Bx, By = scrW * 0.86 - LShop_Menu01Panel_w * 0.15 / 2, LShop_Menu01Panel_h * 0.11
-
-	LShop_Menu01Panel.Action = vgui.Create( "DButton", LShop_Menu01Panel )    
-	LShop_Menu01Panel.Action:SetText( "" )  
-	LShop_Menu01Panel.Action:SetFont("LShop_ButtonText")
-	LShop_Menu01Panel.Action:SetPos( Bx, By )  
-	LShop_Menu01Panel.Action:SetVisible( false )
-	LShop_Menu01Panel.Action:SetColor(Color( 0, 0, 0, 255 ))
-	LShop_Menu01Panel.Action:SetSize( LShop_Menu01Panel_w * 0.15, 35 ) 
-	LShop_Menu01Panel.Action.DoClick = function(  )
-		surface.PlaySound( "ui/buttonclick.wav" )
-		local Find = LShop.system.ItemFindByID( SelectItem.ID, SelectItem.Category )
-		if ( Find.CanEquip && LP:LShop_IsOwned( SelectItem.ID, SelectItem.Category ) ) then
-			if ( !LP:LShop_IsEquiped( SelectItem.ID, SelectItem.Category ) ) then
-				net.Start("LShop_ItemEquip")
-				net.WriteString( SelectItem.Category )
-				net.WriteString( SelectItem.ID )
-				net.WriteString( tostring( SelectItem.EquBool ) )
-				net.SendToServer()		
-			else
-				net.Start("LShop_ItemEquip")
-				net.WriteString( SelectItem.Category )
-				net.WriteString( SelectItem.ID )
-				net.WriteString( tostring( SelectItem.EquBool ) )
-				net.SendToServer()		
-			end
-		end
-	end
-	LShop_Menu01Panel.Action.Paint = function()
-		local w = LShop_Menu01Panel.Action:GetWide()
-		local h = LShop_Menu01Panel.Action:GetTall()
-		
-		surface.SetDrawColor( 10, 10, 10, 30 )
-		surface.DrawRect( 0, 0, w, h )
 	end
 
 	CategoryListClear()
