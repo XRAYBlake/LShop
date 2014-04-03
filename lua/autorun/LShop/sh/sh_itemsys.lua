@@ -464,16 +464,13 @@ if ( SERVER ) then
 	
 	function Player:LShop_PlayerSpawn()
 		local item = self:LShop_GetOwnedItem( )
-		PrintTable( item )
 		timer.Simple(1, function()
 			if ( item ) then
 				for k, v in pairs( item ) do
-					print( v.ID )
 					local findItem = LShop.system.ItemFindByID( v.ID, v.Category )
 					if ( findItem ) then
 						if ( findItem.UseTillDeath ) then return end
 						findItem.Equipped( findItem, self )
-						print("Equipped..")
 					else
 						self:LShop_ItemRemoveInventory( v.ID, v.Category )
 					end
