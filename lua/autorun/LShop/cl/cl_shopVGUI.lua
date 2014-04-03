@@ -15,7 +15,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 	LShop_ItemRunProgress:SetSize( LShop_ItemRunProgress_w, LShop_ItemRunProgress_h )
 	LShop_ItemRunProgress:SetTitle( "" )
 	LShop_ItemRunProgress:SetDraggable( false )
-	LShop_ItemRunProgress:ShowCloseButton( true )
+	LShop_ItemRunProgress:ShowCloseButton( false )
 	LShop_ItemRunProgress:MakePopup()
 	LShop_ItemRunProgress.Think = function()
 		if ( LShop_ItemRunProgress ) then
@@ -240,7 +240,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 		local c = category
 		local Menu = DermaMenu()
 		for k, v in pairs( player.GetAll() ) do
-			if ( k != 1 ) then
+			if ( #player.GetAll() >= 2 ) then
 				if ( v:SteamID() != LP:SteamID() ) then
 					Menu:AddOption( v:Name(), function()
 						net.Start("LShop_ItemSend")
