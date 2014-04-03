@@ -445,9 +445,14 @@ if ( SERVER ) then
 	end
 
 	function Player:LShop_ItemRemoveInventory( itemID, category )
+		local buffer = {}
 		for k, v in pairs( self.OwnItems ) do
 			if ( v.ID == itemID ) then
 				self.OwnItems[k] = nil
+				for n, m in pairs( self.OwnItems ) do
+					buffer[ #buffer + 1 ] = m
+				end
+				self.OwnItems = buffer
 				return
 			else
 				if ( k == #self.OwnItems ) then
@@ -459,13 +464,16 @@ if ( SERVER ) then
 	
 	function Player:LShop_PlayerSpawn()
 		local item = self:LShop_GetOwnedItem( )
+		PrintTable( item )
 		timer.Simple(1, function()
 			if ( item ) then
 				for k, v in pairs( item ) do
+					print( v.ID )
 					local findItem = LShop.system.ItemFindByID( v.ID, v.Category )
 					if ( findItem ) then
 						if ( findItem.UseTillDeath ) then return end
 						findItem.Equipped( findItem, self )
+						print("Equipped..")
 					else
 						self:LShop_ItemRemoveInventory( v.ID, v.Category )
 					end
