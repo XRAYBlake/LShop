@@ -36,6 +36,12 @@ FontList[6] = {
 	Size = 20
 }
 
+FontList[7] = {
+	Name = "LShop_Intro_TeamText",
+	Font = "Segoe UI Light",
+	Size = 65
+}
+
 for i = 1, #FontList do
 	if ( FontList[i].Name && FontList[i].Font && FontList[i].Size ) then
 		surface.CreateFont( FontList[i].Name, { font = FontList[i].Font, size = FontList[i].Size, weight = 1000 } )

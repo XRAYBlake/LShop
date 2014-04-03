@@ -20,21 +20,34 @@ function LShop.cl.ItemRunProgress( itemID, category )
 	LShop_ItemRunProgress.Think = function()
 		if ( LShop_ItemRunProgress ) then
 			if ( itemID && category ) then
-				
-				if ( Find.CanBuy && !LP:LShop_IsOwned( itemID, category )  ) then
-					LShop_ItemRunProgress.MainAction:SetVisible( true )
-					LShop_ItemRunProgress.MainAction:SetText( "Buy" )  
-					LShop_ItemRunProgress.ItemGiftAction:SetVisible( true )
-					local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.9
-					LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
-					ButtonMode = 1
-				elseif ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
-					LShop_ItemRunProgress.MainAction:SetVisible( true )
-					LShop_ItemRunProgress.MainAction:SetText( "Sell" )  
-					LShop_ItemRunProgress.ItemGiftAction:SetVisible( false )
-					local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.95
-					LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
-					ButtonMode = 0
+				if ( Find.CanBuy ) then
+					if ( !Find.CanUnLimitedBuy ) then
+						if ( !LP:LShop_IsOwned( itemID, category ) ) then
+							LShop_ItemRunProgress.MainAction:SetVisible( true )
+							LShop_ItemRunProgress.MainAction:SetText( "Buy" )  
+							LShop_ItemRunProgress.ItemGiftAction:SetVisible( true )
+							local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.9
+							LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
+							ButtonMode = 1
+						end
+					else
+						LShop_ItemRunProgress.MainAction:SetVisible( true )
+						LShop_ItemRunProgress.MainAction:SetText( "Buy" )  
+						LShop_ItemRunProgress.ItemGiftAction:SetVisible( true )
+						local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.9
+						LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
+						ButtonMode = 1						
+					end
+				end
+				if ( Find.CanSell ) then
+					if ( LP:LShop_IsOwned( itemID, category ) ) then
+						LShop_ItemRunProgress.MainAction:SetVisible( true )
+						LShop_ItemRunProgress.MainAction:SetText( "Sell" )  
+						LShop_ItemRunProgress.ItemGiftAction:SetVisible( false )
+						local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.95
+						LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
+						ButtonMode = 0
+					end
 				end
 			end
 		end

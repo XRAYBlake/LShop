@@ -5,6 +5,10 @@ LShop.cl.SelectedMenu = nil
 LShop.OwnItemsCL = LShop.OwnItemsCL or {}
 LShop.PlyMoney = LShop.PlyMoney or 0
 
+LShop.cl.IntroPlaying = LShop.cl.IntroPlaying or false
+LShop.cl.IntroDone = LShop.cl.IntroDone or false
+LShop.cl.IntroLoadText = {}
+
 function LShop.cl.LoadClientFile( )
 	local find = file.Find("autorun/LShop/cl/*.lua", "LUA") or nil
 	if ( find ) then
@@ -83,7 +87,7 @@ net.Receive("LShop_BugNoticeSend", function( len, cl )
 end)
 
 net.Receive("LShop_MenuOpen", function( len, cl )
-	LShop.cl.MainShop()
+	LShop.cl.Intro()
 end)
 
 net.Receive("LShop_SendTable", function( len, cl )
@@ -101,5 +105,5 @@ net.Receive("LShop_SendTable", function( len, cl )
 end)
 
 concommand.Add( LShop.Config.OpenCommand , function( pl, cmd, args )
-	LShop.cl.MainShop()
+	LShop.cl.Intro()
 end)

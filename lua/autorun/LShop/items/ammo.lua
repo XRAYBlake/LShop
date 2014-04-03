@@ -11,6 +11,7 @@ LShop.system.ItemRegister( {
 	CanEquip = false,
 	UseTillDeath = true,
 	UnEquipped_IS_NotRemove = false,
+	CanUnLimitedBuy = true,
 	Desc = "This is SMG ammo, it's simple!",
 	Model = "models/items/item_item_crate.mdl",
 	Buyed = function( item, ply )
@@ -40,6 +41,7 @@ LShop.system.ItemRegister( {
 	CanEquip = false,
 	UseTillDeath = true,
 	UnEquipped_IS_NotRemove = false,
+	CanUnLimitedBuy = true,
 	Desc = "This is Pistol ammo, it's simple!",
 	Model = "models/items/item_item_crate.mdl",
 	Buyed = function( item, ply )
@@ -69,6 +71,7 @@ LShop.system.ItemRegister( {
 	CanEquip = false,
 	UseTillDeath = true,
 	UnEquipped_IS_NotRemove = false,
+	CanUnLimitedBuy = true,
 	Desc = "This is AR2 ammo, it's simple!",
 	Model = "models/items/item_item_crate.mdl",
 	Buyed = function( item, ply )
