@@ -129,7 +129,9 @@ function LShop.cl.MainShop()
 		closefunc = true
 		LShop_MainShopPanel.Menu01:AlphaTo( 0, 0.3, 0 )
 		LShop_MainShopPanel.Menu02:AlphaTo( 0, 0.3, 0 )
-		LShop_MainShopPanel.Admin:AlphaTo( 0, 0.3, 0 )
+		if ( LShop_MainShopPanel.Admin ) then
+			LShop_MainShopPanel.Admin:AlphaTo( 0, 0.3, 0 )
+		end
 		hook.Remove( "CalcView", "LAdmin.main.SchematicView" )
 		hook.Remove( "ShouldDrawLocalPlayer", "LAdmin.main.SchematicView_Func" )
 		
