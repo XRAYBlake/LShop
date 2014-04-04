@@ -301,4 +301,3 @@ function LShop.cl.Intro()
 		end
 	end)
 end
-LocalPlayer():SetNWBool( "LShop_Intro_AlreadyPlayed", false )
