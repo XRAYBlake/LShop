@@ -471,6 +471,7 @@ if ( SERVER ) then
 					if ( findItem ) then
 						if ( findItem.UseTillDeath ) then return end
 						findItem.Equipped( findItem, self )
+						print( "Equiped : " .. findItem.ID )
 					else
 						self:LShop_ItemRemoveInventory( v.ID, v.Category )
 					end
@@ -518,12 +519,12 @@ if ( SERVER ) then
 			else
 				self.Money = 0
 				self.OwnItems = {}
-				self:LShop_SaveData()
+				--self:LShop_SaveData()
 			end
 		else
 			self.Money = 0
 			self.OwnItems = {}
-			self:LShop_SaveData()
+			--self:LShop_SaveData()
 		end
 	end
 
@@ -555,6 +556,12 @@ if ( SERVER ) then
 	function Player:LShop_GetOwnedItem( )
 		return self.OwnItems
 	end
+	
+	hook.Add("ShutDown", "LShop_ShutDown", function( )
+		for k, v in pairs( player.GetAll() ) do
+			v:LShop_SaveData()
+		end
+	end)
 
 	hook.Add("PlayerSpawn", "LShop_PlayerSpawn", function( pl ) pl:LShop_PlayerSpawn() end)
 	hook.Add("PlayerDeath", "LShop_PlayerDeath", function( pl ) pl:LShop_PlayerDeath() end)

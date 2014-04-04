@@ -39,7 +39,37 @@ FontList[6] = {
 FontList[7] = {
 	Name = "LShop_Intro_TeamText",
 	Font = "Segoe UI Light",
+	Size = 35
+}
+
+FontList[8] = {
+	Name = "LShop_Intro_Title",
+	Font = "Consolas Bold",
 	Size = 65
+}
+
+FontList[9] = {
+	Name = "LShop_Intro_Title_2",
+	Font = "Consolas Bold",
+	Size = 55
+}
+
+FontList[10] = {
+	Name = "LShop_Intro_Version",
+	Font = "Consolas Bold",
+	Size = 15
+}
+
+FontList[11] = {
+	Name = "LShop_Intro_LoadText",
+	Font = "Consolas Bold",
+	Size = 20
+}
+
+FontList[12] = {
+	Name = "LShop_Intro_LoadText_2",
+	Font = "Segoe UI Light",
+	Size = 20
 }
 
 for i = 1, #FontList do
