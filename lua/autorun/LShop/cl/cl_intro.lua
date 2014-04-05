@@ -94,6 +94,11 @@ function LShop.cl.Intro()
 		return
 	end
 	
+	if ( !LShop.Config.IntroEnabled ) then
+		LShop.cl.MainShop()
+		return
+	end
+	
 	LShop.cl.IntroDone = false
 	
  	hook.Remove( "HUDPaint", "LShop.cl.Intro_HUDPaint" )
@@ -277,7 +282,7 @@ function LShop.cl.Intro()
 				surface.SetMaterial( Material("gui/gradient_down") )
 				surface.DrawTexturedRect( 0, 0 - 10, scrw, first_background_h )
 				
-				draw.SimpleText( "LShop", "LShop_MainTitle", scrw / 2, first_background_h / 2, Color( 255, 255, 255, intro_percent_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				// draw.SimpleText( "LShop", "LShop_MainTitle", scrw / 2, first_background_h / 2, Color( 255, 255, 255, intro_percent_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 				draw.SimpleText( "Loading ...", "LShop_Intro_LoadText_2", scrw / 2, scrh - first_background_h / 2, Color( 255, 255, 255, intro_percent_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 			end
 			

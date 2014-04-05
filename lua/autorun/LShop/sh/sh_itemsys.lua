@@ -529,12 +529,21 @@ if ( SERVER ) then
 	end
 
 	function Player:LShop_PlayerInitialSpawn()
+		-- Deleted :)
+	end
+	
+	function Player:LShop_PlayerAuthed()
 		self.Money = 0
 		self.OwnItems = {}
 
 		timer.Simple( 2, function()
 			if ( IsValid( self ) ) then
 				self:LShop_LoadData()
+				net.Start("LShop_SendTable")
+				net.WriteTable( self.OwnItems )
+				net.WriteString( self.Money )
+				net.Send( self )
+				self:LShop_SetMoney( self.Money )
 			end
 		end)
 		
@@ -567,6 +576,8 @@ if ( SERVER ) then
 	hook.Add("PlayerDeath", "LShop_PlayerDeath", function( pl ) pl:LShop_PlayerDeath() end)
 	hook.Add("PlayerInitialSpawn", "LShop_PlayerInitialSpawn", function( pl ) pl:LShop_PlayerInitialSpawn() end)
 	hook.Add("PlayerDisconnected", "LShop_PlayerDisconnected", function( pl ) pl:LShop_PlayerDisconnected() end)
+	hook.Add("PlayerAuthed", "LShop_PlayerAuthed", function( pl ) pl:LShop_PlayerAuthed() end)
+	
 
 	net.Receive("LShop_ItemBuy", function( len, cl )
 		local category = net.ReadString()

@@ -15,6 +15,7 @@ LShop.Config.ChatOpenCommand_Output = "" -- Set menu open chat command output st
 	F4 -- Yeah F4 Button. :)
 --]]// #################################### //
 
+LShop.Config.IntroEnabled = true -- Are you sure turn on LShop Intro system? ( Intro is very cool :) )
 
 LShop.Config.AutoMoneyGive = true -- Are you sure turn on Auto Money Give system? ( Timer system )
 LShop.Config.MoneyGiveTimer = 60 -- ( Sec )
