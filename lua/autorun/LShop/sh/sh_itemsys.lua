@@ -555,6 +555,14 @@ if ( SERVER ) then
 				net.WriteString( self.Money )
 				net.Send( self )
 				self:LShop_SetMoney( self.Money )
+				for k, v in pairs( self.OwnItems ) do
+					if ( v.onEquip ) then
+						local id = LShop.system.ItemFindByID( v.ID, v.Category )
+						if ( id ) then
+							id.Equipped( id, self )
+						end
+					end
+				end
 			end
 		end)
 		
