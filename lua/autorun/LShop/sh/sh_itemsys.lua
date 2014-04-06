@@ -315,8 +315,10 @@ if ( SERVER ) then
 	local Player = FindMetaTable('Player')
 	
 	function Player:LShop_ItemBuyProgress( itemID, category )
+		
 		local curretMoney = self:LShop_GetMoney( )
 		local item = LShop.system.ItemFindByID( itemID, category )
+		local price = item.Price
 		local checkOwn = self:LShop_IsOwn( itemID, category )
 		if ( checkOwn ) then
 			if ( item.UseTillDeath ) then
@@ -326,14 +328,18 @@ if ( SERVER ) then
 				return
 			end
 		end
+
 		if ( item ) then
-			if ( item.Price <= curretMoney ) then
+			if ( LShop.Config.GroupDiscountEnabled ) then
+				price = LShop.Config.GroupDiscount( self, item.Price )
+			end
+			if ( price <= curretMoney ) then
 				if ( !item.UseTillDeath ) then
 					if ( #self.OwnItems != 0 ) then
 						for k, v in pairs( self.OwnItems ) do
 							if ( v.ID != itemID ) then
 								self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
-								self:LShop_TakeMoney( item.Price )
+								self:LShop_TakeMoney( price )
 								net.Start("LShop_SendMessage")
 								net.WriteString( "You buying this item." )
 								net.Send( self )
@@ -345,7 +351,7 @@ if ( SERVER ) then
 						end
 					else
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
-						self:LShop_TakeMoney( item.Price )
+						self:LShop_TakeMoney( price )
 						net.Start("LShop_SendMessage")
 						net.WriteString( "You buying this item." )
 						net.Send( self )
@@ -359,7 +365,7 @@ if ( SERVER ) then
 						for k, v in pairs( self.OwnItems ) do
 							if ( v.ID != itemID ) then
 								self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
-								self:LShop_TakeMoney( item.Price )
+								self:LShop_TakeMoney( price )
 								net.Start("LShop_SendMessage")
 								net.WriteString( "You buying this item." )
 								net.Send( self )
@@ -371,7 +377,7 @@ if ( SERVER ) then
 						end
 					else
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
-						self:LShop_TakeMoney( item.Price )
+						self:LShop_TakeMoney( price )
 						net.Start("LShop_SendMessage")
 						net.WriteString( "You buying this item." )
 						net.Send( self )
@@ -396,7 +402,13 @@ if ( SERVER ) then
 		local checkOwn = self:LShop_IsOwn( itemID, category )
 		if ( checkOwn ) then
 			self:LShop_ItemRemoveInventory( itemID, category )
-			self:LShop_AddMoney( item.Price or 100 )
+			if ( LShop.Config.GroupDiscountEnabled ) then
+				local price = LShop.Config.GroupDiscount( self, item.Price )
+				self:LShop_AddMoney( price or 100 )
+			else
+				self:LShop_AddMoney( item.Price or 100 )
+			end
+			
 			net.Start("LShop_SendMessage")
 			net.WriteString( "You selling this item." )
 			net.Send( self )
@@ -471,7 +483,6 @@ if ( SERVER ) then
 					if ( findItem ) then
 						if ( findItem.UseTillDeath ) then return end
 						findItem.Equipped( findItem, self )
-						print( "Equiped : " .. findItem.ID )
 					else
 						self:LShop_ItemRemoveInventory( v.ID, v.Category )
 					end

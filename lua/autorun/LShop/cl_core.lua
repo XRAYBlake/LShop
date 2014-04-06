@@ -71,7 +71,7 @@ end
 local meta = FindMetaTable("Player")
 
 function meta:LShop_GetMoney( ) 
-	return self:GetNWInt("LShop_Money")
+	return LShop.PlyMoney
 end
 
 function meta:LShop_IsOwned( id, category ) 

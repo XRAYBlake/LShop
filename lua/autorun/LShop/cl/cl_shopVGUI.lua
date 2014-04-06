@@ -84,14 +84,26 @@ function LShop.cl.ItemRunProgress( itemID, category )
 		if ( Find.Desc ) then
 			draw.SimpleText( Find.Desc, "LShop_Category_Text", w * 0.5, h * 0.7, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		else
-			draw.SimpleText( "", "LShop_SubTitle", w * 0.5, h * 0.65, Color( 255, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			draw.SimpleText( "", "LShop_SubTitle", w * 0.5, h * 0.7, Color( 255, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		end
 		
 		if ( Find.Price ) then
 			if ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
-				draw.SimpleText( " + " .. Find.Price .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				if ( LShop.Config.GroupDiscountEnabled ) then
+					local saleprice = LShop.Config.GroupDiscount( LP, Find.Price )
+					draw.SimpleText( " + " .. saleprice .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				else
+					draw.SimpleText( " + " .. Find.Price .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				end
 			else
-				draw.SimpleText( " - " .. Find.Price .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				if ( LShop.Config.GroupDiscountEnabled ) then
+					local saleprice = LShop.Config.GroupDiscount( LP, Find.Price )
+					draw.SimpleText( " + " .. saleprice .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+					draw.SimpleText( "Ohh! you are on sale list!", "LShop_MoneyNotice", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				else
+					draw.SimpleText( " - " .. Find.Price .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+					draw.SimpleText( "Ohh! you are on sale list!", "LShop_MoneyNotice", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				end
 			end
 		else
 			draw.SimpleText( "NULL ITEM PRICE", "LShop_SubTitle", w * 0.5, h * 0.8, Color( 255, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
@@ -100,7 +112,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 		if ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
 		
 		else
-			draw.SimpleText( "You have " .. LP:LShop_GetMoney() .. " $.", "LShop_Category_Text", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			--draw.SimpleText( "You have " .. LP:LShop_GetMoney() .. " $.", "LShop_Category_Text", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		end
 	end
 	
@@ -416,11 +428,24 @@ function LShop.cl.Menu01( parent, tab )
 				surface.DrawRect( 0, 0, w, h )
 				
 				draw.SimpleText( v.Name, "LShop_Category_Text", w * 0.1, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
-				draw.SimpleText( v.Price, "LShop_Category_Text", w * 0.96, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+				// draw.SimpleText( v.Name .. " : " .. v.Desc, "LShop_Category_Text", w * 0.1, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 				
 				surface.SetMaterial( Material("icon16/money_dollar.png") )
 				surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
 				surface.DrawTexturedRect( w - 20, h / 2 - 16 / 2, 16, 16 )
+				
+				if ( LShop.Config.GroupDiscountEnabled ) then
+					local saleprice = LShop.Config.GroupDiscount( LP, v.Price )
+					if ( v.Price != saleprice ) then
+						draw.SimpleText( "SALE!", "LShop_Category_Text", w * 0.8, h * 0.5, Color( 0, 0, 255, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+						draw.SimpleText( saleprice, "LShop_Category_Text", w * 0.97, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+					else
+						draw.SimpleText( v.Price, "LShop_Category_Text", w * 0.96, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+					end
+				end
+					
+				
+
 			end
 			
 			local w, h = list:GetWide(), list:GetTall()

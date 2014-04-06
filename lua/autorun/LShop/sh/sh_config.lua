@@ -51,6 +51,21 @@ LShop.Config.PermissionCheck = function( pl ) -- Administrator menu permission.
 	return pl:IsSuperAdmin()
 end
 
+LShop.Config.GroupDiscountEnabled = true
+LShop.Config.GroupDiscount = function( pl, price )
+	if ( pl:IsUserGroup( "donator" ) ) then
+		return math.Round( price * 0.75 )
+	elseif ( pl:IsAdmin() ) then
+		return math.Round( price * 0.50 )
+	elseif ( pl:IsSuperAdmin() ) then
+		return math.Round( price * 0.25 )
+	elseif ( pl:IsUserGroup( "owner" ) ) then
+		return math.Round( price * 0 )
+	else
+		return price
+	end
+end
+
 --[[// #################################### //
 	= Administrator Permission Check System Document =
 
