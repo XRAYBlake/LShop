@@ -180,10 +180,12 @@ if ( SERVER ) then
 	
 	net.Receive("LShop_Admin_ItemGive", function( len, cl )
 		LShop.system.ItemGive( net.ReadEntity(), net.ReadString(), net.ReadString() )
+		LShop.system.SendDBToPlayer( cl )
 	end)
 	
 	net.Receive("LShop_Admin_ItemTake", function( len, cl )
 		LShop.system.ItemTake( net.ReadEntity(), net.ReadString(), net.ReadString() )
+		LShop.system.SendDBToPlayer( cl )
 	end)
 	
 	net.Receive("LShop_ItemIsOwnCheck", function( len, cl )

@@ -102,6 +102,10 @@ net.Receive("LShop_SendTable", function( len, cl )
 		ClearInventory()
 		LoadInventory()
 	end
+	if ( IsValid( LShop_AdminPanel ) ) then
+		Admin_PlayerListClear()
+		Admin_PlayerListAdd()
+	end
 end)
 
 concommand.Add( LShop.Config.OpenCommand , function( pl, cmd, args )
