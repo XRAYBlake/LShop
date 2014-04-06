@@ -2,10 +2,10 @@ LShop.Config = LShop.Config or {}
 
 LShop.Config.Version = "1.4" -- Do not edit this!
 
-LShop.Config.OpenCommand = "LShop_open" -- Set menu open console command.
-LShop.Config.OpenKey = "F4" -- Set menu open key.
-LShop.Config.ChatOpenCommand = "/LShop_open" -- Set menu open chat command.
-LShop.Config.ChatOpenCommand_Output = "" -- Set menu open chat command output string.
+LShop.Config.OpenCommand = "LShop_open" -- Shop open command in console.
+LShop.Config.OpenKey = "F4" -- Key to open Shop.
+LShop.Config.ChatOpenCommand = "!shop" -- Chat command that opens Shop.
+LShop.Config.ChatOpenCommand_Output = "Shop opened!" -- Set menu open chat command output string.
 
 --[[// #################################### //
 	= Shop Open Key Document =
@@ -15,18 +15,19 @@ LShop.Config.ChatOpenCommand_Output = "" -- Set menu open chat command output st
 	F4 -- Yeah F4 Button. :)
 --]]// #################################### //
 
-LShop.Config.IntroEnabled = true -- Are you sure turn on LShop Intro system? ( Intro is very cool :) )
+LShop.Config.IntroEnabled = true -- Enable intro? (It's pretty cool!)
 
-LShop.Config.AutoMoneyGive = true -- Are you sure turn on Auto Money Give system? ( Timer system )
-LShop.Config.MoneyGiveTimer = 60 -- ( Sec )
-LShop.Config.MoneyAmmount = 100 -- Money Amount. ( 100 $ )
+LShop.Config.AutoMoneyGive = true -- Enable timed "Paychecks"?
+LShop.Config.MoneyGiveTimer = 60 -- How long between "Paychecks" (Seconds)
+LShop.Config.MoneyAmmount = 100 -- How much money per paycheck.
 
-LShop.Config.ItemGiftSystem = true -- Are you sure allow Item Gift System?
+LShop.Config.ItemGiftSystem = true -- Enable item gifting?
 
-LShop.Config.DaySaleSystem = false -- Are you sure turn on Week Day Sale System?
-LShop.Config.DayNumber = 1 -- WeekDay Sale system day number.
-LShop.Config.SalePercent = function( price ) -- WeekDay Sale system sale percent.
-	return math.Round( price * 0.95 )
+LShop.Config.DaySaleSystem = false -- Enable weekday sales? (Serverside weekdays)
+LShop.Config.DayNumber = 7 -- What day is the sale on?
+
+LShop.Config.SalePercent = function( price )
+	return math.Round( price * 0.95 ) --Percentage of price paid on Sale Day.
 end
 
 --[[// #################################### //
