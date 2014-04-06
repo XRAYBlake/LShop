@@ -19,14 +19,16 @@ function LShop.cl.MainShop()
 	
 	hook.Add( "CalcView", "LAdmin.main.SchematicView", function( ply, pos, angles, fov )
 		if ( IsValid( ply ) ) then
-			local sin = math.sin( CurTime() / 2 )
-			viewSin = ( 30 / 1 ) * sin
-			local view = {}
-			view.origin = Vector( pos.x, pos.y, pos.z + 100 )
-			view.angles = Angle( angles.p, angles.y + viewSin, angles.r ) 
-			view.fov = fov
-				 
-			return view
+			if ( LShop.Config.ShopMenu_ThirdPersonEnabled ) then
+				local sin = math.sin( CurTime() / 2 )
+				viewSin = ( 30 / 1 ) * sin
+				local view = {}
+				view.origin = Vector( pos.x, pos.y, pos.z + LShop.Config.ShopMenu_ThirdPerson_Height )
+				view.angles = Angle( angles.p, angles.y + viewSin, angles.r ) 
+				view.fov = fov
+					 
+				return view
+			end
 		end
 	end)	
 	
@@ -55,7 +57,11 @@ function LShop.cl.MainShop()
 	end)	
 
 	hook.Add( "ShouldDrawLocalPlayer", "LAdmin.main.SchematicView_Func", function()
-		return true
+		if ( LShop.Config.ShopMenu_ThirdPersonEnabled ) then
+			return true
+		else
+			return false
+		end
 	end)
 	
 	if ( !LShop_MainShopPanel ) then

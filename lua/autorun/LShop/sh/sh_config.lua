@@ -17,6 +17,9 @@ LShop.Config.ChatOpenCommand_Output = "Shop opened!" -- Set menu open chat comma
 
 LShop.Config.IntroEnabled = true -- Enable intro? (It's pretty cool!)
 
+LShop.Config.ShopMenu_ThirdPersonEnabled = true -- Enabled shop menu third person view?
+LShop.Config.ShopMenu_ThirdPerson_Height = 100 -- How much shop menu third person height?
+
 LShop.Config.AutoMoneyGive = true -- Enable timed "Paychecks"?
 LShop.Config.MoneyGiveTimer = 60 -- How long between "Paychecks" (Seconds)
 LShop.Config.MoneyAmmount = 100 -- How much money per paycheck.
