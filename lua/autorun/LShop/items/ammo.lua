@@ -62,7 +62,7 @@ LShop.system.ItemRegister( {
 	ID = "ammo_ar2",
 	Name = "AR2 Ammo",
 	Category = "Ammonation",
-	Price = 30,
+	Price = 50,
 	Ammo_ID = "ar2",
 	Type = "ammo",
 	Ammo_Count = 90,

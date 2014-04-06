@@ -322,19 +322,31 @@ if ( SERVER ) then
 		local checkOwn = self:LShop_IsOwn( itemID, category )
 		if ( checkOwn ) then
 			if ( item.UseTillDeath ) then
-				net.Start("LShop_SendMessage")
-				net.WriteString( "You already own this item. : " .. itemID )
-				net.Send( self )
-				return
+				if ( !item.CanUnLimitedBuy ) then
+					net.Start("LShop_SendMessage")
+					net.WriteString( "You already own this item. : " .. itemID )
+					net.Send( self )
+					return
+				end
 			end
 		end
-
 		if ( item ) then
 			if ( LShop.Config.GroupDiscountEnabled ) then
 				price = LShop.Config.GroupDiscount( self, item.Price )
 			end
 			if ( price <= curretMoney ) then
 				if ( !item.UseTillDeath ) then
+					if ( item.CanUnLimitedBuy ) then
+						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
+						self:LShop_TakeMoney( price )
+						net.Start("LShop_SendMessage")
+						net.WriteString( "You buying this item." )
+						net.Send( self )
+						if ( item.Buyed ) then
+							item.Buyed( item, self )
+						end
+						return					
+					end
 					if ( #self.OwnItems != 0 ) then
 						for k, v in pairs( self.OwnItems ) do
 							if ( v.ID != itemID ) then
