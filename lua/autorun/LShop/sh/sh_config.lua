@@ -26,8 +26,8 @@ LShop.Config.MoneyAmmount = 100 -- How much money per paycheck.
 
 LShop.Config.ItemGiftSystem = true -- Enable item gifting?
 
-LShop.Config.DaySaleSystem = false -- Enable weekday sales? (Serverside weekdays)
-LShop.Config.DayNumber = 7 -- What day is the sale on?
+LShop.Config.DaySaleSystem = true -- Enable weekday sales? (Serverside weekdays)
+LShop.Config.DayNumber = 1 -- What day is the sale on?
 
 LShop.Config.SalePercent = function( price )
 	return math.Round( price * 0.95 ) --Percentage of price paid on Sale Day.

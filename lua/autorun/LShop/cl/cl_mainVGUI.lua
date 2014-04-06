@@ -115,7 +115,7 @@ function LShop.cl.MainShop()
 		
 		if ( LShop.Config.DaySaleSystem ) then
 			if ( day.wday == LShop.Config.DayNumber ) then
-				draw.SimpleText( "Sale Day!", "LShop_SubTitle", w * 0.5, h * 0.95, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				draw.SimpleText( "* Sale Day!", "LShop_SubTitle", w * 0.9, h * 0.05, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 			end
 		end
 	end
