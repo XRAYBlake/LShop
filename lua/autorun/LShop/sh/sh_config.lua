@@ -55,7 +55,7 @@ LShop.Config.PermissionCheck = function( pl ) -- Administrator menu permission.
 	return pl:IsSuperAdmin()
 end
 
-LShop.Config.GroupDiscountEnabled = true
+LShop.Config.GroupDiscountEnabled = false
 LShop.Config.GroupDiscount = function( pl, price )
 	if ( pl:IsUserGroup( "donator" ) ) then
 		return math.Round( price * 0.75 )

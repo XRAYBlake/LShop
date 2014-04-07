@@ -102,17 +102,16 @@ function LShop.cl.ItemRunProgress( itemID, category )
 					draw.SimpleText( "Ohh! you are on sale list!", "LShop_MoneyNotice", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 				else
 					draw.SimpleText( " - " .. Find.Price .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-					draw.SimpleText( "Ohh! you are on sale list!", "LShop_MoneyNotice", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 				end
 			end
 		else
 			draw.SimpleText( "NULL ITEM PRICE", "LShop_SubTitle", w * 0.5, h * 0.8, Color( 255, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		end
 		
-		if ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
-		
-		else
-			--draw.SimpleText( "You have " .. LP:LShop_GetMoney() .. " $.", "LShop_Category_Text", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		if ( Find.Material ) then
+			surface.SetMaterial( Material( Find.Material ) )
+			surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
+			surface.DrawTexturedRect( w / 2 - w * 0.95 / 2, h * 0.15, w * 0.95, h * 0.45 )		
 		end
 	end
 	
@@ -442,6 +441,8 @@ function LShop.cl.Menu01( parent, tab )
 					else
 						draw.SimpleText( v.Price, "LShop_Category_Text", w * 0.96, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 					end
+				else
+					draw.SimpleText( v.Price, "LShop_Category_Text", w * 0.96, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 				end
 					
 				

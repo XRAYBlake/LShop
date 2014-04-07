@@ -54,7 +54,7 @@ function LShop.cl.Menu02( parent, tab )
 		for k, v in pairs( LShop.OwnItemsCL ) do
 			local itemInformation = LShop.system.ItemFindByID( v.ID, v.Category ) or nil
 			local list = vgui.Create("DButton", ItemList)
-			list:SetSize( ItemList:GetWide(), 70 )
+			list:SetSize( ItemList:GetWide(), 50 )
 			list:SetText("")
 			list.DoClick = function()
 				local Menu = DermaMenu()
@@ -96,15 +96,23 @@ function LShop.cl.Menu02( parent, tab )
 					Menu:Open()	
 				end
 			end
+
 			list.Paint = function()
 				local w, h = list:GetWide(), list:GetTall()
 				surface.SetDrawColor( 10, 10, 10, 10 )
 				surface.DrawRect( 0, 0, w, h )
 				
 				if ( itemInformation ) then
-					draw.SimpleText( itemInformation.Name, "LShop_SubTitle", w * 0.2, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+					draw.SimpleText( itemInformation.Name, "LShop_Category_Text", w * 0.1, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+					if ( v ) then
+						if ( v.onEquip ) then
+							surface.SetMaterial( Material("icon16/accept.png") )
+							surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
+							surface.DrawTexturedRect( w - 30, h * 0.1, 16, 16 )
+						end
+					end
 				else
-					draw.SimpleText( "Can't use this item.", "LShop_SubTitle", w * 0.2, h * 0.5, Color( 255, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+					draw.SimpleText( "Can't use this item.", "LShop_Category_Text", w * 0.2, h * 0.5, Color( 255, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 				end
 			end
 			
@@ -113,26 +121,20 @@ function LShop.cl.Menu02( parent, tab )
 			if ( itemInformation ) then
 				if ( !itemInformation.Material ) then
 					local items = list:Add("SpawnIcon")
-					items:SetSize( 70 - 10, 70 - 10 )
+					items:SetSize( 50 - 10, 50 - 10 )
 					items:SetPos( 5, 5 )
-					if ( itemInformation != 1 ) then
+					if ( itemInformation ) then
 						items:SetModel( itemInformation.Model )
 					else
 						items:SetModel( "models/error.mdl" )
 					end
 					items.PaintOver = function( items, w, h )
-						if ( v ) then
-							if ( v.onEquip ) then
-								surface.SetMaterial( Material("icon16/accept.png") )
-								surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
-								surface.DrawTexturedRect( 5, 5, 16, 16 )
-							end
-						end
+						
 					end
 				else
 					local icon = list:Add("DImage")
 					icon:SetPos( 5, 5 )
-					icon:SetSize( 60, h - 10 )
+					icon:SetSize( 50, h - 10 )
 					if ( itemInformation.Material ) then
 						icon:SetImage( itemInformation.Material )
 					else

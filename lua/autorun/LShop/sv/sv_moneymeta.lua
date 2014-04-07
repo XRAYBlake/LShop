@@ -46,5 +46,7 @@ net.Receive("LShop_Admin_SetMoney", function( len, cl )
 		target:LShop_SetMoney( tonumber( money ) )
 		LShop.core.Message( Color( 0, 255, 0 ), "Set target money : " .. target:SteamID() )
 		cl:LShop_SaveData()
+		LShop.system.SendDBToPlayer( cl )
+		LShop.system.SendDBToPlayer( target )
 	end
 end)
