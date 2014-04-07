@@ -69,6 +69,4 @@ return {
 	["LShop_Notice_Text"] = "NOTICE!",
 	["LShop_Warning_Text"] = "WARNING!",
 	["LShop_Error_Text"] = "ERROR!",
-	
-	["TEST2"] = "2",
 }

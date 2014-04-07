@@ -77,6 +77,4 @@ return {
 	["LShop_Notice_Text"] = "안내!",
 	["LShop_Warning_Text"] = "경고!",
 	["LShop_Error_Text"] = "오류!",
-	
-	["KOTEST2"] = "2",
 }
