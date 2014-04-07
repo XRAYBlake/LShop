@@ -71,6 +71,8 @@ return {
 	["LShop_Error_1"] = "다른 사람을 찾을 수 없습니다.",
 	["LShop_Error_2"] = "아이템을 사용할 수 없습니다.",
 	
+	["LShop_Notify_AutoMoneyGive"] = "서버에서 # $ 를 지급하였습니다.",
+	
 	["LShop_Yes"] = "확인",
 	["LShop_No"] = "취소",
 	

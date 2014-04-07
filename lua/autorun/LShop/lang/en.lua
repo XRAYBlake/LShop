@@ -63,6 +63,8 @@ return {
 	["LShop_Error_1"] = "Can't find other players!",
 	["LShop_Error_2"] = "Can't use this item.",
 	
+	["LShop_Notify_AutoMoneyGive"] = "# $ paid by servers.",
+	
 	["LShop_Yes"] = "Yes",
 	["LShop_No"] = "No",
 	

@@ -610,7 +610,7 @@ if ( SERVER ) then
 		timer.Create("LShop_AutoMoneyGive_" .. self:SteamID(), LShop.Config.MoneyGiveTimer, 0, function() 
 			if ( LShop.Config.AutoMoneyGive ) then
 				self:LShop_AddMoney( LShop.Config.MoneyAmmount )
-				self:SendLua("GAMEMODE:AddNotify(\"You gift from server " .. LShop.Config.MoneyAmmount .. " $.\", NOTIFY_NONE, 10)")
+				LShop.system.Notify( self, LShop.lang.GetValue_Replace( self, "LShop_Notify_AutoMoneyGive", { LShop.Config.MoneyAmmount } ) )
 			end
 		end)
 	end
