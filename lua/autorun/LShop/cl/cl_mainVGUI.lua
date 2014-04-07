@@ -14,7 +14,7 @@ function LShop.cl.MainShop()
 	local effect_color = 1
 	
 	net.Receive("LShop_SendMessage", function( len, cl )
-		Derma_Message( net.ReadString(), "NOTICE", "OK" )
+		Derma_Message( net.ReadString(), LShop.lang.GetValue( "LShop_Notice_Text" ), LShop.lang.GetValue( "LShop_Yes" ) )
 	end)
 	
 	hook.Add( "CalcView", "LAdmin.main.SchematicView", function( ply, pos, angles, fov )
@@ -106,11 +106,14 @@ function LShop.cl.MainShop()
 			schematicIntro_back_h = math.Approach( schematicIntro_back_h, 0, 3 )		
 		end
 		
-		draw.SimpleText( "You have " .. LP:LShop_GetMoney() .. " $.", "LShop_MoneyNotice", w * 0.97, h * 0.95, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( LShop.lang.GetValue_Replace( "LShop_MainText_MoneyNotice", { LP:LShop_GetMoney() } ), "LShop_MoneyNotice", w * 0.97, h * 0.97, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 		
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.03, h * 0.05, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
-
-		draw.SimpleText( "Version : " .. LShop.Config.Version, "LShop_MoneyNotice", w * 0.03, h * 0.95, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		
+		
+		-- LShop.lang.langconfigCL
+		
+		draw.SimpleText( LShop.lang.GetValue( "LShop_Version" ) .. LShop.Config.Version, "LShop_MoneyNotice", w * 0.97, h * 0.93, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "Copyright ( C ) 2014 ~ 'Solar Team'", "LShop_MoneyNotice", w * 0.5, h * 0.95, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		
 		if ( LShop.Config.DaySaleSystem ) then
@@ -133,11 +136,19 @@ function LShop.cl.MainShop()
 	CloseButton.DoClick = function(  )
 		surface.PlaySound( "ui/buttonclick.wav" )
 		closefunc = true
-		LShop_MainShopPanel.Menu01:AlphaTo( 0, 0.3, 0 )
-		LShop_MainShopPanel.Menu02:AlphaTo( 0, 0.3, 0 )
+		if ( LShop_MainShopPanel.Menu01 ) then
+			LShop_MainShopPanel.Menu01:AlphaTo( 0, 0.3, 0 )
+		end
+		if ( LShop_MainShopPanel.Menu02 ) then
+			LShop_MainShopPanel.Menu02:AlphaTo( 0, 0.3, 0 )
+		end
 		if ( LShop_MainShopPanel.Admin ) then
 			LShop_MainShopPanel.Admin:AlphaTo( 0, 0.3, 0 )
 		end
+		if ( LShop_MainShopPanel.Language ) then
+			LShop_MainShopPanel.Language:AlphaTo( 0, 0.3, 0 )
+		end
+
 		hook.Remove( "CalcView", "LAdmin.main.SchematicView" )
 		hook.Remove( "ShouldDrawLocalPlayer", "LAdmin.main.SchematicView_Func" )
 		
@@ -204,7 +215,7 @@ function LShop.cl.MainShop()
 	local Bx, By = scrW * 0.25 - LShop_MainShopPanel_w * 0.15 / 2, scrH * 0.05 - 35 / 2
 
 	LShop_MainShopPanel.Menu01 = vgui.Create( "DButton", LShop_MainShopPanel )    
-	LShop_MainShopPanel.Menu01:SetText( "Shop" )  
+	LShop_MainShopPanel.Menu01:SetText( LShop.lang.GetValue( "LShop_MainButton_Shop" ) )  
 	LShop_MainShopPanel.Menu01:SetFont("LShop_ButtonText")
 	LShop_MainShopPanel.Menu01:SetPos( Bx, By )  
 	LShop_MainShopPanel.Menu01:SetColor(Color( 0, 0, 0, 255 ))
@@ -231,7 +242,7 @@ function LShop.cl.MainShop()
 	local Bx, By = scrW * 0.45 - LShop_MainShopPanel_w * 0.15 / 2, scrH * 0.05 - 35 / 2
 
 	LShop_MainShopPanel.Menu02 = vgui.Create( "DButton", LShop_MainShopPanel )    
-	LShop_MainShopPanel.Menu02:SetText( "Inventory" )  
+	LShop_MainShopPanel.Menu02:SetText( LShop.lang.GetValue( "LShop_MainButton_Inventory" ) )  
 	LShop_MainShopPanel.Menu02:SetFont("LShop_ButtonText")
 	LShop_MainShopPanel.Menu02:SetPos( Bx, By )  
 	LShop_MainShopPanel.Menu02:SetColor(Color( 0, 0, 0, 255 ))
@@ -259,7 +270,7 @@ function LShop.cl.MainShop()
 		local Bx, By = scrW * 0.65 - LShop_MainShopPanel_w * 0.15 / 2, scrH * 0.05 - 35 / 2
 
 		LShop_MainShopPanel.Admin = vgui.Create( "DButton", LShop_MainShopPanel )    
-		LShop_MainShopPanel.Admin:SetText( "Administrator" )  
+		LShop_MainShopPanel.Admin:SetText( LShop.lang.GetValue( "LShop_MainButton_Admin" ) )  
 		LShop_MainShopPanel.Admin:SetFont("LShop_ButtonText")
 		LShop_MainShopPanel.Admin:SetPos( Bx, By )  
 		LShop_MainShopPanel.Admin:SetColor(Color( 0, 0, 0, 255 ))
@@ -283,7 +294,109 @@ function LShop.cl.MainShop()
 			end
 		end
 	end
-	
+
+	local Bx, By = scrW * 0.03, scrH * 0.95 - 35 / 2
+
+	LShop_MainShopPanel.Language = vgui.Create( "DButton", LShop_MainShopPanel )    
+	for k, v in pairs( LShop.lang.tablesCL[ LShop.lang.langconfigCL ] ) do
+		if ( k == "LShop_LangFile_Name" ) then
+			LShop_MainShopPanel.Language:SetText( LShop.lang.GetValue( "LShop_MainButton_Language" ) .. v )  
+		end
+	end
+	LShop_MainShopPanel.Language:SetFont("LShop_ButtonText")
+	LShop_MainShopPanel.Language:SetPos( Bx, By )  
+	LShop_MainShopPanel.Language:SetColor(Color( 0, 0, 0, 255 ))
+	LShop_MainShopPanel.Language:SetSize( LShop_MainShopPanel_w * 0.15, 35 ) 
+	LShop_MainShopPanel.Language:SetAlpha( 0 )
+	LShop_MainShopPanel.Language:AlphaTo( 255, 0.3, 0 )
+	LShop_MainShopPanel.Language.DoClick = function(  )
+		surface.PlaySound( "ui/buttonclick.wav" )
+		local Menu = DermaMenu()
+		for k, v in pairs( LShop.lang.tablesCL ) do
+			for k1, v1 in pairs( LShop.lang.tablesCL[ k ] ) do
+				if ( k1 == "LShop_LangFile_Name" ) then
+					Menu:AddOption( v1, function()
+						Derma_Query(LShop.lang.GetValue( "LShop_Warning_1" ) .. " [ " .. v1 .. " ]", LShop.lang.GetValue( "LShop_Warning_Text" ),
+							LShop.lang.GetValue( "LShop_Yes" ), function() 
+								LShop.lang.langconfigCL = k
+								LShop_MainShopPanel.Language:SetText( LShop.lang.GetValue( "LShop_MainButton_Language" ) .. v1 )  
+								net.Start("LShop_Lang_SaveConfig")
+								net.WriteString( LShop.lang.langconfigCL )
+								net.SendToServer()
+								
+								LShop_MainShopPanel:Remove()
+								LShop_MainShopPanel = nil
+								hook.Remove( "CalcView", "LAdmin.main.SchematicView" )
+								hook.Remove( "ShouldDrawLocalPlayer", "LAdmin.main.SchematicView_Func" )
+								hook.Remove( "RenderScreenspaceEffects", "LAdmin.main.SchematicView_Func2" )
+								if ( LShop_Menu01Panel ) then
+									local LShop_Menu01Panel_w, LShop_Menu01Panel_h = 10 + scrW - 30, scrH * 0.8
+									local LShop_Menu01Panel_x, LShop_Menu01Panel_y = 10, scrH + LShop_Menu01Panel_h;
+									LShop_Menu01Panel:MoveTo( LShop_Menu01Panel_x, scrH + LShop_Menu01Panel_w, 0.3, 0 )
+									timer.Simple( 0.3, function()
+										if ( LShop_Menu01Panel ) then
+											LShop_Menu01Panel:Remove()
+											LShop_Menu01Panel = nil
+										end
+									end)
+								end
+								if ( LShop_Menu02Panel ) then
+									local LShop_Menu02Panel_w, LShop_Menu02Panel_h = 10 + scrW - 30, scrH * 0.8
+									local LShop_Menu02Panel_x, LShop_Menu02Panel_y = 10, scrH + LShop_Menu02Panel_h;
+									LShop_Menu02Panel:MoveTo( LShop_Menu02Panel_x, scrH + LShop_Menu02Panel_w, 0.3, 0 )
+									timer.Simple( 0.3, function()
+										if ( LShop_Menu02Panel ) then
+											LShop_Menu02Panel:Remove()
+											LShop_Menu02Panel = nil
+										end
+									end)
+								end
+								if ( LShop_AdminPanel ) then
+									local LShop_AdminPanel_w, LShop_AdminPanel_h = 10 + scrW - 30, scrH * 0.8
+									local LShop_AdminPanel_x, LShop_AdminPanel_y = 10, scrH + LShop_AdminPanel_h;
+									LShop_AdminPanel:MoveTo( LShop_AdminPanel_x, scrH + LShop_AdminPanel_w, 0.3, 0 )
+									timer.Simple( 0.3, function()
+										if ( LShop_AdminPanel ) then
+											LShop_AdminPanel:Remove()
+											LShop_AdminPanel = nil
+										end
+									end)	
+								end
+								if ( LShop_PlayerManager ) then
+									local LShop_PlayerManager_w, LShop_PlayerManager_h = 10 + scrW - 30, scrH * 0.8
+									local LShop_PlayerManager_x, LShop_PlayerManager_y = 10, scrH + LShop_PlayerManager_h;
+									LShop_PlayerManager:MoveTo( LShop_PlayerManager_x, scrH + LShop_PlayerManager_w, 0.3, 0 )
+									timer.Simple( 0.3, function()
+										if ( LShop_PlayerManager ) then
+											LShop_PlayerManager:Remove()
+											LShop_PlayerManager = nil
+										end
+									end)	
+								end
+										
+								LShop.cl.MainShop()
+
+							end,
+							LShop.lang.GetValue( "LShop_No" ), function()
+							
+							end
+						)	
+						
+					end)
+					
+				end
+			end
+		end
+		Menu:Open()
+	end
+	LShop_MainShopPanel.Language.Paint = function()
+		local w = LShop_MainShopPanel.Language:GetWide()
+		local h = LShop_MainShopPanel.Language:GetTall()
+		
+		surface.SetDrawColor( 40, 40, 40, 100 )
+		surface.DrawRect( 0, 0, w, h )
+	end
+
 	--[[
 	
 	local NewItemList = vgui.Create( "DPanelList", LShop_MainShopPanel )

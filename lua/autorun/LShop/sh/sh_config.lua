@@ -1,6 +1,6 @@
 LShop.Config = LShop.Config or {}
 
-LShop.Config.Version = "1.4" -- Do not edit this!
+LShop.Config.Version = "1.5" -- Do not edit this!
 
 LShop.Config.OpenCommand = "LShop_open" -- Shop open command in console.
 LShop.Config.OpenKey = "F4" -- Key to open Shop.
@@ -13,6 +13,15 @@ LShop.Config.ChatOpenCommand_Output = "Shop opened!" -- Set menu open chat comma
 	F2 -- Yeah F2 Button. :)
 	F3 -- Yeah F3 Button. :)
 	F4 -- Yeah F4 Button. :)
+--]]// #################################### //
+
+LShop.Config.DefaultLanguageFile = "en" -- Default language file.
+
+--[[// #################################### //
+	= Default Language File Document =
+	
+	en = English
+	ko = Korean( 한국어 )
 --]]// #################################### //
 
 LShop.Config.IntroEnabled = true -- Enable intro? (It's pretty cool!)

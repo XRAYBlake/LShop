@@ -30,6 +30,9 @@ end
 LShop.cl.LoadSharedFile( )
 LShop.cl.LoadClientFile( )
 
+LShop.lang.tablesCL = LShop.lang.tablesCL or {}
+LShop.lang.langconfigCL = LShop.lang.langconfigCL or LShop.Config.DefaultLanguageFile
+
 function LShop.cl.IsOwned( pl, itemID, category )
 	local id = LShop.system.ItemFindByID( tostring( itemID ), category )
 	if ( id ) then
@@ -38,6 +41,23 @@ function LShop.cl.IsOwned( pl, itemID, category )
 				return true
 			else
 				if ( k == #LShop.OwnItemsCL ) then
+					return nil
+				end
+			end
+		end
+	else
+
+	end
+end
+
+function LShop.cl.IsOwned_Global( target, itemID, category )
+	local id = LShop.system.ItemFindByID( tostring( itemID ), category )
+	if ( id ) then
+		for k, v in pairs( target.OwnItemsCL ) do
+			if ( v.ID == itemID ) then
+				return true
+			else
+				if ( k == #target.OwnItemsCL ) then
 					return nil
 				end
 			end
@@ -71,7 +91,7 @@ end
 local meta = FindMetaTable("Player")
 
 function meta:LShop_GetMoney( ) 
-	return LShop.PlyMoney
+	return self:GetNWInt( "LShop_Money" )
 end
 
 function meta:LShop_IsOwned( id, category ) 
@@ -91,7 +111,9 @@ net.Receive("LShop_MenuOpen", function( len, cl )
 end)
 
 net.Receive("LShop_SendTable", function( len, cl )
-	LShop.OwnItemsCL = net.ReadTable() or {}
+	local ownitemTab = net.ReadTable() or {}
+	LocalPlayer().OwnItemsCL = ownitemTab
+	LShop.OwnItemsCL = ownitemTab
 	LShop.PlyMoney = net.ReadString() or 0
 	LShop.PlyMoney = tonumber( LShop.PlyMoney )
 	if ( IsValid( LShop_Menu01Panel ) ) then
@@ -106,6 +128,11 @@ net.Receive("LShop_SendTable", function( len, cl )
 		Admin_PlayerListClear()
 		Admin_PlayerListAdd()
 	end
+end)
+
+net.Receive("LShop_Lang_SendTable", function( len, cl )
+	LShop.lang.tablesCL = net.ReadTable() or {}
+	LShop.lang.langconfigCL = net.ReadString() or LShop.Config.DefaultLanguageFile
 end)
 
 concommand.Add( LShop.Config.OpenCommand , function( pl, cmd, args )

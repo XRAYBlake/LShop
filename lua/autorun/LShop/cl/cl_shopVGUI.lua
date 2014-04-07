@@ -24,7 +24,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 					if ( !Find.CanUnLimitedBuy ) then
 						if ( !LP:LShop_IsOwned( itemID, category ) ) then
 							LShop_ItemRunProgress.MainAction:SetVisible( true )
-							LShop_ItemRunProgress.MainAction:SetText( "Buy" )  
+							LShop_ItemRunProgress.MainAction:SetText( LShop.lang.GetValue( "LShop_ShopMenu_Button_Buy" ) )
 							LShop_ItemRunProgress.ItemGiftAction:SetVisible( true )
 							local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.9
 							LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
@@ -32,7 +32,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 						end
 					else
 						LShop_ItemRunProgress.MainAction:SetVisible( true )
-						LShop_ItemRunProgress.MainAction:SetText( "Buy" )  
+						LShop_ItemRunProgress.MainAction:SetText( LShop.lang.GetValue( "LShop_ShopMenu_Button_Buy" ) )  
 						LShop_ItemRunProgress.ItemGiftAction:SetVisible( true )
 						local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.9
 						LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
@@ -42,7 +42,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 				if ( Find.CanSell ) then
 					if ( LP:LShop_IsOwned( itemID, category ) ) then
 						LShop_ItemRunProgress.MainAction:SetVisible( true )
-						LShop_ItemRunProgress.MainAction:SetText( "Sell" )  
+						LShop_ItemRunProgress.MainAction:SetText( LShop.lang.GetValue( "LShop_ShopMenu_Button_Sell" ) )  
 						LShop_ItemRunProgress.ItemGiftAction:SetVisible( false )
 						local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.95
 						LShop_ItemRunProgress.MainAction:SetPos( Bx, By )  
@@ -70,9 +70,9 @@ function LShop.cl.ItemRunProgress( itemID, category )
 		surface.DrawRect( w / 2 - w * 0.4 / 2, 0, w * 0.4, h * 0.1 )
 		
 		if ( Find.CanSell && !LP:LShop_IsOwned( itemID, category )  ) then
-			draw.SimpleText( "Item Buy", "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_Buy" ), "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		elseif ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
-			draw.SimpleText( "Item Sell", "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_Sell" ), "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		end
 		
 		if ( Find.Name ) then
@@ -99,7 +99,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 				if ( LShop.Config.GroupDiscountEnabled ) then
 					local saleprice = LShop.Config.GroupDiscount( LP, Find.Price )
 					draw.SimpleText( " + " .. saleprice .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-					draw.SimpleText( "Ohh! you are on sale list!", "LShop_MoneyNotice", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+					draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_SaleNotice" ), "LShop_MoneyNotice", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 				else
 					draw.SimpleText( " - " .. Find.Price .. " $", "LShop_MainTitle", w * 0.5, h * 0.8, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 				end
@@ -157,7 +157,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 			net.Start("LShop_ItemBuy")
 			net.WriteString( c )
 			net.WriteString( id )
-			net.SendToServer()	
+			net.SendToServer()
 			if ( LShop_ItemRunProgress ) then
 				LShop_ItemRunProgress:MoveTo( LShop_ItemRunProgress_x, scrH + LShop_ItemRunProgress_h, 0.3, 0 )
 				timer.Simple( 0.3, function()
@@ -239,7 +239,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 	local Bx, By = LShop_ItemRunProgress_w / 2 - LShop_ItemRunProgress_w * 0.39 / 2, LShop_ItemRunProgress_h * 0.95
 
 	LShop_ItemRunProgress.ItemGiftAction = vgui.Create( "DButton", LShop_ItemRunProgress )    
-	LShop_ItemRunProgress.ItemGiftAction:SetText( "Item Gift to" )  
+	LShop_ItemRunProgress.ItemGiftAction:SetText( LShop.lang.GetValue( "LShop_ShopMenu_Button_GiftTo" ) )  
 	LShop_ItemRunProgress.ItemGiftAction:SetFont("LShop_ButtonText2")
 	LShop_ItemRunProgress.ItemGiftAction:SetPos( Bx, By )  
 	LShop_ItemRunProgress.ItemGiftAction:SetColor(Color( 0, 0, 0, 255 ))
@@ -270,8 +270,8 @@ function LShop.cl.ItemRunProgress( itemID, category )
 						end
 					end)
 				end
-			else
-				Derma_Message( "Can't find other players!", "ERROR!", "OK" )
+			else 
+				Derma_Message( LShop.lang.GetValue( "LShop_Error_1" ), LShop.lang.GetValue( "LShop_Error_Text" ), LShop.lang.GetValue( "LShop_Yes" ) )
 			end
 		end
 		Menu:Open()
@@ -326,7 +326,7 @@ function LShop.cl.Menu01( parent, tab )
 		surface.SetDrawColor( 10, 10, 10, 0 )
 		surface.DrawRect( w * 0.75, h * 0.1, w * 0.25 - 20, h * 0.85 )
 
-		draw.SimpleText( "Shop", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Title" ), "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		
 		draw.RoundedBox( 0, 0, 0, w, 2, Color( 0, 0, 0, 255 ) )
 		draw.RoundedBox( 0, 0, h - 2, w, 2, Color( 0, 0, 0, 255 ) )

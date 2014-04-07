@@ -27,9 +27,9 @@ function LShop.cl.Menu02( parent, tab )
 		draw.RoundedBox( 0, 0, 0, w, 2, Color( 0, 0, 0, 255 ) )
 		draw.RoundedBox( 0, 0, h - 2, w, 2, Color( 0, 0, 0, 255 ) )
 		
-		draw.SimpleText( "Inventory", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( LShop.lang.GetValue( "LShop_InvMenu_Title" ), "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		
-		draw.SimpleText( "You have " .. #LShop.OwnItemsCL .. "'s items.", "LShop_MoneyNotice", w * 0.99, h * 0.975, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( LShop.lang.GetValue_Replace( "LShop_InvMenu_Text_OwnItems", { #LShop.OwnItemsCL } ), "LShop_MoneyNotice", w * 0.99, h * 0.975, Color( 0, 0, 0, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 	end
 	
 	LShop.cl.SelectedMenu = 2
@@ -60,7 +60,7 @@ function LShop.cl.Menu02( parent, tab )
 				local Menu = DermaMenu()
 				if ( itemInformation ) then
 					if ( itemInformation.CanSell && LP:LShop_IsOwned( v.ID, v.Category ) ) then
-						Menu:AddOption("Sell", function() 
+						Menu:AddOption(LShop.lang.GetValue( "LShop_InvMenu_Button_Sell" ), function() 
 							net.Start("LShop_ItemSell")
 							net.WriteString( v.Category )
 							net.WriteString( v.ID )
@@ -70,7 +70,7 @@ function LShop.cl.Menu02( parent, tab )
 					end	
 					if ( itemInformation.CanEquip && LP:LShop_IsOwned( v.ID, v.Category ) ) then
 						if ( !LP:LShop_IsEquiped( v.ID, v.Category ) ) then
-							Menu:AddOption("Equip", function() 
+							Menu:AddOption(LShop.lang.GetValue( "LShop_InvMenu_Button_Equipped" ), function() 
 								net.Start("LShop_ItemEquip")
 								net.WriteString( v.Category )
 								net.WriteString( v.ID )
@@ -81,7 +81,7 @@ function LShop.cl.Menu02( parent, tab )
 							end
 							)
 						else
-							Menu:AddOption("Unequip", function() 
+							Menu:AddOption(LShop.lang.GetValue( "LShop_InvMenu_Button_Unequipped" ), function() 
 								net.Start("LShop_ItemEquip")
 								net.WriteString( v.Category )
 								net.WriteString( v.ID )
@@ -112,7 +112,7 @@ function LShop.cl.Menu02( parent, tab )
 						end
 					end
 				else
-					draw.SimpleText( "Can't use this item.", "LShop_Category_Text", w * 0.2, h * 0.5, Color( 255, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+					draw.SimpleText( LShop.lang.GetValue( "LShop_Error_2" ), "LShop_Category_Text", w * 0.2, h * 0.5, Color( 255, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 				end
 			end
 			

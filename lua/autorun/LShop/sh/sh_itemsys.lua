@@ -179,12 +179,12 @@ if ( SERVER ) then
 	end)
 	
 	net.Receive("LShop_Admin_ItemGive", function( len, cl )
-		LShop.system.ItemGive( net.ReadEntity(), net.ReadString(), net.ReadString() )
+		LShop.system.ItemGive( cl, net.ReadEntity(), net.ReadString(), net.ReadString() )
 		LShop.system.SendDBToPlayer( cl )
 	end)
 	
 	net.Receive("LShop_Admin_ItemTake", function( len, cl )
-		LShop.system.ItemTake( net.ReadEntity(), net.ReadString(), net.ReadString() )
+		LShop.system.ItemTake( cl, net.ReadEntity(), net.ReadString(), net.ReadString() )
 		LShop.system.SendDBToPlayer( cl )
 	end)
 	
@@ -211,11 +211,13 @@ if ( SERVER ) then
 	end
 	
 	function LShop.system.ItemSend( pl, target, itemID, category )
-		local curretMoney = target:LShop_GetMoney( )
+		local curretMoney = pl:LShop_GetMoney( )
 		local item = LShop.system.ItemFindByID( itemID, category )
 		local checkOwn = target:LShop_IsOwn( itemID, category )
 		if ( checkOwn ) then
-			LShop.core.Message( Color( 255, 255, 0 ), "Already own this item! : " .. target:Name() )
+			net.Start("LShop_SendMessage")
+			net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_5", { target:Name(), item.Name } ) )
+			net.Send( pl )
 			return
 		end
 		if ( item ) then
@@ -226,16 +228,17 @@ if ( SERVER ) then
 				end
 				pl:LShop_TakeMoney( item.Price )
 				net.Start("LShop_SendMessage")
-				net.WriteString( "You gift to " .. target:Name() .. " player." )
+				net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_6", { target:Name(), item.Name } ) )
 				net.Send( pl )
+				
 				net.Start("LShop_SendMessage")
-				net.WriteString( pl:Name() .. " gift to item!" )
+				net.WriteString( LShop.lang.GetValue_Replace( target, "LShop_Notice_7", { pl:Name(), item.Name } ) )
 				net.Send( target )
 				LShop.core.Message( Color( 0, 255, 0 ), "Item send : " .. target:SteamID() )
 				return			
 			else
 				net.Start("LShop_SendMessage")
-				net.WriteString( "Not enough money!" )
+				net.WriteString( LShop.lang.GetValue( pl, "LShop_Notice_3" ) )
 				net.Send( pl )			
 			end
 		else
@@ -243,15 +246,16 @@ if ( SERVER ) then
 		end
 	end
 	
-	function LShop.system.ItemGive( target, itemID, category )
+	function LShop.system.ItemGive( pl, target, itemID, category )
 		local curretMoney = target:LShop_GetMoney( )
 		local item = LShop.system.ItemFindByID( itemID, category )
 		local checkOwn = target:LShop_IsOwn( itemID, category )
+		
 		if ( checkOwn ) then
-			if ( item.UseTillDeath ) then
-				LShop.core.Message( Color( 255, 255, 0 ), "Already own this item! : " .. target:SteamID() )
-				return
-			end
+			net.Start("LShop_SendMessage")
+			net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_5", { target:Name(), item.Name } ) )
+			net.Send( pl )
+			return
 		end
 		if ( item ) then
 				if ( !item.UseTillDeath ) then
@@ -263,6 +267,9 @@ if ( SERVER ) then
 									item.Buyed( item, target )
 								end
 								LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
+								net.Start("LShop_SendMessage")
+								net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_10", { target:Name(), item.Name } ) )
+								net.Send( pl )
 								return
 							end
 						end
@@ -272,6 +279,9 @@ if ( SERVER ) then
 							item.Buyed( item, target )
 						end
 						LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
+						net.Start("LShop_SendMessage")
+						net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_10", { target:Name(), item.Name } ) )
+						net.Send( pl )
 						return
 					end
 				else
@@ -283,6 +293,9 @@ if ( SERVER ) then
 									item.Buyed( item, target )
 								end
 								LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
+								net.Start("LShop_SendMessage")
+								net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_10", { target:Name(), item.Name } ) )
+								net.Send( pl )
 								return
 							end
 						end
@@ -292,6 +305,9 @@ if ( SERVER ) then
 							item.Buyed( item, target )
 						end
 						LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
+						net.Start("LShop_SendMessage")
+						net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_10", { target:Name(), item.Name } ) )
+						net.Send( pl )
 						return
 					end
 				end
@@ -300,21 +316,27 @@ if ( SERVER ) then
 		end
 	end
 	
-	function LShop.system.ItemTake( target, itemID, category )
+	function LShop.system.ItemTake( pl, target, itemID, category )
 		local item = LShop.system.ItemFindByID( itemID, category )
 		local checkOwn = target:LShop_IsOwn( itemID, category )
 		if ( checkOwn ) then
 			target:LShop_ItemRemoveInventory( itemID, category )
+			net.Start("LShop_SendMessage")
+			net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_8", { item.Name } ) )
+			net.Send( pl )
 			LShop.core.Message( Color( 0, 255, 0 ), "Item take : " .. target:SteamID() )
 			if ( item.Selled ) then
 				item.Selled( item, target )
 			end
 		else
 			LShop.core.Message( Color( 255, 255, 0 ), "Not own this item! : " .. target:SteamID() )
+			net.Start("LShop_SendMessage")
+			net.WriteString( LShop.lang.GetValue( pl, "LShop_Notice_9" ) )
+			net.Send( pl )
 		end	
 	end
 	
-	local Player = FindMetaTable('Player')
+	local Player = FindMetaTable("Player")
 	
 	function Player:LShop_ItemBuyProgress( itemID, category )
 		
@@ -326,7 +348,7 @@ if ( SERVER ) then
 			if ( item.UseTillDeath ) then
 				if ( !item.CanUnLimitedBuy ) then
 					net.Start("LShop_SendMessage")
-					net.WriteString( "You already own this item. : " .. itemID )
+					net.WriteString( LShop.lang.GetValue_Replace( self, "LShop_Notice_4", { item.Name } ) )
 					net.Send( self )
 					return
 				end
@@ -342,7 +364,7 @@ if ( SERVER ) then
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 						self:LShop_TakeMoney( price )
 						net.Start("LShop_SendMessage")
-						net.WriteString( "You buying this item." )
+						net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_1" ) )
 						net.Send( self )
 						if ( item.Buyed ) then
 							item.Buyed( item, self )
@@ -355,7 +377,7 @@ if ( SERVER ) then
 								self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 								self:LShop_TakeMoney( price )
 								net.Start("LShop_SendMessage")
-								net.WriteString( "You buying this item." )
+								net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_1" ) )
 								net.Send( self )
 								if ( item.Buyed ) then
 									item.Buyed( item, self )
@@ -367,7 +389,7 @@ if ( SERVER ) then
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 						self:LShop_TakeMoney( price )
 						net.Start("LShop_SendMessage")
-						net.WriteString( "You buying this item." )
+						net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_1" ) )
 						net.Send( self )
 						if ( item.Buyed ) then
 							item.Buyed( item, self )
@@ -381,7 +403,7 @@ if ( SERVER ) then
 								self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 								self:LShop_TakeMoney( price )
 								net.Start("LShop_SendMessage")
-								net.WriteString( "You buying this item." )
+								net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_1" ) )
 								net.Send( self )
 								if ( item.Buyed ) then
 									item.Buyed( item, self )
@@ -393,7 +415,7 @@ if ( SERVER ) then
 						self.OwnItems[ #self.OwnItems + 1 ] = { ID = itemID, Category = category, onEquip = true }
 						self:LShop_TakeMoney( price )
 						net.Start("LShop_SendMessage")
-						net.WriteString( "You buying this item." )
+						net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_1" ) )
 						net.Send( self )
 						if ( item.Buyed ) then
 							item.Buyed( item, self )
@@ -403,7 +425,7 @@ if ( SERVER ) then
 				end
 			else
 				net.Start("LShop_SendMessage")
-				net.WriteString( "Not enough money!" )
+				net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_3" ) )
 				net.Send( self )
 			end
 		else
@@ -424,7 +446,7 @@ if ( SERVER ) then
 			end
 			
 			net.Start("LShop_SendMessage")
-			net.WriteString( "You selling this item." )
+			net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_2" ) )
 			net.Send( self )
 			if ( item.Selled ) then
 				item.Selled( item, self )
@@ -439,7 +461,7 @@ if ( SERVER ) then
 				if ( v.ID == itemID ) then
 					return true
 				else
-					if ( i == #v ) then
+					if ( k == #self.OwnItems ) then
 						return nil
 					end
 				end
@@ -448,7 +470,7 @@ if ( SERVER ) then
 			return nil
 		end
 	end
-	
+
 	function Player:IsEquiped( itemID, category )
 		local id = LShop.system.ItemFindByID( tostring( itemID ), category )
 		if ( id ) then
@@ -531,25 +553,30 @@ if ( SERVER ) then
 		file.Write("Lshop/" .. dirName .. "/Money.txt", tostring( self.Money ))
 		LShop.core.Message( Color( 0, 255, 0 ), "Player data saved : " .. self:SteamID() )
 	end
-	
+
 	function Player:LShop_LoadData()
 		local dirName = string.Replace( self:SteamID(), ":", "_" )
 		if ( file.Exists("Lshop/" .. dirName .. "/Ownitems.txt", "DATA") ) then
 			if ( file.Exists("Lshop/" .. dirName .. "/Money.txt", "DATA") ) then
 				local money = file.Read("Lshop/" .. dirName .. "/Money.txt", "DATA") or 0
 				local ownitems = file.Read("Lshop/" .. dirName .. "/Ownitems.txt", "DATA") or "[]"
-				self.Money = tonumber( money )
-				self.OwnItems = util.JSONToTable( ownitems )
-				LShop.core.Message( Color( 0, 255, 0 ), "Player data loaded : " .. self:SteamID() )
+				if ( ownitems != "" ) then
+					self.Money = tonumber( money )
+					self.OwnItems = util.JSONToTable( ownitems )
+					LShop.core.Message( Color( 0, 255, 0 ), "Player data loaded : " .. self:SteamID() )
+				else
+					self.Money = 0
+					self.OwnItems = {}				
+				end
 			else
 				self.Money = 0
 				self.OwnItems = {}
-				--self:LShop_SaveData()
+				self:LShop_SaveData()
 			end
 		else
 			self.Money = 0
 			self.OwnItems = {}
-			--self:LShop_SaveData()
+			self:LShop_SaveData()
 		end
 	end
 
@@ -611,7 +638,6 @@ if ( SERVER ) then
 	hook.Add("PlayerDisconnected", "LShop_PlayerDisconnected", function( pl ) pl:LShop_PlayerDisconnected() end)
 	hook.Add("PlayerAuthed", "LShop_PlayerAuthed", function( pl ) pl:LShop_PlayerAuthed() end)
 	
-
 	net.Receive("LShop_ItemBuy", function( len, cl )
 		local category = net.ReadString()
 		local itemID = net.ReadString()
@@ -653,12 +679,12 @@ if ( SERVER ) then
 					v.onEquip = tobool( bool )
 					if ( v.onEquip == true ) then 
 						net.Start("LShop_SendMessage")
-						net.WriteString( "You equipped this item." )
+						net.WriteString( LShop.lang.GetValue( "LShop_Notice_11" ) )
 						net.Send( self )
 					else
 						net.Start("LShop_SendMessage")
-						net.WriteString( "You unequipped this item." )
-						net.Send( self )					
+						net.WriteString( LShop.lang.GetValue( "LShop_Notice_12" ) )
+						net.Send( self )
 					end
 					if ( v.onEquip ) then
 						id.Equipped( id, self )
@@ -670,7 +696,7 @@ if ( SERVER ) then
 				else				
 					if ( k == #self.OwnItems ) then
 						net.Start("LShop_SendMessage")
-						net.WriteString( "You not own this item!!!" )
+						net.WriteString( LShop.lang.GetValue( "LShop_Error_2" ) )
 						net.Send( self )
 						return
 					end

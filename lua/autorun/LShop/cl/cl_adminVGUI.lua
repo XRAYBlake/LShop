@@ -8,16 +8,13 @@ local function BuildMenuGive( parent, target )
 		end)
 		
 		for i= 1, #items do
-			local ownitems = target:LShop_IsOwned( items[i].ID, items[i].Category )
-			if ( !ownitems ) then
-				category:AddOption( items[i].Name, function()
-					net.Start("LShop_Admin_ItemGive")
-					net.WriteEntity( target )
-					net.WriteString( items[i].ID )
-					net.WriteString( items[i].Category )
-					net.SendToServer()
-				end)
-			end
+			category:AddOption( items[i].Name, function()
+				net.Start("LShop_Admin_ItemGive")
+				net.WriteEntity( target )
+				net.WriteString( items[i].ID )
+				net.WriteString( items[i].Category )
+				net.SendToServer()
+			end)
 		end
 	end
 end
@@ -31,16 +28,13 @@ local function BuildMenuTake( parent, target )
 		end)
 
 		for i= 1, #items do
-			local ownitems = target:LShop_IsOwned( items[i].ID, items[i].Category )
-			if ( ownitems ) then
-				category:AddOption( items[i].Name, function()
-					net.Start("LShop_Admin_ItemTake")
-					net.WriteEntity( target )
-					net.WriteString( items[i].ID )
-					net.WriteString( items[i].Category )
-					net.SendToServer()				
-				end)
-			end
+			category:AddOption( items[i].Name, function()
+				net.Start("LShop_Admin_ItemTake")
+				net.WriteEntity( target )
+				net.WriteString( items[i].ID )
+				net.WriteString( items[i].Category )
+				net.SendToServer()				
+			end)
 		end
 	end
 end
@@ -73,8 +67,7 @@ local function PlayerManagerMenu( v )
 		
 		draw.SimpleText( v:Name() .. " Player Manager", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 	end
-	
-	print( v )
+
 	
 	local Bx, By = LShop_PlayerManager_w - 40, LShop_PlayerManager_h - 40
 
@@ -141,7 +134,7 @@ function LShop.cl.Admin( parent, tab )
 		draw.RoundedBox( 0, 0, 0, w, 2, Color( 0, 0, 0, 255 ) )
 		draw.RoundedBox( 0, 0, h - 2, w, 2, Color( 0, 0, 0, 255 ) )
 		
-		draw.SimpleText( "Administrator", "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( LShop.lang.GetValue( "LShop_MainButton_Admin" ), "LShop_MainTitle", w * 0.01, h * 0.05, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 	end
 	
 	local Menus = vgui.Create( "LShop_PropertySheet", LShop_AdminPanel )
@@ -153,18 +146,27 @@ function LShop.cl.Admin( parent, tab )
 	local Menu1Panel = vgui.Create("DPanel")
 	Menu1Panel:Dock( FILL )
 	Menu1Panel.Paint = function( panel, w, h ) 
-		surface.SetDrawColor( 10, 10, 10, 50 )
+		surface.SetDrawColor( 10, 10, 10, 20 )
 		surface.DrawRect( 0, 0, w, h )	
 		
 		draw.SimpleText( #player.GetAll() .. "/" .. game.MaxPlayers(), "LShop_SubTitle", w * 0.01, h * 0.95, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		
-		draw.SimpleText( "You can now set other players money, items.", "LShop_Category_Text", w * 0.1, h * 0.95, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( LShop.lang.GetValue( "LShop_AdminMenu_Menu01_Help" ), "LShop_Category_Text", w * 0.1, h * 0.95, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 	end
 	
 	local Menu2Panel = vgui.Create("DPanel")
 	Menu2Panel:Dock( FILL )
 	Menu2Panel.Paint = function( panel, w, h ) 
-		surface.SetDrawColor( 10, 10, 10, 50 )
+		surface.SetDrawColor( 10, 10, 10, 20 )
+		surface.DrawRect( 0, 0, w, h )	
+		
+		draw.SimpleText( LShop.lang.GetValue( "LShop_AdminMenu_Menu02_Notice" ), "LShop_Category_Text", w * 0.5, h * 0.5, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+	end
+	
+	local Menu3Panel = vgui.Create("DPanel")
+	Menu3Panel:Dock( FILL )
+	Menu3Panel.Paint = function( panel, w, h ) 
+		surface.SetDrawColor( 10, 10, 10, 20 )
 		surface.DrawRect( 0, 0, w, h )	
 		
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.5, h * 0.1, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
@@ -176,44 +178,28 @@ function LShop.cl.Admin( parent, tab )
 		--draw.SimpleText( "https://github.com/SolarTeam/LShop", "LShop_MoneyNotice", w * 0.5, h * 0.85, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 	end
 	
-	Menus:AddSheet( "Player Manage", Menu1Panel, "icon16/user.png", 
+	Menus:AddSheet( LShop.lang.GetValue( "LShop_AdminMenu_Menu01_Title" ), Menu1Panel, "icon16/user.png", 
 	false, false, false )
-	Menus:AddSheet( "Information", Menu2Panel, "icon16/information.png", 
+	Menus:AddSheet( LShop.lang.GetValue( "LShop_AdminMenu_Menu02_Title" ), Menu2Panel, "icon16/new.png", 
+	false, false, false )
+	Menus:AddSheet( LShop.lang.GetValue( "LShop_AdminMenu_Menu03_Title" ), Menu3Panel, "icon16/information.png", 
 	false, false, false )
 	
-	Menu2Panel.Button1 = vgui.Create( "DButton", Menu2Panel )    
-	Menu2Panel.Button1:SetText( "Contact us" )  
-	Menu2Panel.Button1:SetFont("LShop_ButtonText")
-	Menu2Panel.Button1:Dock( BOTTOM )
-	Menu2Panel.Button1:SetTall( 30 )
-	Menu2Panel.Button1:SetColor(Color( 0, 0, 0, 255 ))
-	Menu2Panel.Button1.DoClick = function(  )
+	Menu3Panel.Button1 = vgui.Create( "DButton", Menu3Panel )    
+	Menu3Panel.Button1:SetText( LShop.lang.GetValue( "LShop_AdminMenu_Button_ContactUS" ) )  
+	Menu3Panel.Button1:SetFont("LShop_ButtonText")
+	Menu3Panel.Button1:Dock( BOTTOM )
+	Menu3Panel.Button1:SetTall( 30 )
+	Menu3Panel.Button1:SetColor(Color( 0, 0, 0, 255 ))
+	Menu3Panel.Button1.DoClick = function(  )
 		surface.PlaySound( "ui/buttonclick.wav" )
 		gui.OpenURL( "http://steamcommunity.com/profiles/76561198011675377" )
 	end
-	Menu2Panel.Button1.Paint = function()
-		local w = Menu2Panel.Button1:GetWide()
-		local h = Menu2Panel.Button1:GetTall()
+	Menu3Panel.Button1.Paint = function()
+		local w = Menu3Panel.Button1:GetWide()
+		local h = Menu3Panel.Button1:GetTall()
 		
 		surface.SetDrawColor( 10, 10, 10, 30 )
-		surface.DrawRect( 0, 0, w, h )
-	end
-	
-	Menu2Panel.Button2 = vgui.Create( "DButton", Menu2Panel )    
-	Menu2Panel.Button2:SetText( "Open Github" )  
-	Menu2Panel.Button2:SetFont("LShop_ButtonText")
-	Menu2Panel.Button2:Dock( BOTTOM )
-	Menu2Panel.Button2:SetTall( 30 )
-	Menu2Panel.Button2:SetColor(Color( 0, 0, 0, 255 ))
-	Menu2Panel.Button2.DoClick = function(  )
-		surface.PlaySound( "ui/buttonclick.wav" )
-		gui.OpenURL( "https://github.com/SolarTeam/LShop/" )
-	end
-	Menu2Panel.Button2.Paint = function()
-		local w = Menu2Panel.Button2:GetWide()
-		local h = Menu2Panel.Button2:GetTall()
-		
-		surface.SetDrawColor( 10, 255, 10, 30 )
 		surface.DrawRect( 0, 0, w, h )
 	end
 	
@@ -242,10 +228,10 @@ function LShop.cl.Admin( parent, tab )
 			list.DoClick = function()
 				if ( LShop.Config.PermissionCheck( LP ) ) then
 					local Menu = DermaMenu()
-					Menu:AddOption( "Money Set", function()
+					Menu:AddOption( LShop.lang.GetValue( "LShop_AdminMenu_Button_MoneySet" ), function()
 						Derma_StringRequest(
-							v:Name() .. " 's money set.",
-							"How set ammount target money?",
+							LShop.lang.GetValue_Replace( "LShop_AdminMenu_MoneySet_StringRequest_Title", { v:Name() } ),
+							LShop.lang.GetValue( "LShop_AdminMenu_MoneySet_StringRequest_Value" ),
 							v:LShop_GetMoney(),
 							function( str )
 								if ( !str ) then
@@ -262,8 +248,8 @@ function LShop.cl.Admin( parent, tab )
 							end
 						)					
 					end)
-					BuildMenuGive( Menu:AddSubMenu( "Item Give" ), v )
-					BuildMenuTake( Menu:AddSubMenu( "Item Take" ), v )
+					BuildMenuGive( Menu:AddSubMenu( LShop.lang.GetValue( "LShop_AdminMenu_Button_GiveItem" ) ), v )
+					BuildMenuTake( Menu:AddSubMenu( LShop.lang.GetValue( "LShop_AdminMenu_Button_TakeItem" ) ), v )
 					Menu:Open()
 				else
 					LShop.cl.SelectedMenu = nil
