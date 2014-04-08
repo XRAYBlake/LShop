@@ -679,11 +679,11 @@ if ( SERVER ) then
 					v.onEquip = tobool( bool )
 					if ( v.onEquip == true ) then 
 						net.Start("LShop_SendMessage")
-						net.WriteString( LShop.lang.GetValue( "LShop_Notice_11" ) )
+						net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_11" ) )
 						net.Send( self )
 					else
 						net.Start("LShop_SendMessage")
-						net.WriteString( LShop.lang.GetValue( "LShop_Notice_12" ) )
+						net.WriteString( LShop.lang.GetValue( self, "LShop_Notice_12" ) )
 						net.Send( self )
 					end
 					if ( v.onEquip ) then
@@ -696,7 +696,7 @@ if ( SERVER ) then
 				else				
 					if ( k == #self.OwnItems ) then
 						net.Start("LShop_SendMessage")
-						net.WriteString( LShop.lang.GetValue( "LShop_Error_2" ) )
+						net.WriteString( LShop.lang.GetValue( self, "LShop_Error_2" ) )
 						net.Send( self )
 						return
 					end
