@@ -696,7 +696,7 @@ if ( SERVER ) then
 				else				
 					if ( k == #self.OwnItems ) then
 						net.Start("LShop_SendMessage")
-						net.WriteString( LShop.lang.GetValue( self, "LShop_Error_2" ) )
+						net.WriteString( LShop.lang.GetValue( "LShop_Error_2" ) )
 						net.Send( self )
 						return
 					end

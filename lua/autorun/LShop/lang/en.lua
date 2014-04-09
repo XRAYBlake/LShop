@@ -30,8 +30,8 @@ return {
 	["LShop_AdminMenu_Menu01_Help"] = "You can now set other players money, items.",
 	
 	["LShop_AdminMenu_Menu01_Title"] = "Player Manage",
-	["LShop_AdminMenu_Menu02_Title"] = "Program Update",
-	["LShop_AdminMenu_Menu03_Title"] = "Program Information",
+	["LShop_AdminMenu_Menu02_Title"] = "Software Update",
+	["LShop_AdminMenu_Menu03_Title"] = "Software Information",
 	
 	["LShop_AdminMenu_Menu02_Notice"] = "Development ...",
 	

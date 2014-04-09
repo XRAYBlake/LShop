@@ -33,8 +33,8 @@ return {
 	["LShop_AdminMenu_Menu01_Help"] = "다른 사람의 돈과 아이템을 설정할 수 있습니다.",
 	
 	["LShop_AdminMenu_Menu01_Title"] = "플레이어 관리",
-	["LShop_AdminMenu_Menu02_Title"] = "프로그램 업데이트",
-	["LShop_AdminMenu_Menu03_Title"] = "프로그램 정보",
+	["LShop_AdminMenu_Menu02_Title"] = "소프트웨어 업데이트",
+	["LShop_AdminMenu_Menu03_Title"] = "소프트웨어 정보",
 	
 	["LShop_AdminMenu_Menu02_Notice"] = "현재 이 시스템은 개발중 입니다 ...",
 	
