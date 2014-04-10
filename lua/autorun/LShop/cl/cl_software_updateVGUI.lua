@@ -3,18 +3,59 @@ function LShop.cl.SU_update( )
 	local scrW, scrH = ScrW(), ScrH()
 	local LShop_su_update_w, LShop_su_update_h = scrW, scrH
 	local LShop_su_update_x, LShop_su_update_y = scrW / 2 - LShop_su_update_w / 2, scrH / 2 - LShop_su_update_h / 2;
-	local notify = {}
-	local Ani = 0
-	local AniFunc = false
+	local noticeBuffer = {}
+	local ani = 0
+	local Percent = 0
+	local Percent_Ani = 0
+	
+	local function addnotice( text, color )
+		local tables = { 
+			Text = "", 
+			NextChar = 0, 
+			Char = "",
+			Color = color
+		}
+		
+		local index = table.insert( noticeBuffer, tables )
+		local i = 1
+
+		timer.Create("LShop_scroll_notices_su_" .. tostring( tables ), 0.05, #text, function()
+			if (tables) then
+				tables.Text = string.sub( text, 1, i )
+				i = i + 1
+				
+				if ( i >= #text ) then
+					tables.Char = ""
+					tables.StartTime = CurTime() + 1
+					tables.FinishTime = CurTime() + 10
+				end
+			end
+		end)
+	end
+
 	net.Receive( "LShop_SU_SoftwareUpdate_ProgressMessage", function( len, cl )
 		local msg = net.ReadString()
-		notify[ #notify + 1 ] = {
-			Text = msg,
-			Time = CurTime() + 3,
-			Alpha = 255
-		}
+		if ( string.match( msg, "*" ) ) then
+			addnotice( msg, Color( 255, 0, 0 ) )
+			surface.PlaySound( "buttons/combine_button_locked.wav" )
+			return
+		end
+		
+		if ( string.match( msg, "+" ) ) then
+			addnotice( msg, Color( 0, 255, 0 ) )
+			surface.PlaySound( "buttons/combine_button7.wav" )
+			return
+		end	
+		
+		addnotice( msg, Color( 255, 255, 255 ) )
+		surface.PlaySound( "buttons/combine_button1.wav" )
 	end)
-
+	
+	net.Receive( "LShop_SU_SoftwareUpdate_PercentCL", function( len, cl )
+		local percent = net.ReadString()
+		Percent = tonumber( percent ) / 100
+	end)
+	
 	if ( !LShop_su_update ) then
 	LShop_su_update = vgui.Create("DFrame", parent)
 	LShop_su_update:SetPos( LShop_su_update_x , LShop_su_update_y )
@@ -34,43 +75,56 @@ function LShop.cl.SU_update( )
 		local y = LShop_su_update_y
 		local w = LShop_su_update_w
 		local h = LShop_su_update_h
+
+		Percent_Ani = math.Approach( Percent_Ani, Percent, 0.001 )
 		
-		if ( Ani != w && !AniFunc ) then
-			Ani = math.Approach( Ani, w + w, 4 )
-		end
+		local sinAni = math.sin( CurTime() * 5 )
 		
-		if ( Ani >= w ) then
-			AniFunc = true
-		end
-		
-		if ( AniFunc ) then
-			Ani = math.Approach( Ani, 0, 4 )
-			if ( Ani == 0 ) then
-				AniFunc = false
+		if ( sinAni ) then
+			if ( Percent_Ani != 0 ) then
+				if ( Percent_Ani * 100 <= 90 ) then
+					ani = ( 10 / 1 ) * sinAni
+				else
+					ani = 0
+				end
 			end
 		end
-		
 		surface.SetDrawColor( 0, 0, 0, 255 )
 		surface.DrawRect( 0, 0, w, h )
 		
-		draw.RoundedBox( 0, 0, h - 10, Ani, 10, Color( 255, 255, 255, 255 ) )
+		surface.SetDrawColor( 50, 50, 50, 150 )
+		surface.SetMaterial( Material( "gui/gradient_up" ) )
+		surface.DrawTexturedRect( 0, 0, w, h )
 
-		draw.SimpleText( "Software Update", "LShop_MainTitle", w * 0.95, h * 0.05, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
-		draw.SimpleText( "Do not shutdown server!", "LShop_SubTitle", w * 0.95, h * 0.1, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+		draw.RoundedBox( 0, 0, h - 20, w * Percent_Ani + ani, 20, Color( 255, 255, 255, 255 ) )
+		
+		surface.SetDrawColor( 50, 50, 50, 200 )
+		surface.SetMaterial( Material( "gui/gradient" ) )
+		surface.DrawTexturedRect( 0, 0, w, 120 )
 
-		draw.SimpleText( "LShop Kernel " .. LShop.Config.Version, "LShop_Category_Text", w * 0.95, h * 0.95, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( "Software Update", "LShop_Intro_TeamText", w * 0.02, 30, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( "Version " .. LShop.Config.Version, "LShop_MoneyNotice", w * 0.02, 90, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		draw.SimpleText( "WARNING : Do not shutdown server!", "LShop_MoneyNotice", w * 0.02, 60, Color( 255, 100, 100, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
+		
+		draw.SimpleText( math.Round( Percent_Ani * 100 ) .. "%", "LShop_Intro_TeamText", w * Percent_Ani - 5 + ani, h - 40, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 
-		for k, v in pairs( notify ) do
-			local t = #notify + 1
-			if ( v.Time <= CurTime() ) then
-				v.Alpha = math.Approach( v.Alpha, 0, 2 )
-				if ( v.Alpha <= 0 ) then
-					table.remove( notify, k )
-				end			
+		for k, v in pairs( noticeBuffer ) do
+			local alpha = 255
+
+			if ( v.StartTime and v.FinishTime ) then
+				alpha = 255 - math.Clamp( math.TimeFraction( v.StartTime, v.FinishTime, CurTime() ) * 255, 0, 255 )
+			elseif ( v.NextChar < CurTime() ) then
+				v.NextChar = CurTime() + 0.1
+				v.Char = string.char( math.random( 47, 90 ) )
 			end
-			
-			draw.SimpleText( v.Text, "LShop_Category_Text", w * 0.05, h * 0.95 - 30 * ( t - k ), Color( 255, 255, 255, v.Alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )			
-		end
+			local t = #noticeBuffer + 1
+
+			draw.SimpleText( v.Text .. v.Char, "LShop_SU_Notice", w * 0.95, h * 0.95 - 30 * ( t - k ), Color( v.Color.r, v.Color.g, v.Color.b, alpha ), TEXT_ALIGN_RIGHT )
+
+			if ( alpha == 0 ) then
+				table.remove( noticeBuffer, k )
+			end
+		end	
 	end
 	
 	else
@@ -99,7 +153,7 @@ function LShop.cl.SU_software_download( newver, changelog )
 	end)
 	
 	net.Receive( "LShop_SU_SoftwareUpdate_STOP", function( len, cl )
-		LShop.SU.CheckNewUpdate( cl )
+
 	end)
 
 	
