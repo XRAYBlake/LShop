@@ -1,6 +1,6 @@
 LShop.Config = LShop.Config or {}
 
-LShop.Config.Version = "1.5.1" -- Do not edit this!
+LShop.Config.Version = "1.5.2" -- Do not edit this!
 
 LShop.Config.OpenCommand = "LShop_open" -- Shop open command in console.
 LShop.Config.OpenKey = "F4" -- Key to open Shop.
