@@ -1,5 +1,13 @@
 
-require("fileio")
+if ( !fileio ) then
+	require("fileio")
+	
+	if ( fileio ) then
+		LShop.core.Message( Color( 0, 255, 0 ), "FileIO Module load. - Module by 'AlexGrist'" )
+	else
+		LShop.core.Message( Color( 255, 0, 0 ), "FileIO Module load failed. - Please reinstall FileIO Module ;o" )
+	end
+end
 
 LShop.SU = LShop.SU or {}
 
