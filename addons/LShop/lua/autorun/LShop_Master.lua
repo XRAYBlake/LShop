@@ -1,4 +1,3 @@
-
 if ( SERVER ) then
 	AddCSLuaFile( "autorun/LShop/cl_core.lua" )
 	include( "LShop/sv_core.lua" )

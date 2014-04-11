@@ -7,5 +7,4 @@
 	"author_email"			"smhjyh2009@gmail.com"
 	"author_url"			""
 	"info"				"A Shop system for Garry's Mod."
-	"override"			"0"
-}
+	"override"			"0"}

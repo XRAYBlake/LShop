@@ -1,7 +1,6 @@
 /// LShop ///
-Copyright ( C ) 2014 by 'Solar Team' - Team Leader : L7D
-
+Copyright ( C ) 2014 by 'Solar Team' - Team Leader : L7D
 
 * FileIO Module copyright
 Copyright ( C ) 2013 by 'Alex Grist-Hucker'
-Github Link : https://github.com/alexgrist/gmsv_fileio
+Github Link : https://github.com/alexgrist/gmsv_fileioThanks for using LShop!Your best friend - L7D.
