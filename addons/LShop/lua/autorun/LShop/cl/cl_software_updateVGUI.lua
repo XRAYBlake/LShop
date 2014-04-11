@@ -7,6 +7,8 @@ function LShop.cl.SU_update( )
 	local ani = 0
 	local Percent = 0
 	local Percent_Ani = 0
+	local progressAni_1 = 0
+	local progressAni_2 = 0
 	
 	local function addnotice( text, color )
 		local tables = { 
@@ -89,19 +91,28 @@ function LShop.cl.SU_update( )
 				end
 			end
 		end
+		
+		progressAni_1 = progressAni_1 - 1
+		
 		surface.SetDrawColor( 0, 0, 0, 255 )
 		surface.DrawRect( 0, 0, w, h )
 		
 		surface.SetDrawColor( 50, 50, 50, 150 )
 		surface.SetMaterial( Material( "gui/gradient_up" ) )
 		surface.DrawTexturedRect( 0, 0, w, h )
+		
+		local sinAni2 = math.sin( CurTime() * 4 )
+		
+		if ( sinAni2 ) then
+			progressAni_2 = ( 20 / 1 ) * sinAni2
+		end
 
 		draw.RoundedBox( 0, 0, h - 20, w * Percent_Ani + ani, 20, Color( 255, 255, 255, 255 ) )
 		
 		surface.SetDrawColor( 50, 50, 50, 200 )
 		surface.SetMaterial( Material( "gui/gradient" ) )
 		surface.DrawTexturedRect( 0, 0, w, 120 )
-
+		
 		draw.SimpleText( "Software Update", "LShop_Intro_TeamText", w * 0.02, 30, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "Version " .. LShop.Config.Version, "LShop_MoneyNotice", w * 0.02, 90, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "WARNING : Do not shutdown server!", "LShop_MoneyNotice", w * 0.02, 60, Color( 255, 100, 100, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )

@@ -1,0 +1,10 @@
+Welcome to LShop!
+
+addons/
+lua/
+
+insert to 
+
+Server File/garrysmod/
+
+Thanks using LShop!

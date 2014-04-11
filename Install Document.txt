@@ -1,9 +1,0 @@
-You must insert module file!
-
-/Install This/gmsv_fileio_win32.dll
-
-insert to
-
-garrysmod/lua/bin/
-
-Thank you :)
