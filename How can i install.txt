@@ -1,13 +1,23 @@
 Welcome to LShop!
+
 You use install program for install LShop, you can install so simple!
+
 
 Run this program, ' LShop_Install.exe '
 
+
+
 * WARNING
+
 You are use Install program, please setting by this install directory
 
+
 ServerFile/garrysmod/
+
 Example : C:\server\garrysmod
 
+
+
 Thanks for using LShop!
+
 Your best friend - L7D.
