@@ -13,16 +13,24 @@ LShop.system.ItemRegister( {
 	Desc = "This is Crowbar, it's simple!",
 	Model = "models/weapons/w_crowbar.mdl",
 	Buyed = function( item, ply )
-		ply:Give( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:Give( item.Weapon_ID )
+		end
 	end,
 	Selled = function( item, ply )
-		ply:StripWeapon( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:StripWeapon( item.Weapon_ID )
+		end
 	end,
 	Equipped = function( item, ply )
-		ply:Give( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:Give( item.Weapon_ID )
+		end
 	end,
 	Unequipped = function( item, ply )
-		ply:StripWeapon( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:StripWeapon( item.Weapon_ID )
+		end
 	end
 } )
 
@@ -41,16 +49,24 @@ LShop.system.ItemRegister( {
 	Desc = "This is Pistol, it's simple!",
 	Model = "models/weapons/W_pistol.mdl",
 	Buyed = function( item, ply )
-		ply:Give( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:Give( item.Weapon_ID )
+		end
 	end,
 	Selled = function( item, ply )
-		ply:StripWeapon( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:StripWeapon( item.Weapon_ID )
+		end
 	end,
 	Equipped = function( item, ply )
-		ply:Give( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:Give( item.Weapon_ID )
+		end
 	end,
 	Unequipped = function( item, ply )
-		ply:StripWeapon( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:StripWeapon( item.Weapon_ID )
+		end
 	end
 } )
 
@@ -69,16 +85,24 @@ LShop.system.ItemRegister( {
 	Desc = "This is SMG, it's simple!",
 	Model = "models/weapons/w_smg1.mdl",
 	Buyed = function( item, ply )
-		ply:Give( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:Give( item.Weapon_ID )
+		end
 	end,
 	Selled = function( item, ply )
-		ply:StripWeapon( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:StripWeapon( item.Weapon_ID )
+		end
 	end,
 	Equipped = function( item, ply )
-		ply:Give( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:Give( item.Weapon_ID )
+		end
 	end,
 	Unequipped = function( item, ply )
-		ply:StripWeapon( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:StripWeapon( item.Weapon_ID )
+		end
 	end
 } )
 
@@ -97,15 +121,23 @@ LShop.system.ItemRegister( {
 	Desc = "This is AR2, it's simple!",
 	Model = "models/weapons/w_irifle.mdl",
 	Buyed = function( item, ply )
-		ply:Give( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:Give( item.Weapon_ID )
+		end
 	end,
 	Selled = function( item, ply )
-		ply:StripWeapon( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:StripWeapon( item.Weapon_ID )
+		end
 	end,
 	Equipped = function( item, ply )
-		ply:Give( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:Give( item.Weapon_ID )
+		end
 	end,
 	Unequipped = function( item, ply )
-		ply:StripWeapon( item.Weapon_ID )
+		if ( SERVER ) then
+			ply:StripWeapon( item.Weapon_ID )
+		end
 	end
 } )

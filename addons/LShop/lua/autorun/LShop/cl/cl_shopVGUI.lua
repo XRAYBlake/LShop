@@ -111,7 +111,7 @@ function LShop.cl.ItemRunProgress( itemID, category )
 		if ( Find.Material ) then
 			surface.SetMaterial( Material( Find.Material ) )
 			surface.SetDrawColor( Color( 255, 255, 255, 255 ) )
-			surface.DrawTexturedRect( w / 2 - w * 0.95 / 2, h * 0.15, w * 0.95, h * 0.45 )		
+			surface.DrawTexturedRect( w / 2 - w * 0.3 / 2, h * 0.15, w * 0.3, h * 0.45 )		
 		end
 	end
 	

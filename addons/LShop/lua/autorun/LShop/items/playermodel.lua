@@ -11,22 +11,30 @@ LShop.system.ItemRegister( {
 	Desc = "This is Doctor Kliner model!",
 	Model = "models/player/kleiner.mdl",
 	Buyed = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+		if ( SERVER ) then
+			if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
+				ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+			end
+			ply:SetModel( item.Model )
 		end
-		ply:SetModel( item.Model )
 	end,
 	Selled = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		if ( SERVER ) then
+			ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		end
 	end,
 	Equipped = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+		if ( SERVER ) then
+			if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
+				ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+			end
+			ply:SetModel( item.Model )
 		end
-		ply:SetModel( item.Model )
 	end,
 	Unequipped = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		if ( SERVER ) then
+			ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		end
 	end
 } )
 
@@ -43,22 +51,30 @@ LShop.system.ItemRegister( {
 	Desc = "This is Alyx model!",
 	Model = "models/player/alyx.mdl",
 	Buyed = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+		if ( SERVER ) then
+			if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
+				ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+			end
+			ply:SetModel( item.Model )
 		end
-		ply:SetModel( item.Model )
 	end,
 	Selled = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		if ( SERVER ) then
+			ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		end
 	end,
 	Equipped = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+		if ( SERVER ) then
+			if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
+				ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+			end
+			ply:SetModel( item.Model )
 		end
-		ply:SetModel( item.Model )
 	end,
 	Unequipped = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		if ( SERVER ) then
+			ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		end
 	end
 } )
 
@@ -75,21 +91,29 @@ LShop.system.ItemRegister( {
 	Desc = "This is Breen model!",
 	Model = "models/player/breen.mdl",
 	Buyed = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+		if ( SERVER ) then
+			if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
+				ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+			end
+			ply:SetModel( item.Model )
 		end
-		ply:SetModel( item.Model )
 	end,
 	Selled = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		if ( SERVER ) then
+			ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		end
 	end,
 	Equipped = function( item, ply )
-		if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
-			ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+		if ( SERVER ) then
+			if ( ply:GetNWString("LShop_Oldmodel") == "" ) then
+				ply:SetNWString("LShop_Oldmodel", ply:GetModel())
+			end
+			ply:SetModel( item.Model )
 		end
-		ply:SetModel( item.Model )
 	end,
 	Unequipped = function( item, ply )
-		ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		if ( SERVER ) then
+			ply:SetModel( ply:GetNWString("LShop_Oldmodel") )
+		end
 	end
 } )

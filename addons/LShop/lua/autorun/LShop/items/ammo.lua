@@ -15,16 +15,24 @@ LShop.system.ItemRegister( {
 	Desc = "This is SMG ammo, it's simple!",
 	Model = "models/items/item_item_crate.mdl",
 	Buyed = function( item, ply )
-		ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Selled = function( item, ply )
-		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Equipped = function( item, ply )
-		ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Unequipped = function( item, ply )
-		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end
 } )
 
@@ -45,16 +53,24 @@ LShop.system.ItemRegister( {
 	Desc = "This is Pistol ammo, it's simple!",
 	Model = "models/items/item_item_crate.mdl",
 	Buyed = function( item, ply )
-		ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Selled = function( item, ply )
-		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Equipped = function( item, ply )
-		ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Unequipped = function( item, ply )
-		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end
 } )
 
@@ -75,15 +91,23 @@ LShop.system.ItemRegister( {
 	Desc = "This is AR2 ammo, it's simple!",
 	Model = "models/items/item_item_crate.mdl",
 	Buyed = function( item, ply )
-		ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Selled = function( item, ply )
-		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Equipped = function( item, ply )
-		ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:GiveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end,
 	Unequipped = function( item, ply )
-		ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		if ( SERVER ) then
+			ply:RemoveAmmo( item.Ammo_Count, item.Ammo_ID )
+		end
 	end
 } )

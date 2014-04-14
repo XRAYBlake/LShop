@@ -167,6 +167,8 @@ if ( SERVER ) then
 	util.AddNetworkString("LShop_Admin_ItemTake")
 	util.AddNetworkString("LShop_ItemSend")
 	
+	util.AddNetworkString("LShop_ClientFunctionRun")
+	
 	net.Receive("LShop_SendTable_Request", function( len, cl )
 		net.Start("LShop_SendTable")
 		net.WriteTable( cl.OwnItems )
@@ -226,6 +228,12 @@ if ( SERVER ) then
 				if ( item.Buyed ) then
 					item.Buyed( item, target )
 				end
+				net.Start("LShop_ClientFunctionRun")
+				net.WriteString( "buy" )
+				net.WriteTable( { ID = item.ID, Category = item.Category } )
+				net.WriteEntity( target )
+				net.Send( target )
+				
 				pl:LShop_TakeMoney( item.Price )
 				net.Start("LShop_SendMessage")
 				net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_6", { target:Name(), item.Name } ) )
@@ -266,6 +274,11 @@ if ( SERVER ) then
 								if ( item.Buyed ) then
 									item.Buyed( item, target )
 								end
+								net.Start("LShop_ClientFunctionRun")
+								net.WriteString( "buy" )
+								net.WriteTable( { ID = item.ID, Category = item.Category } )
+								net.WriteEntity( target )
+								net.Send( target )
 								LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
 								net.Start("LShop_SendMessage")
 								net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_10", { target:Name(), item.Name } ) )
@@ -278,6 +291,11 @@ if ( SERVER ) then
 						if ( item.Buyed ) then
 							item.Buyed( item, target )
 						end
+						net.Start("LShop_ClientFunctionRun")
+						net.WriteString( "buy" )
+						net.WriteTable( { ID = item.ID, Category = item.Category } )
+						net.WriteEntity( target )
+						net.Send( target )
 						LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
 						net.Start("LShop_SendMessage")
 						net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_10", { target:Name(), item.Name } ) )
@@ -292,6 +310,11 @@ if ( SERVER ) then
 								if ( item.Buyed ) then
 									item.Buyed( item, target )
 								end
+								net.Start("LShop_ClientFunctionRun")
+								net.WriteString( "buy" )
+								net.WriteTable( { ID = item.ID, Category = item.Category } )
+								net.WriteEntity( target )
+								net.Send( target )
 								LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
 								net.Start("LShop_SendMessage")
 								net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_10", { target:Name(), item.Name } ) )
@@ -304,6 +327,11 @@ if ( SERVER ) then
 						if ( item.Buyed ) then
 							item.Buyed( item, target )
 						end
+						net.Start("LShop_ClientFunctionRun")
+						net.WriteString( "buy" )
+						net.WriteTable( { ID = item.ID, Category = item.Category } )
+						net.WriteEntity( target )
+						net.Send( target )
 						LShop.core.Message( Color( 0, 255, 0 ), "Item give : " .. target:SteamID() )
 						net.Start("LShop_SendMessage")
 						net.WriteString( LShop.lang.GetValue_Replace( pl, "LShop_Notice_10", { target:Name(), item.Name } ) )
@@ -328,6 +356,11 @@ if ( SERVER ) then
 			if ( item.Selled ) then
 				item.Selled( item, target )
 			end
+			net.Start("LShop_ClientFunctionRun")
+			net.WriteString( "sell" )
+			net.WriteTable( { ID = item.ID, Category = item.Category } )
+			net.WriteEntity( target )
+			net.Send( target )
 		else
 			LShop.core.Message( Color( 255, 255, 0 ), "Not own this item! : " .. target:SteamID() )
 			net.Start("LShop_SendMessage")
@@ -369,6 +402,11 @@ if ( SERVER ) then
 						if ( item.Buyed ) then
 							item.Buyed( item, self )
 						end
+						net.Start("LShop_ClientFunctionRun")
+						net.WriteString( "buy" )
+						net.WriteTable( { ID = itemID, Category = category } )
+						net.WriteEntity( self )
+						net.Send( self )
 						return					
 					end
 					if ( #self.OwnItems != 0 ) then
@@ -382,6 +420,11 @@ if ( SERVER ) then
 								if ( item.Buyed ) then
 									item.Buyed( item, self )
 								end
+								net.Start("LShop_ClientFunctionRun")
+								net.WriteString( "buy" )
+								net.WriteTable( { ID = itemID, Category = category } )
+								net.WriteEntity( self )
+								net.Send( self )
 								return
 							end
 						end
@@ -394,6 +437,11 @@ if ( SERVER ) then
 						if ( item.Buyed ) then
 							item.Buyed( item, self )
 						end
+						net.Start("LShop_ClientFunctionRun")
+						net.WriteString( "buy" )
+						net.WriteTable( { ID = itemID, Category = category } )
+						net.WriteEntity( self )
+						net.Send( self )
 						return
 					end
 				else
@@ -408,6 +456,11 @@ if ( SERVER ) then
 								if ( item.Buyed ) then
 									item.Buyed( item, self )
 								end
+								net.Start("LShop_ClientFunctionRun")
+								net.WriteString( "buy" )
+								net.WriteTable( { ID = itemID, Category = category } )
+								net.WriteEntity( self )
+								net.Send( self )
 								return
 							end
 						end
@@ -420,6 +473,11 @@ if ( SERVER ) then
 						if ( item.Buyed ) then
 							item.Buyed( item, self )
 						end
+						net.Start("LShop_ClientFunctionRun")
+						net.WriteString( "buy" )
+						net.WriteTable( { ID = itemID, Category = category } )
+						net.WriteEntity( self )
+						net.Send( self )
 						return
 					end
 				end
@@ -451,6 +509,12 @@ if ( SERVER ) then
 			if ( item.Selled ) then
 				item.Selled( item, self )
 			end
+			net.Start("LShop_ClientFunctionRun")
+			net.WriteString( "sell" )
+			net.WriteTable( { ID = itemID, Category = category } )
+			net.WriteEntity( self )
+			net.Send( self )
+			return
 		end
 	end
 	
@@ -519,6 +583,11 @@ if ( SERVER ) then
 					if ( findItem ) then
 						if ( findItem.UseTillDeath ) then return end
 						findItem.Equipped( findItem, self )
+						net.Start("LShop_ClientFunctionRun")
+						net.WriteString( "equ" )
+						net.WriteTable( { ID = findItem.ID, Category = findItem.Category } )
+						net.WriteEntity( self )
+						net.Send( self )
 					else
 						self:LShop_ItemRemoveInventory( v.ID, v.Category )
 					end
@@ -601,6 +670,11 @@ if ( SERVER ) then
 						local id = LShop.system.ItemFindByID( v.ID, v.Category )
 						if ( id ) then
 							id.Equipped( id, self )
+							net.Start("LShop_ClientFunctionRun")
+							net.WriteString( "equ" )
+							net.WriteTable( { ID = id.ID, Category = id.Category } )
+							net.WriteEntity( self )
+							net.Send( self )
 						end
 					end
 				end
@@ -688,8 +762,18 @@ if ( SERVER ) then
 					end
 					if ( v.onEquip ) then
 						id.Equipped( id, self )
+						net.Start("LShop_ClientFunctionRun")
+						net.WriteString( "equ" )
+						net.WriteTable( { ID = id.ID, Category = id.Category } )
+						net.WriteEntity( self )
+						net.Send( self )
 					else
 						id.Unequipped( id, self )
+						net.Start("LShop_ClientFunctionRun")
+						net.WriteString( "unequ" )
+						net.WriteTable( { ID = id.ID, Category = id.Category } )
+						net.WriteEntity( self )
+						net.Send( self )
 					end
 					LShop.system.SendDBToPlayer( self )
 					return

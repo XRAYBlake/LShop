@@ -135,6 +135,32 @@ net.Receive("LShop_Lang_SendTable", function( len, cl )
 	LShop.lang.langconfigCL = net.ReadString() or LShop.Config.DefaultLanguageFile
 end)
 
+net.Receive("LShop_ClientFunctionRun", function( len, cl )
+	local types = net.ReadString()
+	local items = net.ReadTable()
+	local target = net.ReadEntity()
+	local itemFunc = LShop.system.ItemFindByID( items.ID, items.Category )
+	if ( itemFunc ) then
+		if ( types == "buy" ) then
+			if ( itemFunc.Buyed ) then
+				itemFunc.Buyed( itemFunc, target )
+			end	
+		elseif ( types == "sell" ) then
+			if ( itemFunc.Selled ) then
+				itemFunc.Selled( itemFunc, target )
+			end			
+		elseif ( types == "equ" ) then
+			if ( itemFunc.Equipped ) then
+				itemFunc.Equipped( itemFunc, target )
+			end			
+		elseif ( types == "unequ" ) then
+			if ( itemFunc.Unequipped ) then
+				itemFunc.Unequipped( itemFunc, target )
+			end			
+		end
+	end
+end)
+
 concommand.Add( LShop.Config.OpenCommand , function( pl, cmd, args )
 	LShop.cl.Intro()
 end)
