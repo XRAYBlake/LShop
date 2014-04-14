@@ -69,10 +69,18 @@ function LShop.cl.ItemRunProgress( itemID, category )
 		surface.SetDrawColor( 0, 0, 0, 30 )
 		surface.DrawRect( w / 2 - w * 0.4 / 2, 0, w * 0.4, h * 0.1 )
 		
-		if ( Find.CanSell && !LP:LShop_IsOwned( itemID, category )  ) then
-			draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_Buy" ), "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-		elseif ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
-			draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_Sell" ), "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		if ( !Find.CanUnLimitedBuy ) then
+			if ( Find.CanBuy && !LP:LShop_IsOwned( itemID, category )  ) then
+				draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_Buy" ), "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			elseif ( Find.CanSell && LP:LShop_IsOwned( itemID, category )  ) then
+				draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_Sell" ), "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			end
+		elseif ( Find.CanUnLimitedBuy ) then
+			if ( Find.CanBuy ) then
+				draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_Buy" ), "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			elseif ( Find.CanSell ) then
+				draw.SimpleText( LShop.lang.GetValue( "LShop_ShopMenu_Text_Sell" ), "LShop_MainTitle", w * 0.5, h * 0.1 / 2, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+			end		
 		end
 		
 		if ( Find.Name ) then
