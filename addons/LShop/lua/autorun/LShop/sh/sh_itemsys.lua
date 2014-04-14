@@ -582,12 +582,14 @@ if ( SERVER ) then
 					local findItem = LShop.system.ItemFindByID( v.ID, v.Category )
 					if ( findItem ) then
 						if ( findItem.UseTillDeath ) then return end
-						findItem.Equipped( findItem, self )
-						net.Start("LShop_ClientFunctionRun")
-						net.WriteString( "equ" )
-						net.WriteTable( { ID = findItem.ID, Category = findItem.Category } )
-						net.WriteEntity( self )
-						net.Send( self )
+						if ( findItem.Equipped ) then
+							findItem.Equipped( findItem, self )
+							net.Start("LShop_ClientFunctionRun")
+							net.WriteString( "equ" )
+							net.WriteTable( { ID = findItem.ID, Category = findItem.Category } )
+							net.WriteEntity( self )
+							net.Send( self )
+						end
 					else
 						self:LShop_ItemRemoveInventory( v.ID, v.Category )
 					end
@@ -669,12 +671,14 @@ if ( SERVER ) then
 					if ( v.onEquip ) then
 						local id = LShop.system.ItemFindByID( v.ID, v.Category )
 						if ( id ) then
-							id.Equipped( id, self )
-							net.Start("LShop_ClientFunctionRun")
-							net.WriteString( "equ" )
-							net.WriteTable( { ID = id.ID, Category = id.Category } )
-							net.WriteEntity( self )
-							net.Send( self )
+							if ( id.Equipped ) then
+								id.Equipped( id, self )
+								net.Start("LShop_ClientFunctionRun")
+								net.WriteString( "equ" )
+								net.WriteTable( { ID = id.ID, Category = id.Category } )
+								net.WriteEntity( self )
+								net.Send( self )
+							end
 						end
 					end
 				end
@@ -761,19 +765,23 @@ if ( SERVER ) then
 						net.Send( self )
 					end
 					if ( v.onEquip ) then
-						id.Equipped( id, self )
-						net.Start("LShop_ClientFunctionRun")
-						net.WriteString( "equ" )
-						net.WriteTable( { ID = id.ID, Category = id.Category } )
-						net.WriteEntity( self )
-						net.Send( self )
+						if ( id.Equipped ) then
+							id.Equipped( id, self )
+							net.Start("LShop_ClientFunctionRun")
+							net.WriteString( "equ" )
+							net.WriteTable( { ID = id.ID, Category = id.Category } )
+							net.WriteEntity( self )
+							net.Send( self )
+						end
 					else
-						id.Unequipped( id, self )
-						net.Start("LShop_ClientFunctionRun")
-						net.WriteString( "unequ" )
-						net.WriteTable( { ID = id.ID, Category = id.Category } )
-						net.WriteEntity( self )
-						net.Send( self )
+						if ( id.Unequipped ) then
+							id.Unequipped( id, self )
+							net.Start("LShop_ClientFunctionRun")
+							net.WriteString( "unequ" )
+							net.WriteTable( { ID = id.ID, Category = id.Category } )
+							net.WriteEntity( self )
+							net.Send( self )
+						end
 					end
 					LShop.system.SendDBToPlayer( self )
 					return
