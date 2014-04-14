@@ -109,10 +109,7 @@ function LShop.cl.MainShop()
 		draw.SimpleText( LShop.lang.GetValue_Replace( "LShop_MainText_MoneyNotice", { LP:LShop_GetMoney() } ), "LShop_MoneyNotice", w * 0.97, h * 0.97, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 		
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.03, h * 0.05, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
-		
-		
-		-- LShop.lang.langconfigCL
-		
+
 		draw.SimpleText( LShop.lang.GetValue( "LShop_Version" ) .. LShop.Config.Version, "LShop_MoneyNotice", w * 0.97, h * 0.93, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 		draw.SimpleText( "Copyright ( C ) 2014 ~ 'Solar Team'", "LShop_MoneyNotice", w * 0.5, h * 0.95, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		
@@ -133,7 +130,7 @@ function LShop.cl.MainShop()
 	CloseButton:SetSize( 35, 35 ) 
 	CloseButton:SetAlpha( 0 )
 	CloseButton:AlphaTo( 255, 0.3, 0 )
-	CloseButton.DoClick = function(  )
+	CloseButton.DoClick = function( panels )
 		surface.PlaySound( "ui/buttonclick.wav" )
 		closefunc = true
 		if ( LShop_MainShopPanel.Menu01 ) then
@@ -147,6 +144,9 @@ function LShop.cl.MainShop()
 		end
 		if ( LShop_MainShopPanel.Language ) then
 			LShop_MainShopPanel.Language:AlphaTo( 0, 0.3, 0 )
+		end
+		if ( panels ) then
+			panels:AlphaTo( 0, 0.3, 0 )
 		end
 
 		hook.Remove( "CalcView", "LAdmin.main.SchematicView" )
@@ -393,7 +393,7 @@ function LShop.cl.MainShop()
 		local w = LShop_MainShopPanel.Language:GetWide()
 		local h = LShop_MainShopPanel.Language:GetTall()
 		
-		surface.SetDrawColor( 40, 40, 40, 100 )
+		surface.SetDrawColor( 10, 10, 10, 10 )
 		surface.DrawRect( 0, 0, w, h )
 	end
 

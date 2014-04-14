@@ -33,14 +33,15 @@ return {
 	["LShop_AdminMenu_Menu01_Help"] = "다른 사람의 돈과 아이템을 설정할 수 있습니다.",
 	
 	["LShop_AdminMenu_Menu01_Title"] = "플레이어 관리",
-	["LShop_AdminMenu_Menu02_Title"] = "소프트웨어 업데이트",
-	["LShop_AdminMenu_Menu03_Title"] = "소프트웨어 정보",
+	["LShop_AdminMenu_Menu02_Title"] = "소프트웨어 정보",
 	
 	["LShop_AdminMenu_Menu02_Notice"] = "현재 이 시스템은 개발중 입니다 ...",
 	
 	["LShop_AdminMenu_Button_ContactUS"] = "개발자에게 연락하기",
 	
 	["LShop_AdminMenu_Button_MoneySet"] = "돈 설정...",
+	["LShop_AdminMenu_Button_CopySteamID"] = "Steam ID 복사",
+	["LShop_AdminMenu_Button_OpenSteamProfile"] = "스팀 프로필 열기",
 	["LShop_AdminMenu_Button_GiveItem"] = "아이템 주기...",
 	["LShop_AdminMenu_Button_TakeItem"] = "아이템 뺏기...",
 	

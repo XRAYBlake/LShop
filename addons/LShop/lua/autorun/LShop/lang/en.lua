@@ -30,14 +30,15 @@ return {
 	["LShop_AdminMenu_Menu01_Help"] = "You can now set other players money, items.",
 	
 	["LShop_AdminMenu_Menu01_Title"] = "Player Manage",
-	["LShop_AdminMenu_Menu02_Title"] = "Software Update",
-	["LShop_AdminMenu_Menu03_Title"] = "Software Information",
+	["LShop_AdminMenu_Menu02_Title"] = "Software Information",
 	
 	["LShop_AdminMenu_Menu02_Notice"] = "Development ...",
 	
 	["LShop_AdminMenu_Button_ContactUS"] = "Contact Us",
 	
 	["LShop_AdminMenu_Button_MoneySet"] = "Money Set...",
+	["LShop_AdminMenu_Button_CopySteamID"] = "Copy SteamID",
+	["LShop_AdminMenu_Button_OpenSteamProfile"] = "Open Steam Profile",
 	["LShop_AdminMenu_Button_GiveItem"] = "Item Give...",
 	["LShop_AdminMenu_Button_TakeItem"] = "Item Take...",
 	
