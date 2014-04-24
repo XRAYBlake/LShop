@@ -35,8 +35,11 @@ return {
 	["LShop_AdminMenu_Menu01_Title"] = "플레이어 관리",
 	["LShop_AdminMenu_Menu02_Title"] = "소프트웨어 정보",
 	
-	["LShop_AdminMenu_Menu02_Notice"] = "현재 이 시스템은 개발중 입니다 ...",
-	
+	["LShop_AdminMenu_Menu02_CurVerStr"] = "현재 LShop 버전 - #",
+	["LShop_AdminMenu_Menu02_NewVerStr"] = "서버의 최신 LShop 버전 - #",
+	["LShop_AdminMenu_Menu02_CurVerNotStr"] = "당신은 LShop 최신 버전을 사용하고 있습니다, 업데이트가 필요하지 않습니다.",
+	["LShop_AdminMenu_Menu02_NewVerNotStr"] = "새로운 LShop 이 발견되었습니다, 업데이트를 하십시오.",
+
 	["LShop_AdminMenu_Button_ContactUS"] = "개발자에게 연락하기",
 	
 	["LShop_AdminMenu_Button_MoneySet"] = "돈 설정...",

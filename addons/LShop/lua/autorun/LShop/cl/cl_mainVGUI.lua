@@ -111,7 +111,7 @@ function LShop.cl.MainShop()
 		draw.SimpleText( "LShop", "LShop_MainTitle", w * 0.03, h * 0.05, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 
 		draw.SimpleText( LShop.lang.GetValue( "LShop_Version" ) .. LShop.Config.Version, "LShop_MoneyNotice", w * 0.97, h * 0.93, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
-		draw.SimpleText( "Copyright ( C ) 2014 ~ 'Solar Team'", "LShop_MoneyNotice", w * 0.5, h * 0.95, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		draw.SimpleText( "Copyright ( C ) 2014 ~ 'Cyanide Team'", "LShop_MoneyNotice", w * 0.5, h * 0.95, Color( 0, 0, 0, schematicIntro_alpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 		
 		if ( LShop.Config.DaySaleSystem ) then
 			if ( day.wday == LShop.Config.DayNumber ) then

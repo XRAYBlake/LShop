@@ -32,8 +32,11 @@ return {
 	["LShop_AdminMenu_Menu01_Title"] = "Player Manage",
 	["LShop_AdminMenu_Menu02_Title"] = "Software Information",
 	
-	["LShop_AdminMenu_Menu02_Notice"] = "Development ...",
-	
+	["LShop_AdminMenu_Menu02_CurVerStr"] = "Current LShop Version - #",
+	["LShop_AdminMenu_Menu02_NewVerStr"] = "New LShop Version - #",
+	["LShop_AdminMenu_Menu02_CurVerNotStr"] = "You are using LShop as latest version, not need update.",
+	["LShop_AdminMenu_Menu02_NewVerNotStr"] = "New LShop found!, please update your LShop.",
+
 	["LShop_AdminMenu_Button_ContactUS"] = "Contact Us",
 	
 	["LShop_AdminMenu_Button_MoneySet"] = "Money Set...",
