@@ -232,8 +232,8 @@ function LShop.cl.Intro()
 						draw.RoundedBox( 0, 0, scrh / 2 - scrh * 0.15 / 2, first_intro_teamback_w, scrh * 0.15, Color( 235, 235, 235, first_intro_teamtext_a ) )
 						draw.SimpleText( "LShop", "LShop_Intro_Title", scrw / 2 + math.random( 1, 3 ), scrh / 2 - scrh * 0.03 + math.random( 1, 3 ), Color( 30, 30, 30, first_intro_teamtext_a - 100 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 						draw.SimpleText( "LShop", "LShop_Intro_Title", scrw / 2, scrh / 2 - scrh * 0.03, Color( 30, 30, 30, first_intro_teamtext_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-						draw.SimpleText( "Solar Team", "LShop_Intro_TeamText", scrw / 2, scrh / 2 + scrh * 0.03, Color( 30, 30, 30, first_intro_teamtext_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-						draw.SimpleText( "VERSION " .. LShop.Config.Version, "LShop_Intro_Version", scrw - 10, scrh / 2 + scrh * 0.05, Color( 30, 30, 30, first_intro_teamtext_a ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
+						draw.SimpleText( "Cyanide Team", "LShop_Intro_TeamText", scrw / 2, scrh / 2 + scrh * 0.03, Color( 30, 30, 30, first_intro_teamtext_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+						draw.SimpleText( LShop.lang.GetValue( "LShop_Intro_Version" ) .. LShop.Config.Version, "LShop_Intro_Version", scrw - 10, scrh / 2 + scrh * 0.05, Color( 30, 30, 30, first_intro_teamtext_a ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 						
 						surface.SetDrawColor( 60, 60, 60, first_intro_teamtext_a )
 						surface.SetMaterial( Material("gui/gradient_up") )
@@ -282,8 +282,8 @@ function LShop.cl.Intro()
 				surface.SetMaterial( Material("gui/gradient_down") )
 				surface.DrawTexturedRect( 0, 0 - 10, scrw, first_background_h )
 				
-				// draw.SimpleText( "LShop", "LShop_MainTitle", scrw / 2, first_background_h / 2, Color( 255, 255, 255, intro_percent_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
-				draw.SimpleText( "Loading ...", "LShop_Intro_LoadText_2", scrw / 2, scrh - first_background_h / 2, Color( 255, 255, 255, intro_percent_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				//draw.SimpleText( "LShop", "LShop_MainTitle", scrw / 2, first_background_h / 2, Color( 255, 255, 255, intro_percent_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+				draw.SimpleText( LShop.lang.GetValue( "LShop_Intro_Loading" ), "LShop_Intro_LoadText_2", scrw / 2, scrh - first_background_h / 2, Color( 255, 255, 255, intro_percent_a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 			end
 			
 		if ( LShop.cl.IntroDone ) then
