@@ -3,6 +3,11 @@ return {
 	["LShop_LangFile_Name"] = "English",
 	["LShop_Version"] = "Ver ",
 	
+	["LShop_Intro_Version"] = "VERSION ",
+	["LShop_Intro_Loading"] = "Loading...",
+	
+	["LShop_Saleday"] = "* Sale Day!",
+	
 	["LShop_MainButton_Shop"] = "Shop",
 	["LShop_MainButton_Inventory"] = "Inventory",	
 	["LShop_MainButton_Admin"] = "Administrator",

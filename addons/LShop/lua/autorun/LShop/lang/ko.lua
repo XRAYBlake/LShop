@@ -3,6 +3,10 @@ return {
 	["LShop_LangFile_Name"] = "한국어",
 	["LShop_Version"] = "버전 ",
 	
+	["LShop_Intro_Version"] = "버전 ",
+	["LShop_Intro_Loading"] = "불러오는 중...",
+	
+	["LShop_Saleday"] = "* 오늘만 세일!",
 	
 	["LShop_MainButton_Shop"] = "상점",
 	["LShop_MainButton_Inventory"] = "인벤토리",
