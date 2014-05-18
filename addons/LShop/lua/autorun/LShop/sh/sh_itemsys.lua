@@ -117,6 +117,7 @@ function LShop.system.ItemFindByModel( model, category )
 end
 
 function LShop.system.DaySale( )
+	if ( !LShop.Config.DaySaleSystem ) then return end
 	local day = os.date("*t")
 	for i = 1, #LShop.system.WeekDay do
 		if ( day.wday == LShop.Config.DayNumber ) then
