@@ -1,8 +1,8 @@
 local function BuildMenuGive( parent, target )
-	for category_ID, items in pairs(LShop.ITEMs) do
+	for category_ID, items in pairs( LShop.system.GetItems( ) ) do
 		local category = parent:AddSubMenu( category_ID )
 		
-		table.sort(LShop.ITEMs, function(a, b) 
+		table.sort( LShop.system.GetItems( ), function( a, b ) 
 			return a.Name > b.Name
 		end)
 		
@@ -19,10 +19,10 @@ local function BuildMenuGive( parent, target )
 end
 
 local function BuildMenuTake( parent, target )
-	for category_ID, items in pairs(LShop.ITEMs) do
+	for category_ID, items in pairs( LShop.system.GetItems( ) ) do
 		local category = parent:AddSubMenu( category_ID )
 
-		table.sort(LShop.ITEMs, function(a, b) 
+		table.sort( LShop.system.GetItems( ), function( a, b ) 
 			return a.Name > b.Name
 		end)
 

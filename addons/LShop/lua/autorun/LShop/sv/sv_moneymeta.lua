@@ -23,7 +23,7 @@ end
 
 util.AddNetworkString("LShop_Admin_SetMoney")
 
-function LShop.core.MoneyFIX( )
+function LShop.kernel.MoneyFIX( )
 	for k, v in pairs( player.GetAll() ) do
 		local money = v.Money
 		if ( type( money ) == "number" ) then
@@ -37,14 +37,14 @@ function LShop.core.MoneyFIX( )
 		end
 	end
 end
-hook.Add( "Think", "LAdmin.core.MoneyFIX", LShop.core.MoneyFIX )
+hook.Add( "Think", "LAdmin.kernel.MoneyFIX", LShop.kernel.MoneyFIX )
 
 net.Receive("LShop_Admin_SetMoney", function( len, cl )
 	local target = net.ReadEntity()
 	local money = net.ReadString()
 	if ( IsValid( target ) ) then
 		target:LShop_SetMoney( tonumber( money ) )
-		LShop.core.Message( Color( 0, 255, 0 ), "Set target money : " .. target:SteamID() )
+		LShop.kernel.Message( Color( 0, 255, 0 ), "Set target money : " .. target:SteamID() )
 		cl:LShop_SaveData()
 		LShop.system.SendDBToPlayer( cl )
 		LShop.system.SendDBToPlayer( target )

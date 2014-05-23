@@ -13,7 +13,7 @@ function LShop.system.NewVersionCheck( caller )
 			net.Send( caller )
 		end,
 		function( err )
-			LShop.core.Message( Color( 255, 0, 0 ), "Version Check Error : " .. err )
+			LShop.kernel.Message( Color( 255, 0, 0 ), "Version Check Error : " .. err )
 			net.Start("LShop_versioncheck_CheckSendCL")
 			net.WriteString( "Error" )
 			net.Send( caller )

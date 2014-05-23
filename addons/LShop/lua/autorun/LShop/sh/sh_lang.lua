@@ -18,7 +18,7 @@ if ( SERVER ) then
 		local dirName = string.Replace( self:SteamID(), ":", "_" )
 		file.CreateDir("Lshop/" .. dirName)
 		file.Write("Lshop/" .. dirName .. "/Language.txt", tostring( self.LangConfig ) )
-		LShop.core.Message( Color( 0, 255, 0 ), "Player lang data saved : " .. self:SteamID() )		
+		LShop.kernel.Message( Color( 0, 255, 0 ), "Player lang data saved : " .. self:SteamID() )		
 	end
 	
 	function Player:LShop_Lang_LoadData()
@@ -27,14 +27,14 @@ if ( SERVER ) then
 			local languageFile = file.Read("Lshop/" .. dirName .. "/Language.txt", "DATA") or LShop.Config.DefaultLanguageFile
 			if ( languageFile != "nil" ) then
 				self.LangConfig = languageFile
-				LShop.core.Message( Color( 0, 255, 0 ), "Player lang data loaded : " .. self:SteamID() .. " - " .. self.LangConfig )
+				LShop.kernel.Message( Color( 0, 255, 0 ), "Player lang data loaded : " .. self:SteamID() .. " - " .. self.LangConfig )
 				LShop.lang.SendTableToPlayer( self )
 			else
 				languageFile = file.Read("Lshop/" .. dirName .. "/Language.txt", "DATA") or LShop.Config.DefaultLanguageFile
 				self.LangConfig = LShop.Config.DefaultLanguageFile or "en"
 				self:LShop_Lang_SaveData()
 				self.LangConfig = languageFile
-				LShop.core.Message( Color( 0, 255, 0 ), "Player lang data loaded : " .. self:SteamID() .. " - " .. self.LangConfig )	
+				LShop.kernel.Message( Color( 0, 255, 0 ), "Player lang data loaded : " .. self:SteamID() .. " - " .. self.LangConfig )	
 				LShop.lang.SendTableToPlayer( self )				
 			end
 		else
