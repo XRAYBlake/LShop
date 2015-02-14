@@ -10,7 +10,7 @@ LShop.Config.Version = "1.8" -- Do not edit this!
 LShop.Config.OpenCommand = "LShop_open" -- Shop open command in console.
 LShop.Config.OpenKey = "F4" -- Key to open Shop.
 LShop.Config.ChatOpenCommand = "!shop" -- Chat command that opens Shop.
-LShop.Config.ChatOpenCommand_Output = "" -- Set menu open chat command output string.
+LShop.Config.ChatOpenCommand_Output = "Shop opened!" -- Set menu open chat command output string.
 
 --[[// #################################### //
 	= Shop Open Key Document =

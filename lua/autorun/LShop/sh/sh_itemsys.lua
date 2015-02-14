@@ -564,7 +564,7 @@ if ( SERVER ) then
 			end
 		end )
 		
-		timer.Create("LShop_AutoMoneyGive_" .. self:SteamID( ), LShop.Config.MoneyGiveTimer, 0, function( ) 
+		timer.Create( "LShop_AutoMoneyGive_" .. self:SteamID( ), LShop.Config.MoneyGiveTimer, 0, function( ) 
 			if ( !LShop.Config.AutoMoneyGive ) then return end
 			self:LShop_AddMoney( LShop.Config.MoneyAmmount )
 			LShop.system.Notify( self, LShop.lang.GetValue_Replace( self, "LShop_Notify_AutoMoneyGive", { LShop.Config.MoneyAmmount } ) )
@@ -623,7 +623,7 @@ if ( SERVER ) then
 		net.Send( pl )	
 	end
 	
-	function Player:onEquipProgress( itemID, bool, category )
+	function META:onEquipProgress( itemID, bool, category )
 		local id = LShop.system.ItemFindByID( itemID, category )
 		if ( !id ) then return end
 		for k, v in pairs( self.OwnItems ) do

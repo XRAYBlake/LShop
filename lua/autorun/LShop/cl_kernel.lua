@@ -1,4 +1,4 @@
-LShop = LShop or { cl = { }, OwnItemsCL = { }, PlyMoney = 0 }
+LShop = LShop or { cl = { }, OwnItemsCL = { }, PlyMoney = 0, system = { } }
 LShop.cl.SelectedCategory = LShop.cl.SelectedCategory or nil
 LShop.cl.SelectedMenu = LShop.cl.SelectedMenu or nil
 

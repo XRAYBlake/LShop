@@ -11,7 +11,7 @@ end
 
 function META:LShop_SetMoney( money )
 	if ( type( money ) != "number" ) then money = tonumber( money ) end
-	self:SetNWInt( "LShop_Money", math.max( self.Money, 0 ) )
+	self:SetNWInt( "LShop_Money", math.max( money, 0 ) )
 end
 
 function META:LShop_AddMoney( money )
@@ -32,7 +32,7 @@ net.Receive( "LShop_Admin_SetMoney", function( len, cl )
 	local target = net.ReadEntity( )
 	local money = net.ReadString( )
 	if ( !IsValid( target ) ) then return end
-	target:LShop_SetMoney( net.ReadString( ) )
+	target:LShop_SetMoney( money )
 	cl:LShop_SaveData( )
 	LShop.system.SendDBToPlayer( cl )
 	LShop.system.SendDBToPlayer( target )

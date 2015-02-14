@@ -20,8 +20,9 @@ if ( SERVER ) then
 	local META = FindMetaTable( "Player" )
 
 	function META:LShop_Lang_SaveData( )
+		local dirName = string.Replace( self:SteamID( ), ":", "_" )
 		file.CreateDir( "Lshop/" .. dirName )
-		file.Write( "Lshop/" .. string.Replace( self:SteamID( ), ":", "_" ) .. "/Language.txt", tostring( self.LangConfig ) )	
+		file.Write( "Lshop/" .. dirName .. "/Language.txt", tostring( self.LangConfig ) )	
 	end
 	
 	function META:LShop_Lang_LoadData( )
@@ -81,10 +82,12 @@ if ( SERVER ) then
 	end
 	
 	function LShop.lang.SendTableToAllPlayers( )
-		net.Start( "LShop_Lang_SendTable" )
-		net.WriteTable( LShop.lang.tables )
-		net.WriteString( v.LangConfig )
-		net.Broadcast( )
+		for k, v in pairs( player.GetAll( ) ) do
+			net.Start( "LShop_Lang_SendTable" )
+			net.WriteTable( LShop.lang.tables )
+			net.WriteString( v.LangConfig )
+			net.Send( v )
+		end
 	end
 
 	LShop.lang.Register( "en" )
