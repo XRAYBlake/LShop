@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+	"name"				"LShop"
+	"version"			"1.8"
+	"up_date"			""
+	"author_name"			"L7D"
+	"author_email"			"smhjyh2009@gmail.com"
+	"author_url"			""
+	"info"				"A Shop system for Garry's Mod."
+	"override"			"0"
+}
